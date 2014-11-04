@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="2" >
+
+    <dataSet config="main" >
+        <source path="/home/hbown1/cs97/labs/04/FoodRecognitionApp/app/src/main/assets" />
+    </dataSet>
+    <dataSet config="debug" >
+        <source path="/home/hbown1/cs97/labs/04/FoodRecognitionApp/app/src/debug/assets" />
+    </dataSet>
+
+</merger>
