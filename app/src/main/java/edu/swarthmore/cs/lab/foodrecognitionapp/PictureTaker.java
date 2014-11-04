@@ -136,7 +136,7 @@ public class PictureTaker extends Activity {
             // TODO Auto-generated catch block
             e1.printStackTrace();
         }
-        findViewById(R.id.imageView1).setBackground(new BitmapDrawable(bitmap));
+        _imageView.setImageBitmap(bitmap);
     }
 
     /** Create a file Uri for saving an image or video */
