@@ -1,6 +1,7 @@
 package edu.swarthmore.cs.lab.foodrecognitionapp;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -8,6 +9,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Path;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,6 +27,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.EventObject;
@@ -33,8 +37,6 @@ import java.util.UUID;
 
 
 public class PictureTaker extends Activity {
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-    private Uri fileUri;
     public static final int MEDIA_TYPE_IMAGE = 1;
     private static final String TAG = "PictureTaker";
     public static File _file;
@@ -47,11 +49,10 @@ public class PictureTaker extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_picture_taker);
-//
-//        if (IsThereAnAppToTakePictures())
-//        {
-            CreateDirectoryForPictures();
-//        }
+
+        // we are not making sure there is an app to take pictures
+        CreateDirectoryForPictures();
+
 
         Button button = (Button)findViewById(R.id.myButton);
         button.setOnClickListener(new View.OnClickListener() {
@@ -67,16 +68,6 @@ public class PictureTaker extends Activity {
             bitmap = null;
         }
 
-
-//        // create Intent to take a picture and return control to the calling application
-//        Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//
-//        fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE); // create a file to save the image
-//        i.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-//
-//        if (i.resolveActivity(getPackageManager()) != null) {
-//            startActivityForResult(i, REQUEST_IMAGE_CAPTURE);
-//        }
     }
 
     private void CreateDirectoryForPictures()
@@ -121,10 +112,9 @@ public class PictureTaker extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(TAG, "in onActivityResult");
 
         super.onActivityResult(requestCode,resultCode,data);
 
@@ -137,37 +127,16 @@ public class PictureTaker extends Activity {
         // display in ImageView. We will resize the bitmap to fit the display
         // Loading the full sized image will consume to much memory
         // and cause the application to crash.
-        int height = (new DisplayMetrics()).heightPixels;
-        int width = _imageView.getWidth() ;
-        bitmap = LoadAndResizeBitmap(_file.getPath(), width, height);
-    }
-
-    public static Bitmap LoadAndResizeBitmap(String fileName, int width, int height)
-    {
-        // First we get the the dimensions of the file on disk
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(fileName, options);
-
-        // Next we calculate the ratio that we need to resize the image by
-        // in order to fit the requested dimensions.
-        int outHeight = options.outHeight;
-        int outWidth = options.outWidth;
-        int inSampleSize = 1;
-
-        if (outHeight > height || outWidth > width)
-        {
-            inSampleSize = outWidth > outHeight
-                    ? outHeight / height
-                    : outWidth / width;
+        try {
+            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), contentUri);
+        } catch (FileNotFoundException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
         }
-
-        // Now we will load the image and have BitmapFactory resize it for us.
-        options.inSampleSize = inSampleSize;
-        options.inJustDecodeBounds = false;
-        Bitmap resizedBitmap = BitmapFactory.decodeFile(fileName, options);
-
-        return resizedBitmap;
+        findViewById(R.id.imageView1).setBackground(new BitmapDrawable(bitmap));
     }
 
     /** Create a file Uri for saving an image or video */
