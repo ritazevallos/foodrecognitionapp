@@ -2,18 +2,34 @@ package edu.swarthmore.cs.lab.foodrecognitionapp;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Path;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.EventObject;
+import java.util.List;
+import java.util.UUID;
 
 
 public class PictureTaker extends Activity {
@@ -21,22 +37,67 @@ public class PictureTaker extends Activity {
     private Uri fileUri;
     public static final int MEDIA_TYPE_IMAGE = 1;
     private static final String TAG = "PictureTaker";
+    public static File _file;
+    public static File _dir;
+    public static Bitmap bitmap;
+    public static ImageView _imageView;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_picture_taker);
+//
+//        if (IsThereAnAppToTakePictures())
+//        {
+            CreateDirectoryForPictures();
+//        }
 
-        // create Intent to take a picture and return control to the calling application
-        Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-        fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE); // create a file to save the image
-        i.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-
-        if (i.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(i, REQUEST_IMAGE_CAPTURE);
+        Button button = (Button)findViewById(R.id.myButton);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "clicked that button");
+                TakeAPicture();
+            }
+        });
+        _imageView = (ImageView)findViewById(R.id.imageView1);
+        if (bitmap != null) {
+            _imageView.setImageBitmap(bitmap);
+            bitmap = null;
         }
+
+
+//        // create Intent to take a picture and return control to the calling application
+//        Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//
+//        fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE); // create a file to save the image
+//        i.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+//
+//        if (i.resolveActivity(getPackageManager()) != null) {
+//            startActivityForResult(i, REQUEST_IMAGE_CAPTURE);
+//        }
+    }
+
+    private void CreateDirectoryForPictures()
+    {
+        _dir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "BOOKS");
+        if (!_dir.exists())
+        {
+            _dir.mkdirs();
+        }
+    }
+
+    private void TakeAPicture()
+    {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        _file = new File(_dir, String.format("foodPhoto_{0}.jpg", UUID.randomUUID()));
+
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(_file));
+
+        startActivityForResult(intent, 0);
     }
 
 
@@ -65,23 +126,48 @@ public class PictureTaker extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode,resultCode,data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE) {
-            if (resultCode == RESULT_OK) {
-                Log.d(TAG, "Successfully saved file: " + fileUri.toString());
 
-                // Start an intent to look at the file
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setDataAndType(fileUri, "image/jpeg");
-                startActivity(i);
-                finish();
-            } else if (resultCode == RESULT_CANCELED) {
-                // User cancelled the image capture
-            } else {
-                // Image capture failed, advise user
-            }
-        }
+        // make it available in the gallery
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        Uri contentUri = Uri.fromFile(_file);
+        mediaScanIntent.setData(contentUri);
+        sendBroadcast(mediaScanIntent);
+
+        // display in ImageView. We will resize the bitmap to fit the display
+        // Loading the full sized image will consume to much memory
+        // and cause the application to crash.
+        int height = (new DisplayMetrics()).heightPixels;
+        int width = _imageView.getWidth() ;
+        bitmap = LoadAndResizeBitmap(_file.getPath(), width, height);
     }
 
+    public static Bitmap LoadAndResizeBitmap(String fileName, int width, int height)
+    {
+        // First we get the the dimensions of the file on disk
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(fileName, options);
+
+        // Next we calculate the ratio that we need to resize the image by
+        // in order to fit the requested dimensions.
+        int outHeight = options.outHeight;
+        int outWidth = options.outWidth;
+        int inSampleSize = 1;
+
+        if (outHeight > height || outWidth > width)
+        {
+            inSampleSize = outWidth > outHeight
+                    ? outHeight / height
+                    : outWidth / width;
+        }
+
+        // Now we will load the image and have BitmapFactory resize it for us.
+        options.inSampleSize = inSampleSize;
+        options.inJustDecodeBounds = false;
+        Bitmap resizedBitmap = BitmapFactory.decodeFile(fileName, options);
+
+        return resizedBitmap;
+    }
 
     /** Create a file Uri for saving an image or video */
     private static Uri getOutputMediaFileUri(int type){
