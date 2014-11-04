@@ -48,6 +48,8 @@
                 </string>
                 <string name="app_name" >FoodRecognitionApp
                 </string>
+                <string name="pictureTagHint" >Tag this picture
+                </string>
             </file>
             <file
                 path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/values/dimens.xml"

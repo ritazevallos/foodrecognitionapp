@@ -15,6 +15,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -39,10 +42,12 @@ import java.util.UUID;
 public class PictureTaker extends Activity {
     public static final int MEDIA_TYPE_IMAGE = 1;
     private static final String TAG = "PictureTaker";
-    public static File _file;
-    public static File _dir;
+    public static File mFile;
+    public static File mDir;
     public static Bitmap bitmap;
     public static ImageView _imageView;
+    private EditText mTagField;
+    private FoodPhoto mFoodPhoto;
 
 
     @Override
@@ -53,15 +58,39 @@ public class PictureTaker extends Activity {
         // we are not making sure there is an app to take pictures
         CreateDirectoryForPictures();
 
+        mFoodPhoto = new FoodPhoto();
 
         Button button = (Button)findViewById(R.id.myButton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "clicked that button");
                 TakeAPicture();
             }
         });
+
+        mTagField = (EditText)findViewById(R.id.pictureTag);
+        mTagField.setTag(mFoodPhoto.getTag());
+
+        mTagField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String msg = s.toString();
+                Log.d(TAG, msg);
+                mFoodPhoto.setTag(msg);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         _imageView = (ImageView)findViewById(R.id.imageView1);
         if (bitmap != null) {
             _imageView.setImageBitmap(bitmap);
@@ -72,11 +101,11 @@ public class PictureTaker extends Activity {
 
     private void CreateDirectoryForPictures()
     {
-        _dir = new File(Environment.getExternalStoragePublicDirectory(
+        mDir = new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES), "BOOKS");
-        if (!_dir.exists())
+        if (!mDir.exists())
         {
-            _dir.mkdirs();
+            mDir.mkdirs();
         }
     }
 
@@ -84,10 +113,11 @@ public class PictureTaker extends Activity {
     {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-        _file = new File(_dir, String.format("foodPhoto_"+ UUID.randomUUID() + ".jpg"));
-        Log.d(TAG, "file path: "+_file.toString());
+        mFile = new File(mDir, String.format("foodPhoto_"+ UUID.randomUUID() + ".jpg"));
+        Log.d(TAG, "file path: " + mFile.toString());
+        mFoodPhoto.setFile(mFile);
 
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(_file));
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mFile));
 
         startActivityForResult(intent, 0);
     }
@@ -120,7 +150,7 @@ public class PictureTaker extends Activity {
 
         // make it available in the gallery
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        Uri contentUri = Uri.fromFile(_file);
+        Uri contentUri = Uri.fromFile(mFile);
         mediaScanIntent.setData(contentUri);
         sendBroadcast(mediaScanIntent);
 

@@ -14,4 +14,10 @@
         android:layout_height="300.0dp"
         android:id="@+id/imageView1"
         android:adjustViewBounds="true" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id = "@+id/pictureTag"
+        android:hint="@string/pictureTagHint"/>
 </LinearLayout><!-- From: file:/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/activity_picture_taker.xml -->

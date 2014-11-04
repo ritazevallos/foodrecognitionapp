@@ -12,6 +12,7 @@
     <string name="action_settings">Settings</string>
     <string name="app_name">FoodRecognitionApp</string>
     <string name="openCamera">Open Camera</string>
+    <string name="pictureTagHint">Tag this picture</string>
     <!-- From: file:/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/values/styles.xml -->
     <eat-comment />
 
