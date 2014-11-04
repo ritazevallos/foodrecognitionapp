@@ -93,7 +93,8 @@ public class PictureTaker extends Activity {
     {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-        _file = new File(_dir, String.format("foodPhoto_{0}.jpg", UUID.randomUUID()));
+        _file = new File(_dir, String.format("foodPhoto_"+ UUID.randomUUID() + ".jpg"));
+        Log.d(TAG, "file path: "+_file.toString());
 
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(_file));
 
