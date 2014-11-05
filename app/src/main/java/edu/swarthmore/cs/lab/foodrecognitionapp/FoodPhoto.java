@@ -21,6 +21,7 @@ public class FoodPhoto {
     private static final String JSON_ID = "id";
     private static final String JSON_TAGS = "tags";
     private static final String JSON_DATE = "date";
+    private static final String JSON_FILE = "file";
 
     public FoodPhoto(){
         mId = UUID.randomUUID();
@@ -66,19 +67,23 @@ public class FoodPhoto {
     public JSONObject toJSON() throws JSONException {
         JSONObject json = new JSONObject();
         json.put(JSON_ID, mId.toString());
-        json.put(JSON_TAGS, mTags); //TODO: this might break
+        json.put(JSON_TAGS, mTags.get(0)); //TODO: just putting the first string
         json.put(JSON_DATE, mDate.getTime());
+        json.put(JSON_FILE, mFile.toURI().toString());//todo: no idea if this is the right way to do this
         return json;
     }
 
+    // given the JSON of the foodPhoto, this is a constructor
     public FoodPhoto(JSONObject json) throws JSONException {
         mId = UUID.fromString(json.getString(JSON_ID));
 
-        JSONArray jsonArray = json.getJSONArray(JSON_TAGS);
-        for (int i=0; i<jsonArray.length(); i++) {
-            mTags.add(jsonArray.getString(i));
-        }
+//        JSONArray jsonArray = json.getJSONArray(JSON_TAGS);
+//        for (int i=0; i<jsonArray.length(); i++) {
+//            mTags.add(jsonArray.getString(i));
+//        }
+        mTags.add(json.getString(JSON_TAGS));
 
         mDate = new Date(json.getLong(JSON_DATE));
+        //todo: turn JSON file URI into a file
     }
 }
