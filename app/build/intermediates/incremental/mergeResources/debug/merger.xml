@@ -64,6 +64,8 @@
                 </string>
                 <string name="food_photo_title" >Food Photo
                 </string>
+                <string name="menu_item_gallery" >Go to Gallery
+                </string>
                 <string name="pictureTagHint" >Tag this picture
                 </string>
             </file>
