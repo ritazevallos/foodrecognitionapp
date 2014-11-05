@@ -3,6 +3,12 @@
     tools:context=".PictureTaker" >
 
     <item
+        android:id="@+id/menu_item_add"
+        android:icon="@android:drawable/ic_menu_add"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/menu_item_add"/>
+
+    <item
         android:id="@+id/menu_item_gallery"
         android:icon="@android:drawable/ic_menu_gallery"
         android:showAsAction="ifRoom|withText"

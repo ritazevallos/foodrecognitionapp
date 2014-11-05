@@ -39,11 +39,13 @@ public class FoodPhotoStore {
             // will loop through all items in ArrayListVar
             // each time through the loop elementVar (which is of type ElementType) will be an item in the list
             if (photo.getId().equals(id)) {
+                Log.d(TAG, "returning existing photo with id" + id.toString());
                 return photo;
             }
         }
 
         FoodPhoto emptyPhoto = new FoodPhoto();
+        Log.d(TAG, "returning new photo");
         return emptyPhoto;
 
     }
