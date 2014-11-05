@@ -1,5 +1,7 @@
 package edu.swarthmore.cs.lab.foodrecognitionapp;
 
+import android.net.Uri;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,7 +23,7 @@ public class FoodPhoto {
     private static final String JSON_ID = "id";
     private static final String JSON_TAGS = "tags";
     private static final String JSON_DATE = "date";
-    private static final String JSON_FILE = "file";
+    private static final String JSON_FILE_URI = "file";
 
     public FoodPhoto(){
         mId = UUID.randomUUID();
@@ -69,7 +71,7 @@ public class FoodPhoto {
         json.put(JSON_ID, mId.toString());
         json.put(JSON_TAGS, mTags.get(0)); //TODO: just putting the first string
         json.put(JSON_DATE, mDate.getTime());
-        json.put(JSON_FILE, mFile.toURI().toString());//todo: no idea if this is the right way to do this
+        json.put(JSON_FILE_URI, Uri.fromFile(mFile).toString());//todo: no idea if this is the right way to do this
         return json;
     }
 
@@ -84,6 +86,7 @@ public class FoodPhoto {
         mTags.add(json.getString(JSON_TAGS));
 
         mDate = new Date(json.getLong(JSON_DATE));
-        //todo: turn JSON file URI into a file
+
+        mFile = new File(json.getString(JSON_FILE_URI));
     }
 }
