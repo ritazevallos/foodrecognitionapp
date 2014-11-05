@@ -15,11 +15,11 @@ public class FoodPhotoStore {
     private Context mAppContext;
     private ArrayList<FoodPhoto> mFoodPhotos;
     private static final String TAG = "FoodPhotoStore";
-    //private FoodPhotoIntentJSONSerializer mSerializer;
+    private FoodPhotoIntentJSONSerializer mSerializer;
 
     public FoodPhotoStore(Context appContext) {
         mAppContext = appContext;
-        /*
+
         mSerializer = new FoodPhotoIntentJSONSerializer(mAppContext, "foodPhotos.json");
         try {
             mFoodPhotos = mSerializer.loadFoodPhotos();
@@ -27,7 +27,7 @@ public class FoodPhotoStore {
             mFoodPhotos = new ArrayList<FoodPhoto>();
             Log.e(TAG, "Error loading Food Photos: ", e);
 
-*/
+        }
     }
 
     public ArrayList getFoodPhotos(){
@@ -59,10 +59,10 @@ public class FoodPhotoStore {
         mFoodPhotos.add(fp);
     }
 
-/*
+
     public boolean saveFoodPhotos() {
         try {
-            mSerializer.saveHealthEvents(mFoodPhotos);
+            mSerializer.saveFoodPhotos(mFoodPhotos);
             Log.d(TAG, "Food photos saved to file.");
             return true;
         } catch (Exception e) {
@@ -70,5 +70,5 @@ public class FoodPhotoStore {
             return false;
         }
     }
-*/
+
 }

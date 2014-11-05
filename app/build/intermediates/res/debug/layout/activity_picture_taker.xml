@@ -20,4 +20,4 @@
         android:layout_height="wrap_content"
         android:id = "@+id/pictureTag"
         android:hint="@string/pictureTagHint"/>
-</LinearLayout><!-- From: file:/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/activity_picture_taker.xml -->
+</LinearLayout><!-- From: file:/home/hbown1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/activity_picture_taker.xml -->
