@@ -9,5 +9,9 @@
     <string name="menu_item_gallery">Go to Gallery</string>
     <string name="saveButton">Save Food Photo</string>
     <string name="menu_item_add">Add Food Photo</string>
+    <string name="add_food_photo">Add New Food Photo</string>
+    <string name="view_nutrition_history">View Nutrition History</string>
+    <string name="todays_menu">Today's Sharples Menu</string>
+
 
 </resources>
