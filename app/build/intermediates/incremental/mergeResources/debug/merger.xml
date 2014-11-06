@@ -56,7 +56,13 @@
             <file
                 path="/home/hbown1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/values/strings.xml"
                 qualifiers="" >
+                <string name="todays_menu" >Today\'s Sharples Menu
+                </string>
                 <string name="action_settings" >Settings
+                </string>
+                <string name="view_nutrition_history" >View Nutrition History
+                </string>
+                <string name="main_menu_title" >Main Menu
                 </string>
                 <string name="openCamera" >Open Camera
                 </string>
@@ -65,6 +71,8 @@
                 <string name="food_photo_title" >Food Photo
                 </string>
                 <string name="menu_item_gallery" >Go to Gallery
+                </string>
+                <string name="add_food_photo" >Add New Food Photo
                 </string>
                 <string name="saveButton" >Save Food Photo
                 </string>
@@ -91,6 +99,16 @@
             <file
                 name="list_item_food_photo"
                 path="/home/hbown1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/list_item_food_photo.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="activity_main_menu"
+                path="/home/hbown1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/activity_main_menu.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="main_menu"
+                path="/home/hbown1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/main_menu.xml"
                 qualifiers=""
                 type="layout" />
         </source>

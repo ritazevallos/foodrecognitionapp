@@ -28,7 +28,7 @@ public class MainMenuFragment extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        getActivity().setTitle(R.string.food_photo_title);
+        getActivity().setTitle(R.string.main_menu_title);
 
         mFoodPhotoStore = FoodPhotoStore.get(getActivity());
         ArrayList mFoodPhotos = mFoodPhotoStore.getFoodPhotos();
