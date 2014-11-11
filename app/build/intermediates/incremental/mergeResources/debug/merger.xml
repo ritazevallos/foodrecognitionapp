@@ -70,15 +70,15 @@
                 </string>
                 <string name="food_photo_title" >Food Photo
                 </string>
-                <string name="add_food_photo" >Add New Food Photo
-                </string>
                 <string name="menu_item_gallery" >Go to Gallery
+                </string>
+                <string name="add_food_photo" >Add New Food Photo
                 </string>
                 <string name="saveButton" >Save Food Photo
                 </string>
-                <string name="pictureTagHint" >Tag this picture
-                </string>
                 <string name="menu_item_add" >Add Food Photo
+                </string>
+                <string name="pictureTagHint" >Tag this picture
                 </string>
             </file>
             <file

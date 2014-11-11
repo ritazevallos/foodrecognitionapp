@@ -78,15 +78,11 @@ public class FoodPhoto {
     // given the JSON of the foodPhoto, this is a constructor
     public FoodPhoto(JSONObject json) throws JSONException {
         mId = UUID.fromString(json.getString(JSON_ID));
-
-//        JSONArray jsonArray = json.getJSONArray(JSON_TAGS);
-//        for (int i=0; i<jsonArray.length(); i++) {
-//            mTags.add(jsonArray.getString(i));
-//        }
-        mTags.add(json.getString(JSON_TAGS));
-
+        mTags = new ArrayList<String>();
+        String string_tags = json.getString(JSON_TAGS);
+        mTags.add(string_tags);
         mDate = new Date(json.getLong(JSON_DATE));
-
         mFile = new File(json.getString(JSON_FILE_URI));
+
     }
 }
