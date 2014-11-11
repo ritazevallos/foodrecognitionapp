@@ -57,7 +57,7 @@ public class MainMenuFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 FoodPhoto fp = new FoodPhoto();
-                mFoodPhotoStore.addFoodPhoto(fp);
+                //mFoodPhotoStore.addFoodPhoto(fp);
                 Intent i = new Intent(getActivity(), PictureTakerActivity.class);
                 i.putExtra(PictureTakerFragment.EXTRA_FOODPHOTO_ID, fp.getId());
                 startActivity(i);
@@ -121,7 +121,7 @@ public class MainMenuFragment extends Fragment{
      * Creates new food photo object */
     public void newFoodPhoto(){
         FoodPhoto fp = new FoodPhoto();
-        mFoodPhotoStore.addFoodPhoto(fp);
+        //mFoodPhotoStore.addFoodPhoto(fp);
         Intent i = new Intent(getActivity(), PictureTakerActivity.class);
         i.putExtra(PictureTakerFragment.EXTRA_FOODPHOTO_ID, fp.getId());
         startActivity(i);
