@@ -13,5 +13,6 @@
     <string name="view_nutrition_history">View Nutrition History</string>
     <string name="todays_menu">Today\'s Sharples Menu</string>
     <string name="main_menu_title">Main Menu</string>
+    <string name="menu_item_deleteAll">Delete All Photos</string>
 
 </resources>

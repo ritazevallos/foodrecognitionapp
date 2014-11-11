@@ -26,6 +26,7 @@ public final class R {
         public static final int imageView1=0x7f080002;
         public static final int list_image=0x7f080007;
         public static final int menu_item_add=0x7f08000b;
+        public static final int menu_item_deleteAll=0x7f08000d;
         public static final int menu_item_gallery=0x7f08000c;
         public static final int pictureTag=0x7f080003;
         public static final int saveButton=0x7f080004;
@@ -50,12 +51,13 @@ public final class R {
         public static final int food_photo_title=0x7f050003;
         public static final int main_menu_title=0x7f050004;
         public static final int menu_item_add=0x7f050005;
-        public static final int menu_item_gallery=0x7f050006;
-        public static final int openCamera=0x7f050007;
-        public static final int pictureTagHint=0x7f050008;
-        public static final int saveButton=0x7f050009;
-        public static final int todays_menu=0x7f05000a;
-        public static final int view_nutrition_history=0x7f05000b;
+        public static final int menu_item_deleteAll=0x7f050006;
+        public static final int menu_item_gallery=0x7f050007;
+        public static final int openCamera=0x7f050008;
+        public static final int pictureTagHint=0x7f050009;
+        public static final int saveButton=0x7f05000a;
+        public static final int todays_menu=0x7f05000b;
+        public static final int view_nutrition_history=0x7f05000c;
     }
     public static final class style {
         /**  Customize your theme here. 

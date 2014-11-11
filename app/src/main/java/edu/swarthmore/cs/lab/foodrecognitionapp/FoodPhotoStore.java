@@ -73,4 +73,10 @@ public class FoodPhotoStore {
         }
     }
 
+    public void deleteAllPhotos(){
+        boolean deleted = mSerializer.deleteJsonFile();
+        Log.d(TAG, "Json file deleted = " + deleted);
+        mFoodPhotos = new ArrayList<FoodPhoto>();
+    }
+
 }

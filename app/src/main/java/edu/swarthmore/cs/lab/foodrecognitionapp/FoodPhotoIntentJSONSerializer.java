@@ -52,6 +52,11 @@ public class FoodPhotoIntentJSONSerializer {
         }
     }
 
+    public boolean deleteJsonFile(){
+        return mContext.deleteFile(mFilename);
+
+    }
+
     public ArrayList<FoodPhoto> loadFoodPhotos() throws IOException, JSONException {
         ArrayList<FoodPhoto> foodPhotos = new ArrayList<FoodPhoto>();
         BufferedReader reader = null;

@@ -109,4 +109,53 @@ public class FoodPhotoListFragment  extends ListFragment {
         ((FoodPhotoAdapter)getListAdapter()).notifyDataSetChanged();
     }
 
+    /* onCreateOptionsMenu */
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        // Inflate the menu; this adds items to the action bar if it is present.
+        inflater.inflate(R.menu.picture_taker, menu);
+
+    }
+
+    /* onOptionItemSelected */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        if(item.getItemId() == R.id.menu_item_gallery) {
+            Log.d(TAG, "Go to Gallery selected");
+
+            openGallery();
+        }
+
+        if(item.getItemId() == R.id.menu_item_add){
+            Log.d(TAG, "Add Food Photo selected");
+
+            newFoodPhoto();
+        }
+
+        if(item.getItemId() == R.id.menu_item_deleteAll){
+            mFoodPhotoStore.deleteAllPhotos();
+
+        }
+
+        return true;
+    }
+
+    /* openGallery
+ *  Starts new photo list activity */
+    public void openGallery(){
+        Intent i = new Intent(getActivity(), FoodPhotoListActivity.class);
+        startActivity(i);
+    }
+
+    /* newFoodPhoto
+     * Creates new food photo object */
+    public void newFoodPhoto(){
+        FoodPhoto fp = new FoodPhoto();
+        mFoodPhotoStore.addFoodPhoto(fp);
+        Intent i = new Intent(getActivity(), PictureTakerActivity.class);
+        i.putExtra(PictureTakerFragment.EXTRA_FOODPHOTO_ID, fp.getId());
+        startActivity(i);
+    }
+
 }

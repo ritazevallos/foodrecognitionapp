@@ -14,5 +14,12 @@
         android:showAsAction="ifRoom|withText"
         android:title="@string/menu_item_gallery"/>
 
+    <item
+        android:id="@+id/menu_item_deleteAll"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/menu_item_deleteAll"/>
+
+
 </menu>
 <!-- From: file:/home/hbown1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/menu/picture_taker.xml -->
