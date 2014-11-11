@@ -50,12 +50,15 @@ public class FoodPhotoListFragment  extends ListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        FoodPhotoAdapter la = (FoodPhotoAdapter)getListAdapter();
-        FoodPhoto fp = (FoodPhoto)la.getItem(position);
-        Intent i = new Intent(getActivity(), PictureTakerFragment.class);
-        i.putExtra(PictureTakerFragment.EXTRA_FOODPHOTO_ID, fp.getId());
-        startActivity(i);
-
+        try {
+            FoodPhotoAdapter la = (FoodPhotoAdapter) getListAdapter();
+            FoodPhoto fp = (FoodPhoto) la.getItem(position);
+            Intent i = new Intent(getActivity(), PictureTakerActivity.class);
+            i.putExtra(PictureTakerFragment.EXTRA_FOODPHOTO_ID, fp.getId());
+            startActivity(i);
+        } catch (Exception e){
+            Log.d(TAG, "List Item click failed. Error = " + e);
+        }
 
     }
 
