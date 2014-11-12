@@ -14,5 +14,7 @@
     <string name="todays_menu">Today\'s Sharples Menu</string>
     <string name="main_menu_title">Main Menu</string>
     <string name="menu_item_deleteAll">Delete All Photos</string>
+    <string name="add_tags_button">Add Tags</string>
+    <string name="retake_photo_button">Retake Photo</string>
 
 </resources>

@@ -60,13 +60,9 @@
                 </string>
                 <string name="action_settings" >Settings
                 </string>
+                <string name="retake_photo_button" >Retake Photo
+                </string>
                 <string name="view_nutrition_history" >View Nutrition History
-                </string>
-                <string name="main_menu_title" >Main Menu
-                </string>
-                <string name="openCamera" >Open Camera
-                </string>
-                <string name="app_name" >FoodRecognitionApp
                 </string>
                 <string name="food_photo_title" >Food Photo
                 </string>
@@ -74,9 +70,17 @@
                 </string>
                 <string name="add_food_photo" >Add New Food Photo
                 </string>
-                <string name="menu_item_gallery" >Go to Gallery
-                </string>
                 <string name="saveButton" >Save Food Photo
+                </string>
+                <string name="main_menu_title" >Main Menu
+                </string>
+                <string name="openCamera" >Open Camera
+                </string>
+                <string name="add_tags_button" >Add Tags
+                </string>
+                <string name="app_name" >FoodRecognitionApp
+                </string>
+                <string name="menu_item_gallery" >Go to Gallery
                 </string>
                 <string name="pictureTagHint" >Tag this picture
                 </string>

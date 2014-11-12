@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -38,10 +39,12 @@ public class PictureTakerFragment extends Fragment {
     public static File mFile;
     public static File mDir;
     public static Bitmap bitmap;
-    public static ImageView _imageView;
+    public static ImageView mImageView;
     private EditText mTagField;
     private FoodPhoto mFoodPhoto;
     private FoodPhotoStore mFoodPhotoStore;
+    private Button retakePhotoButton;
+    public boolean beforePhotoTaken;
     public static final String EXTRA_FOODPHOTO_ID =
             "edu.swarthmore.cs.lab.foodrecognitionapp.foodphoto_id";
 
@@ -53,6 +56,7 @@ public class PictureTakerFragment extends Fragment {
         setHasOptionsMenu(true);
         mFoodPhotoStore = FoodPhotoStore.get(getActivity());
         UUID foodPhotoId = (UUID)getArguments().getSerializable(EXTRA_FOODPHOTO_ID);
+        beforePhotoTaken = true;
 
         CreateDirectoryForPictures();
         mFoodPhoto = mFoodPhotoStore.getFoodPhoto(foodPhotoId);
@@ -62,21 +66,27 @@ public class PictureTakerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
         View v = inflater.inflate(R.layout.activity_picture_taker, parent, false);
 
-        Button cameraButton = (Button)v.findViewById(R.id.cameraButton);
-        cameraButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TakeAPicture();
-            }
-        });
+//        Button cameraButton = (Button)v.findViewById(R.id.cameraButton);
+//        cameraButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                TakeAPicture();
+//            }
+//        });
+        retakePhotoButton = (Button)v.findViewById(R.id.retake_photo_button);
+        if(beforePhotoTaken) {
+            retakePhotoButton.setVisibility(View.INVISIBLE);
+        } else {
+            retakePhotoButton.setVisibility(View.VISIBLE);
+        }
+
 
         Button saveButton = (Button)v.findViewById(R.id.saveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mTagField.toString().isEmpty()){
-                    Context context = getActivity();
-                    Toast toast = Toast.makeText(context, "Remember to tag your photo", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(getActivity(), "Remember to tag your photo", Toast.LENGTH_SHORT);
                     toast.show();
                 } else{
                     mFoodPhotoStore.addFoodPhoto(mFoodPhoto);
@@ -87,6 +97,7 @@ public class PictureTakerFragment extends Fragment {
         });
 
         mTagField = (EditText)v.findViewById(R.id.pictureTag);
+        mTagField.setVisibility(View.INVISIBLE);
         mTagField.setTag(mFoodPhoto.getTags());
 
         mTagField.addTextChangedListener(new TextWatcher() {
@@ -112,12 +123,44 @@ public class PictureTakerFragment extends Fragment {
             }
         });
 
-        _imageView = (ImageView)v.findViewById(R.id.imageView1);
+        mImageView = (ImageView)v.findViewById(R.id.imageView1);
         if (bitmap != null) {
-            _imageView.setImageBitmap(bitmap);
+            mImageView.setImageBitmap(bitmap);
             bitmap = null;
         }
+
+//            mImageView.setOnClickListener(new View.OnClickListener() {
+//
+//
+//                    @Override
+//                    public void onClick(View v) {
+//
+//                        if (beforePhotoTaken) {
+//                            TakeAPicture();
+//
+//                        }
+//                    }
+//
+//            });
+
+        mImageView.setOnTouchListener(new View.OnTouchListener(){
+            @Override
+            public boolean onTouch(View v, MotionEvent event){
+                if (beforePhotoTaken){
+                    TakeAPicture();
+                }
+                else {
+                    // TODO: make toast only show after picture has actually been taken
+                    Toast toast = Toast.makeText(getActivity(), "Touched the location" + event.getX() + "," + event.getY(), Toast.LENGTH_SHORT);
+                    toast.show();
+                    mTagField.setVisibility(View.VISIBLE);
+                }
+                return true;
+            }
+        });
+
         return v;
+
 
     }
 
@@ -141,6 +184,7 @@ public class PictureTakerFragment extends Fragment {
 
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mFile));
 
+        beforePhotoTaken = false;
         startActivityForResult(intent, 0);
     }
 
@@ -149,6 +193,7 @@ public class PictureTakerFragment extends Fragment {
         Log.d(TAG, "in onActivityResult");
 
         super.onActivityResult(requestCode,resultCode,data);
+
 
         // make it available in the gallery
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
@@ -168,7 +213,7 @@ public class PictureTakerFragment extends Fragment {
             // TODO Auto-generated catch block
             e1.printStackTrace();
         }
-        _imageView.setImageBitmap(bitmap);
+        mImageView.setImageBitmap(bitmap);
     }
 
 

@@ -138,6 +138,7 @@ public class FoodPhotoListFragment  extends ListFragment {
 
         if(item.getItemId() == R.id.menu_item_deleteAll){
             mFoodPhotoStore.deleteAllPhotos();
+            openGallery();
 
         }
 
