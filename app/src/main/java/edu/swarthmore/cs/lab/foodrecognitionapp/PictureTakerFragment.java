@@ -76,16 +76,21 @@ public class PictureTakerFragment extends Fragment {
         retakePhotoButton = (Button)v.findViewById(R.id.retake_photo_button);
         if(beforePhotoTaken) {
             retakePhotoButton.setVisibility(View.INVISIBLE);
-        } else {
-            retakePhotoButton.setVisibility(View.VISIBLE);
         }
+        retakePhotoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TakeAPicture();
+            }
+        });
 
 
         Button saveButton = (Button)v.findViewById(R.id.saveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mTagField.toString().isEmpty()){
+                Log.d(TAG, "tag says: " + mFoodPhoto.getTags());
+                if (mFoodPhoto.getTags().isEmpty()){
                     Toast toast = Toast.makeText(getActivity(), "Remember to tag your photo", Toast.LENGTH_SHORT);
                     toast.show();
                 } else{
@@ -154,6 +159,7 @@ public class PictureTakerFragment extends Fragment {
                     Toast toast = Toast.makeText(getActivity(), "Touched the location" + event.getX() + "," + event.getY(), Toast.LENGTH_SHORT);
                     toast.show();
                     mTagField.setVisibility(View.VISIBLE);
+                    retakePhotoButton.setVisibility(View.VISIBLE);
                 }
                 return true;
             }
