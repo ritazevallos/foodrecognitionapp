@@ -117,6 +117,11 @@
                     <!-- Customize your theme here. -->
                 </style>
             </file>
+            <file
+                name="activity_sharples_menu"
+                path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/activity_sharples_menu.xml"
+                qualifiers=""
+                type="layout" />
         </source>
         <source path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/build/generated/res/rs/debug" />
         <source path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/build/generated/res/generated/debug" />

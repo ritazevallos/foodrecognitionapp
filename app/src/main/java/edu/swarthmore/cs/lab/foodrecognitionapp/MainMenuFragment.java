@@ -76,7 +76,8 @@ public class MainMenuFragment extends Fragment{
         sharplesMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Hook up sharples menu
+                Intent i = new Intent(getActivity(), SharplesMenuActivity.class);
+                startActivity(i);
             }
         });
 

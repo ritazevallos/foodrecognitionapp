@@ -6,6 +6,7 @@
     <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -30,6 +31,10 @@
             android:label="@string/app_name" >
         </activity>
 
+        <activity
+            android:name="edu.swarthmore.cs.lab.foodrecognitionapp.SharplesMenuActivity"
+            android:label="@string/app_name" >
+        </activity>
     </application>
 
 </manifest>

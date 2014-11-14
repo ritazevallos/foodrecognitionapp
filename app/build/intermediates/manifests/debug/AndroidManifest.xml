@@ -13,6 +13,7 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-sdk
         android:minSdkVersion="15"
@@ -38,6 +39,10 @@
         </activity>
         <activity
             android:name="edu.swarthmore.cs.lab.foodrecognitionapp.FoodPhotoListActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="edu.swarthmore.cs.lab.foodrecognitionapp.SharplesMenuActivity"
             android:label="@string/app_name" >
         </activity>
     </application>
