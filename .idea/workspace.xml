@@ -30,13 +30,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e557c951-0733-49f2-8012-94cb2564ad19" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhoto.java" afterPath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhoto.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhotoIntentJSONSerializer.java" afterPath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhotoIntentJSONSerializer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhotoListFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhotoListFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/generated/source/r/debug/edu/swarthmore/cs/lab/foodrecognitionapp/R.java" afterPath="$PROJECT_DIR$/app/build/generated/source/r/debug/edu/swarthmore/cs/lab/foodrecognitionapp/R.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_picture_taker.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_picture_taker.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/SharplesMenu.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="foodrecognitionapp.iws" />
@@ -60,18 +54,57 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="PictureTakerFragment.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="PictureTakerFragment.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.40707964" vertical-offset="1824" max-vertical-offset="4560">
-              <caret line="184" column="54" selection-start-line="184" selection-start-column="54" selection-end-line="184" selection-end-column="54" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4560">
+              <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
               <folding>
                 <element signature="e#4663#4735#0" expanded="false" />
                 <element signature="e#5122#5911#0" expanded="true" />
                 <element signature="e#5900#5901#0" expanded="true" />
                 <element signature="e#7130#7273#0" expanded="true" />
                 <element signature="e#7262#7263#0" expanded="true" />
-                <marker date="1415936476289" expanded="true" signature="6859:7102" placeholder="..." />
+                <marker date="1415936658710" expanded="true" signature="6859:7102" placeholder="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FoodPhotoStore.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhotoStore.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1215">
+              <caret line="30" column="5" selection-start-line="30" selection-start-column="5" selection-end-line="30" selection-end-column="5" />
+              <folding>
+                <element signature="e#1760#1761#0" expanded="true" />
+                <element signature="e#1795#1796#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SharplesMenu.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/SharplesMenu.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.18141593" vertical-offset="252" max-vertical-offset="1065">
+              <caret line="25" column="44" selection-start-line="25" selection-start-column="44" selection-end-line="25" selection-end-column="44" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1335#1343#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FoodPhotoIntentJSONSerializer.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhotoIntentJSONSerializer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1620">
+              <caret line="73" column="17" selection-start-line="73" selection-start-column="17" selection-end-line="73" selection-end-column="17" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1730#1741#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -1211,7 +1244,6 @@
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/list_item_food_photo.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/menu/picture_taker.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhotoStore.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/MainMenuFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhoto.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhotoListFragment.java" />
@@ -1219,6 +1251,8 @@
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_picture_taker.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhotoStore.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/SharplesMenu.java" />
       </list>
     </option>
   </component>
@@ -1450,6 +1484,32 @@
               <option name="myItemId" value="java" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="foodrecognitionapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="foodrecognitionapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="foodrecognitionapp" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
@@ -1494,6 +1554,10 @@
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="emulator-5554" />
     <property name="FullScreen" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="options.lastSelected" value="editor.preferences.import" />
+    <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RunManager" selected="Android Application.app">
     <configuration default="true" type="JUnit" factoryName="JUnit">
@@ -1745,14 +1809,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="150" max-vertical-offset="270">
-          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhoto.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="1350">
@@ -1784,7 +1840,7 @@
             <element signature="e#5900#5901#0" expanded="true" />
             <element signature="e#7130#7273#0" expanded="true" />
             <element signature="e#7262#7263#0" expanded="true" />
-            <marker date="1415936476289" expanded="true" signature="6859:7102" placeholder="..." />
+            <marker date="1415936658710" expanded="true" signature="6859:7102" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -1828,7 +1884,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="870" max-vertical-offset="1215">
           <caret line="58" column="0" selection-start-line="58" selection-start-column="0" selection-end-line="58" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="e#1760#1761#0" expanded="true" />
+            <element signature="e#1795#1796#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1898,7 +1957,7 @@
             <element signature="e#5900#5901#0" expanded="true" />
             <element signature="e#7130#7273#0" expanded="true" />
             <element signature="e#7262#7263#0" expanded="true" />
-            <marker date="1415936476289" expanded="true" signature="6859:7102" placeholder="..." />
+            <marker date="1415936658710" expanded="true" signature="6859:7102" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -1942,7 +2001,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="840" max-vertical-offset="1185">
           <caret line="56" column="0" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="e#1760#1761#0" expanded="true" />
+            <element signature="e#1795#1796#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -2092,14 +2154,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhotoStore.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="351" max-vertical-offset="1215">
-          <caret line="60" column="0" selection-start-line="60" selection-start-column="0" selection-end-line="60" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="615">
@@ -2161,23 +2215,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhotoIntentJSONSerializer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="759" max-vertical-offset="1620">
-          <caret line="73" column="17" selection-start-line="73" selection-start-column="17" selection-end-line="73" selection-end-column="17" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1730#1741#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$APPLICATION_HOME_DIR$/sdk/sources/android-19/android/view/MotionEvent.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="26545" max-vertical-offset="52230">
           <caret line="1820" column="0" selection-start-line="1820" selection-start-column="0" selection-end-line="1820" selection-end-column="0" />
           <folding>
-            <element signature="e#74000#74001#0" expanded="true" />
+            <element signature="e#74000#74001#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2227,7 +2270,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="10015" max-vertical-offset="26745">
           <caret line="758" column="0" selection-start-line="758" selection-start-column="0" selection-end-line="758" selection-end-column="0" />
           <folding>
-            <element signature="e#29022#29023#0" expanded="true" />
+            <element signature="e#29022#29023#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2250,15 +2293,48 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.40707964" vertical-offset="1824" max-vertical-offset="4560">
-          <caret line="184" column="54" selection-start-line="184" selection-start-column="54" selection-end-line="184" selection-end-column="54" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4560">
+          <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
           <folding>
             <element signature="e#4663#4735#0" expanded="false" />
             <element signature="e#5122#5911#0" expanded="true" />
             <element signature="e#5900#5901#0" expanded="true" />
             <element signature="e#7130#7273#0" expanded="true" />
             <element signature="e#7262#7263#0" expanded="true" />
-            <marker date="1415936476289" expanded="true" signature="6859:7102" placeholder="..." />
+            <marker date="1415936658710" expanded="true" signature="6859:7102" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhotoIntentJSONSerializer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="759" max-vertical-offset="1620">
+          <caret line="73" column="17" selection-start-line="73" selection-start-column="17" selection-end-line="73" selection-end-column="17" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1730#1741#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhotoStore.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1215">
+          <caret line="30" column="5" selection-start-line="30" selection-start-column="5" selection-end-line="30" selection-end-column="5" />
+          <folding>
+            <element signature="e#1760#1761#0" expanded="true" />
+            <element signature="e#1795#1796#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/SharplesMenu.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.18141593" vertical-offset="252" max-vertical-offset="1065">
+          <caret line="25" column="44" selection-start-line="25" selection-start-column="44" selection-end-line="25" selection-end-column="44" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1335#1343#0" expanded="true" />
           </folding>
         </state>
       </provider>
