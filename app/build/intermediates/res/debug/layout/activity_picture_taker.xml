@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="fill_parent"
-              android:layout_height="fill_parent">
+              android:layout_height="fill_parent"
+              android:id="@+id/root">
     <Button
         android:id="@+id/retake_photo_button"
         android:layout_width="fill_parent"
@@ -15,11 +16,18 @@
         android:id="@+id/imageView1"
         android:adjustViewBounds="true" />
 
-    <EditText
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id = "@+id/pictureTag"
-        android:hint="@string/pictureTagHint"/>
+        android:id="@+id/tagContainerLayout">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id = "@+id/pictureTag"
+            android:hint="@string/pictureTagHint"/>
+
+    </LinearLayout>
     <Button
         android:id="@+id/add_tags_button"
         android:layout_width="fill_parent"
@@ -31,4 +39,4 @@
         android:layout_height="wrap_content"
         android:text="@string/saveButton" />
 
-</LinearLayout><!-- From: file:/home/hbown1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/activity_picture_taker.xml -->
+</LinearLayout><!-- From: file:/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/activity_picture_taker.xml -->

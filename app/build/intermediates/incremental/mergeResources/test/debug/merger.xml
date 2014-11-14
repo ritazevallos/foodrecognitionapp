@@ -2,9 +2,9 @@
 <merger version="2" >
 
     <dataSet config="main" >
-        <source path="/home/hbown1/AndroidStudioProjects/foodrecognitionapp/app/src/androidTest/res" />
-        <source path="/home/hbown1/AndroidStudioProjects/foodrecognitionapp/app/build/generated/res/rs/test/debug" />
-        <source path="/home/hbown1/AndroidStudioProjects/foodrecognitionapp/app/build/generated/res/generated/test/debug" />
+        <source path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/androidTest/res" />
+        <source path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/build/generated/res/rs/test/debug" />
+        <source path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/build/generated/res/generated/test/debug" />
     </dataSet>
 
 </merger>

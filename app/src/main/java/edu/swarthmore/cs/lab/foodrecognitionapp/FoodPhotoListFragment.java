@@ -84,9 +84,13 @@ public class FoodPhotoListFragment  extends ListFragment {
 
             TextView tagsTextView =
                     (TextView) convertView.findViewById(R.id.food_photo_list_tagsTextView);
-            ArrayList<String> tags = fp.getTags();
+            ArrayList<FoodPhoto.FoodPhotoTag> tags = fp.getTags();
             // todo: catch if no tag
-            tagsTextView.setText(tags.get(0));
+            String all_tags = "";
+            for (int i=0; i<tags.size(); i++){
+                all_tags += tags.get(i).getFoodName() + "\t";
+            }
+            tagsTextView.setText(all_tags);
 
             ImageView imageView = (ImageView) convertView.findViewById(R.id.list_image);
             Uri contentUri = Uri.fromFile(fp.getFile());

@@ -1,8 +1,6 @@
 package edu.swarthmore.cs.lab.foodrecognitionapp;
 
-import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -22,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.io.File;
@@ -41,6 +40,7 @@ public class PictureTakerFragment extends Fragment {
     public static Bitmap bitmap;
     public static ImageView mImageView;
     private EditText mTagField;
+    private ArrayList<EditText> mTagFields;
     private FoodPhoto mFoodPhoto;
     private FoodPhotoStore mFoodPhotoStore;
     private Button retakePhotoButton;
@@ -48,6 +48,8 @@ public class PictureTakerFragment extends Fragment {
     public static final String EXTRA_FOODPHOTO_ID =
             "edu.swarthmore.cs.lab.foodrecognitionapp.foodphoto_id";
 
+    // make this true if you don't want it to break when opening up camera
+    public boolean using_emulator = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,14 +59,14 @@ public class PictureTakerFragment extends Fragment {
         mFoodPhotoStore = FoodPhotoStore.get(getActivity());
         UUID foodPhotoId = (UUID)getArguments().getSerializable(EXTRA_FOODPHOTO_ID);
         beforePhotoTaken = true;
-
+        mTagFields = new ArrayList<EditText>();
         CreateDirectoryForPictures();
         mFoodPhoto = mFoodPhotoStore.getFoodPhoto(foodPhotoId);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
-        View v = inflater.inflate(R.layout.activity_picture_taker, parent, false);
+        final View v = inflater.inflate(R.layout.activity_picture_taker, parent, false);
 
 //        Button cameraButton = (Button)v.findViewById(R.id.cameraButton);
 //        cameraButton.setOnClickListener(new View.OnClickListener() {
@@ -114,11 +116,7 @@ public class PictureTakerFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String msg = s.toString();
-                ArrayList<String> tags = new ArrayList<String>();
-                tags.add(msg);
-                Log.d(TAG, msg);
-                // TODO: setTags will be addTag
-                mFoodPhoto.setTags(tags);
+                mFoodPhoto.setOneTag(0, msg, 0, 0);
 
             }
 
@@ -135,30 +133,28 @@ public class PictureTakerFragment extends Fragment {
         }
 
 //            mImageView.setOnClickListener(new View.OnClickListener() {
-//
-//
 //                    @Override
 //                    public void onClick(View v) {
-//
 //                        if (beforePhotoTaken) {
 //                            TakeAPicture();
-//
 //                        }
 //                    }
-//
 //            });
+        final LinearLayout tagContainer = (LinearLayout)v.findViewById(R.id.tagContainerLayout);
 
         mImageView.setOnTouchListener(new View.OnTouchListener(){
             @Override
             public boolean onTouch(View v, MotionEvent event){
-                if (beforePhotoTaken){
+                if (beforePhotoTaken && !(using_emulator)){
                     TakeAPicture();
                 }
                 else {
                     // TODO: make toast only show after picture has actually been taken
                     Toast toast = Toast.makeText(getActivity(), "Touched the location" + event.getX() + "," + event.getY(), Toast.LENGTH_SHORT);
                     toast.show();
+                    addTagField(event.getX(), event.getY(), tagContainer);
                     mTagField.setVisibility(View.VISIBLE);
+
                     retakePhotoButton.setVisibility(View.VISIBLE);
                 }
                 return true;
@@ -168,6 +164,44 @@ public class PictureTakerFragment extends Fragment {
         return v;
 
 
+    }
+
+    private void addTagField(final float x, final float y, final LinearLayout tagContainer){ // declared final so we can access in inner block
+        final EditText tag_field = new EditText(getActivity());
+        tag_field.setHint("Tag this picture");
+
+        tag_field.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String msg = s.toString();
+                mFoodPhoto.setOneTag(mTagFields.size(), msg, x, y);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        // doing this after so that mTagFields.size() is the correct index for the new tag
+        mTagFields.add(tag_field);
+
+//        final LinearLayout dynamic_component = new LinearLayout(getActivity());
+//        dynamic_component.setOrientation(LinearLayout.VERTICAL); // MAYBE THE TAGS SHOULD BE LISTED HORIZONTALLY?
+//        dynamic_component.addView(tag_field);
+        tagContainer.post( new Runnable() {
+            @Override
+            public void run() {
+                tagContainer.addView(tag_field);
+            }
+        });
+    }
+
+    private void removeTag(){
+        //TODO: need to get index of tag and remove both from the layout and the foodphoto
     }
 
     private void CreateDirectoryForPictures()

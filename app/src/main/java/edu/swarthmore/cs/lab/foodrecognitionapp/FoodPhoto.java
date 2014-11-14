@@ -15,7 +15,7 @@ import java.util.UUID;
  * Created by rzevall1 on 11/3/14.
  */
 public class FoodPhoto {
-    private ArrayList<String> mTags;
+    private ArrayList<FoodPhotoTag> mTags;
     private File mFile;
     private UUID mId;
     private Date mDate;
@@ -28,16 +28,23 @@ public class FoodPhoto {
     public FoodPhoto(){
         mId = UUID.randomUUID();
         mDate = new Date();
-        mTags = new ArrayList<String>();
+        mTags = new ArrayList<FoodPhotoTag>();
     }
 
-    public ArrayList<String> getTags() {
+    public ArrayList<FoodPhotoTag> getTags() {
         return mTags;
     }
 
-    public void setTags(ArrayList<String> tags) {
+    public void setTags(ArrayList<FoodPhotoTag> tags) {
         mTags = tags;
     }
+
+    public void setOneTag(int i, String foodName, float x, float y){
+        FoodPhotoTag tag = new FoodPhotoTag(foodName, x, y);
+        mTags.add(i,tag);
+        //todo: will this break if mTags has no things and i=6?
+    }
+
 
     public File getFile() {
         return mFile;
@@ -69,7 +76,7 @@ public class FoodPhoto {
     public JSONObject toJSON() throws JSONException {
         JSONObject json = new JSONObject();
         json.put(JSON_ID, mId.toString());
-        json.put(JSON_TAGS, mTags.get(0)); //TODO: just putting the first string
+        json.put(JSON_TAGS, mTags.get(0).getFoodName()); //TODO: only saving the first tag as a string
         json.put(JSON_DATE, mDate.getTime());
         json.put(JSON_FILE_URI, Uri.fromFile(mFile).toString());//todo: no idea if this is the right way to do this
         return json;
@@ -78,11 +85,48 @@ public class FoodPhoto {
     // given the JSON of the foodPhoto, this is a constructor
     public FoodPhoto(JSONObject json) throws JSONException {
         mId = UUID.fromString(json.getString(JSON_ID));
-        mTags = new ArrayList<String>();
-        String string_tags = json.getString(JSON_TAGS);
-        mTags.add(string_tags);
+        mTags = new ArrayList<FoodPhotoTag>();
+        String string_tags = json.getString(JSON_TAGS); // currently just a single string
+        FoodPhotoTag new_tag = new FoodPhotoTag(string_tags, 0, 0);
+        mTags.add(new_tag); // temporary losing all data except the string of the first tag
         mDate = new Date(json.getLong(JSON_DATE));
         mFile = new File(json.getString(JSON_FILE_URI));
 
+    }
+
+    public class FoodPhotoTag {
+        private String mFoodName;
+        private float x;
+        private float y;
+
+        private FoodPhotoTag(String foodName, float x, float y) {
+            mFoodName = foodName;
+            this.x = x;
+            this.y = y;
+        }
+
+        public String getFoodName() {
+            return mFoodName;
+        }
+
+        public void setFoodName(String foodName) {
+            mFoodName = foodName;
+        }
+
+        public float getX() {
+            return x;
+        }
+
+        public void setX(float x) {
+            this.x = x;
+        }
+
+        public float getY() {
+            return y;
+        }
+
+        public void setY(float y) {
+            this.y = y;
+        }
     }
 }

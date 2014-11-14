@@ -2,59 +2,70 @@
 <merger version="2" >
 
     <dataSet config="main" >
-        <source path="/home/hbown1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res" >
+        <source path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res" >
             <file
-                name="activity_picture_taker"
-                path="/home/hbown1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/activity_picture_taker.xml"
+                name="activity_fragment"
+                path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/activity_fragment.xml"
                 qualifiers=""
                 type="layout" />
             <file
-                name="ic_launcher"
-                path="/home/hbown1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/drawable-xhdpi/ic_launcher.png"
-                qualifiers="xhdpi-v4"
-                type="drawable" />
-            <file
-                name="ic_launcher"
-                path="/home/hbown1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/drawable-xxhdpi/ic_launcher.png"
-                qualifiers="xxhdpi-v4"
-                type="drawable" />
-            <file
-                name="ic_launcher"
-                path="/home/hbown1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/drawable-mdpi/ic_launcher.png"
-                qualifiers="mdpi-v4"
-                type="drawable" />
-            <file
-                name="picture_taker"
-                path="/home/hbown1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/menu/picture_taker.xml"
+                name="main_menu"
+                path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/main_menu.xml"
                 qualifiers=""
-                type="menu" />
+                type="layout" />
             <file
-                path="/home/hbown1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/values-w820dp/dimens.xml"
+                name="activity_foodphoto"
+                path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/activity_foodphoto.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="list_item_food_photo"
+                path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/list_item_food_photo.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="activity_main_menu"
+                path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/activity_main_menu.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="activity_picture_taker"
+                path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/activity_picture_taker.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/values-w820dp/dimens.xml"
                 qualifiers="w820dp-v13" >
                 <dimen name="activity_horizontal_margin" >64dp
                 </dimen>
             </file>
             <file
-                path="/home/hbown1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/values/styles.xml"
-                qualifiers="" >
-
-                <style
-                    name="AppTheme"
-                    parent="android:Theme.Holo.Light.DarkActionBar" >
-
-                    <!-- Customize your theme here. -->
-                </style>
-            </file>
+                name="picture_taker"
+                path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/menu/picture_taker.xml"
+                qualifiers=""
+                type="menu" />
             <file
-                path="/home/hbown1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/values/dimens.xml"
-                qualifiers="" >
-                <dimen name="activity_horizontal_margin" >16dp
-                </dimen>
-                <dimen name="activity_vertical_margin" >16dp
-                </dimen>
-            </file>
+                name="ic_launcher"
+                path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/drawable-hdpi/ic_launcher.png"
+                qualifiers="hdpi-v4"
+                type="drawable" />
             <file
-                path="/home/hbown1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/values/strings.xml"
+                name="ic_launcher"
+                path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/drawable-xhdpi/ic_launcher.png"
+                qualifiers="xhdpi-v4"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/drawable-mdpi/ic_launcher.png"
+                qualifiers="mdpi-v4"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/drawable-xxhdpi/ic_launcher.png"
+                qualifiers="xxhdpi-v4"
+                type="drawable" />
+            <file
+                path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/values/strings.xml"
                 qualifiers="" >
                 <string name="todays_menu" >Today\'s Sharples Menu
                 </string>
@@ -82,47 +93,36 @@
                 </string>
                 <string name="menu_item_gallery" >Go to Gallery
                 </string>
-                <string name="pictureTagHint" >Tag this picture
-                </string>
                 <string name="menu_item_add" >Add Food Photo
+                </string>
+                <string name="pictureTagHint" >This is the nondynamic one
                 </string>
             </file>
             <file
-                name="ic_launcher"
-                path="/home/hbown1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/drawable-hdpi/ic_launcher.png"
-                qualifiers="hdpi-v4"
-                type="drawable" />
+                path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/values/dimens.xml"
+                qualifiers="" >
+                <dimen name="activity_horizontal_margin" >16dp
+                </dimen>
+                <dimen name="activity_vertical_margin" >16dp
+                </dimen>
+            </file>
             <file
-                name="activity_foodphoto"
-                path="/home/hbown1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/activity_foodphoto.xml"
-                qualifiers=""
-                type="layout" />
-            <file
-                name="activity_fragment"
-                path="/home/hbown1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/activity_fragment.xml"
-                qualifiers=""
-                type="layout" />
-            <file
-                name="list_item_food_photo"
-                path="/home/hbown1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/list_item_food_photo.xml"
-                qualifiers=""
-                type="layout" />
-            <file
-                name="activity_main_menu"
-                path="/home/hbown1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/activity_main_menu.xml"
-                qualifiers=""
-                type="layout" />
-            <file
-                name="main_menu"
-                path="/home/hbown1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/main_menu.xml"
-                qualifiers=""
-                type="layout" />
+                path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/values/styles.xml"
+                qualifiers="" >
+
+                <style
+                    name="AppTheme"
+                    parent="android:Theme.Holo.Light.DarkActionBar" >
+
+                    <!-- Customize your theme here. -->
+                </style>
+            </file>
         </source>
-        <source path="/home/hbown1/AndroidStudioProjects/foodrecognitionapp/app/build/generated/res/rs/debug" />
-        <source path="/home/hbown1/AndroidStudioProjects/foodrecognitionapp/app/build/generated/res/generated/debug" />
+        <source path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/build/generated/res/rs/debug" />
+        <source path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/build/generated/res/generated/debug" />
     </dataSet>
     <dataSet config="debug" >
-        <source path="/home/hbown1/AndroidStudioProjects/foodrecognitionapp/app/src/debug/res" />
+        <source path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/debug/res" />
     </dataSet>
 
 </merger>
