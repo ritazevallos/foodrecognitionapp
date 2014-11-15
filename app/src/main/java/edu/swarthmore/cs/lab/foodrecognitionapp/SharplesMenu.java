@@ -28,6 +28,7 @@ import java.util.regex.Pattern;
  * Created by rzevall1 on 11/13/14.
  */
 public class SharplesMenu {
+    private static SharplesMenu sSharplesMenu;
     private ArrayList<String> breakfastMenu;
     private ArrayList<String> lunchMenu;
     private ArrayList<String> dinnerMenu;
@@ -39,6 +40,7 @@ public class SharplesMenu {
     private Date lunchEnd;
     private Date dinnerStart;
     private Date dinnerEnd;
+    private Date menuDate;
 
     private String mFileName = "https://secure.swarthmore.edu/dash/";
 
@@ -49,6 +51,8 @@ public class SharplesMenu {
         Document dash;
         ArrayList<ArrayList<Date>> mealHours = new ArrayList<ArrayList<Date>>();
         ArrayList<ArrayList<String>> menus = new ArrayList<ArrayList<String>>();
+        menuDate = new Date();
+
         try {
 
             Log.d(TAG, "INITIALIZING ASYNC THREAD");
@@ -107,6 +111,23 @@ public class SharplesMenu {
         } catch (Exception e) {
             Log.d(TAG, "exception in constructor: " + e);
         }
+    }
+
+    public static SharplesMenu get(Context c ) {
+        return get(c,false);
+    }
+
+
+    public static SharplesMenu get(Context c, boolean newDay ) {
+        if (sSharplesMenu == null || newDay) {
+            sSharplesMenu = new SharplesMenu(c.getApplicationContext());
+        }
+        return sSharplesMenu;
+    }
+
+    public boolean isNewDay(Date otherDate){
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyyMMdd");
+        return !(fmt.format(otherDate).equals(fmt.format(menuDate)));
     }
 
     private ArrayList<Date> parseHours(String hoursString){
@@ -183,7 +204,7 @@ public class SharplesMenu {
         }
         else {
             // take care of this case
-            menu.addAll(alwaysMenu);
+            menu.addAll(lunchMenu); // todo: switch this back to alwaysMenu
         }
 
         return menu;

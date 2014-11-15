@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -17,6 +18,8 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -39,12 +42,14 @@ public class PictureTakerFragment extends Fragment {
     public static File mDir;
     public static Bitmap bitmap;
     public static ImageView mImageView;
-    private EditText mTagField;
+    private AutoCompleteTextView mTagField;
     private ArrayList<EditText> mTagFields;
     private FoodPhoto mFoodPhoto;
     private FoodPhotoStore mFoodPhotoStore;
     private Button retakePhotoButton;
     public boolean beforePhotoTaken;
+    private SharplesMenu mSharplesMenu;
+    private boolean menuIsLoaded = false;
     public static final String EXTRA_FOODPHOTO_ID =
             "edu.swarthmore.cs.lab.foodrecognitionapp.foodphoto_id";
 
@@ -62,6 +67,11 @@ public class PictureTakerFragment extends Fragment {
         mTagFields = new ArrayList<EditText>();
         CreateDirectoryForPictures();
         mFoodPhoto = mFoodPhotoStore.getFoodPhoto(foodPhotoId);
+
+        Log.d(TAG, "in onCreate");
+        AsyncSharplesGetter dashScraper = new AsyncSharplesGetter();
+        dashScraper.execute("go!");
+        // populates mSharplesMenu, populates FOOD_GUESSES, and sets menuIsLoaded to true once done
     }
 
     @Override
@@ -103,9 +113,8 @@ public class PictureTakerFragment extends Fragment {
             }
         });
 
-        mTagField = (EditText)v.findViewById(R.id.pictureTag);
+        mTagField = (AutoCompleteTextView)v.findViewById(R.id.pictureTag);
         mTagField.setVisibility(View.INVISIBLE);
-        mTagField.setTag(mFoodPhoto.getTags());
 
         mTagField.addTextChangedListener(new TextWatcher() {
             @Override
@@ -338,5 +347,52 @@ public class PictureTakerFragment extends Fragment {
 //    }
 
 
+    private class AsyncSharplesGetter extends AsyncTask<String, Integer, String> {
+        //todo: what are the string, int, string in the constructor?
+
+        @Override
+        protected void onPreExecute() {
+            Log.d(TAG, "in AsyncSharplesGetter.onPreExecute()");
+            super.onPreExecute();
+            //mBreakfastMenuView.setText("loading menu");
+            // show progress bar
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            Log.d(TAG, "in AsyncSharplesGetter.doInBackground()");
+            // this will get the existing sharples menu, or create one if it doesn't exist
+            mSharplesMenu = SharplesMenu.get(getActivity());
+            if (mSharplesMenu.isNewDay(new Date())){
+                mSharplesMenu = SharplesMenu.get(getActivity(), true);
+                // todo: i haven't tested whether the new day thing works
+            }
+
+
+            return "All done!";
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            // update progress bar
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            Log.d(TAG, "in onPostExecute");
+            menuIsLoaded = true;
+
+            // populate the guesses
+            ArrayList<String> arrayListGuesses = mSharplesMenu.getMenu(new Date());
+            String[] guessesArr = new String[arrayListGuesses.size()];
+            guessesArr = arrayListGuesses.toArray(guessesArr);
+            Log.d(TAG, "how many guesses do we have: "+guessesArr.length);
+            Log.d(TAG, guessesArr.toString());
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, guessesArr);
+            mTagField.setAdapter(adapter);
+        }
+    }
 
 }
