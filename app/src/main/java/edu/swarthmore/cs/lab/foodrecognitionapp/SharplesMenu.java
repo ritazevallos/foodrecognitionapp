@@ -40,123 +40,72 @@ public class SharplesMenu {
     private Date dinnerStart;
     private Date dinnerEnd;
 
-    private boolean loaded = false;
-
     private String mFileName = "https://secure.swarthmore.edu/dash/";
 
     private String TAG = "edu.swarthmore.cs.lab.foodrecognitionapp.SharplesMenu";
 
-    public SharplesMenu(Context c){
+    public SharplesMenu(Context c) {
 
-        DashScraper dashScraper = new DashScraper();
-        Log.d(TAG, "before execute");
-        dashScraper.execute(mFileName);
-        Log.d(TAG, "after execute");
-        // todo: asynctask crashes when screen is rotated
-        // https://androidresearch.wordpress.com/2013/05/10/dealing-with-asynctask-and-screen-orientation/
+        Document dash;
+        ArrayList<ArrayList<Date>> mealHours = new ArrayList<ArrayList<Date>>();
+        ArrayList<ArrayList<String>> menus = new ArrayList<ArrayList<String>>();
+        try {
 
-        // we'd have to hand-type in the always menu (salad bar and whaterver)
-        alwaysMenu = new ArrayList<String>();
+            Log.d(TAG, "INITIALIZING ASYNC THREAD");
+            Connection connection = Jsoup.connect(mFileName);
+            Log.d(TAG, "AFTER CALL TO JSOUP.CONNECT");
 
-        // should probably throw an error if the times overlap for some reason?
-
-        Log.d(TAG, "end of SharplesMenu constructor");
-    }
-
-    public boolean getLoaded(){
-        return loaded;
-    }
-
-    private class DashScraper extends AsyncTask<String, Integer, String> {
-        //todo: what are the string, int, string in the constructor?
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            // show progress bar
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            String url = params[0];
-
-            Document dash;
-            ArrayList<ArrayList<Date>> mealHours = new ArrayList<ArrayList<Date>>();
-            ArrayList<ArrayList<String>> menus = new ArrayList<ArrayList<String>>();
-            try{
-
-                Log.d(TAG, "INITIALIZING ASYNC THREAD");
-                Connection connection = Jsoup.connect(url);
-                Log.d(TAG, "AFTER CALL TO JSOUP.CONNECT");
-
-                dash = connection.get();
-                Log.d(TAG, "AFTER CALL TO CONNECTION.GET()");
-                //TODO: WHY IS THIS BREAKING HERE WITHOUT EVEN AT LEAST GIVING AN ERROR MESSAGE
+            dash = connection.get();
+            Log.d(TAG, "AFTER CALL TO CONNECTION.GET()");
+            //TODO: WHY IS THIS BREAKING HERE WITHOUT EVEN AT LEAST GIVING AN ERROR MESSAGE
 
 
-                Element diningDiv = dash.getElementById("dining");
-                //Log.d(TAG, "AFTER GET DINING DIV: "+diningDiv.toString());
-                Elements mealDivs = diningDiv.getElementsByClass("dining-meal");
-                // this returns 5 meals: Sharples breakfast, lunch, dinner, Essie Mae's lunch, dinner
+            Element diningDiv = dash.getElementById("dining");
+            //Log.d(TAG, "AFTER GET DINING DIV: "+diningDiv.toString());
+            Elements mealDivs = diningDiv.getElementsByClass("dining-meal");
+            // this returns 5 meals: Sharples breakfast, lunch, dinner, Essie Mae's lunch, dinner
 
-                for (int i=0; i<3; i++) { // iterating only through Sharples meals
-                    Element mealDiv = mealDivs.get(i);
-                    String hoursString = mealDiv.getElementsByTag("strong").first().nextSibling().toString();
-                    ArrayList<Date> startAndEndHours = parseHours(hoursString);
-                    mealHours.add(startAndEndHours);
+            for (int i = 0; i < 3; i++) { // iterating only through Sharples meals
+                Element mealDiv = mealDivs.get(i);
+                String hoursString = mealDiv.getElementsByTag("strong").first().nextSibling().toString();
+                ArrayList<Date> startAndEndHours = parseHours(hoursString);
+                mealHours.add(startAndEndHours);
 
-                    Element menuDiv = mealDiv.getElementsByClass("dining-menu").get(0);
-                    ArrayList<String> menuLines = new ArrayList<String>();
-                    for (Node child : menuDiv.childNodes()) {
-                        if (child instanceof TextNode) {
-                            menuLines.add(child.toString());
-                        }
+                Element menuDiv = mealDiv.getElementsByClass("dining-menu").get(0);
+                ArrayList<String> menuLines = new ArrayList<String>();
+                for (Node child : menuDiv.childNodes()) {
+                    if (child instanceof TextNode) {
+                        menuLines.add(child.toString());
                     }
-                    Log.d(TAG, "AFTER MEAL "+i+": "+mealDiv.toString());
-
-                    ArrayList<String> menu = parseMenu(menuLines);
-                    menus.add(menu);
                 }
+                Log.d(TAG, "AFTER MEAL " + i + ": " + mealDiv.toString());
 
-                Log.d(TAG, "after for loop");
-
-                breakfastStart = mealHours.get(0).get(0);
-                breakfastEnd = mealHours.get(0).get(1);
-                lunchStart = mealHours.get(1).get(0);
-                lunchEnd = mealHours.get(1).get(1);
-                dinnerStart = mealHours.get(2).get(0);
-                dinnerEnd = mealHours.get(2).get(1);
-
-                breakfastMenu = menus.get(0);
-                lunchMenu = menus.get(1);
-                dinnerMenu = menus.get(2);
-
-
-
-                Log.d(TAG, "end of doInBackground");
-            } catch (IOException e){
-                Log.d(TAG, "IO EXCEPTION:" + e);
-            }
-            catch (Exception e){
-                Log.d(TAG, "EXCEPTION:" + e);
+                ArrayList<String> menu = parseMenu(menuLines);
+                menus.add(menu);
             }
 
-            return "All done!";
-        }
+            Log.d(TAG, "after for loop");
 
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-            // update progress bar
-        }
+            breakfastStart = mealHours.get(0).get(0);
+            breakfastEnd = mealHours.get(0).get(1);
+            lunchStart = mealHours.get(1).get(0);
+            lunchEnd = mealHours.get(1).get(1);
+            dinnerStart = mealHours.get(2).get(0);
+            dinnerEnd = mealHours.get(2).get(1);
 
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            loaded = true;
-            // dismiss progress bar
+            breakfastMenu = menus.get(0);
+            lunchMenu = menus.get(1);
+            dinnerMenu = menus.get(2);
 
-            Log.d(TAG, "in onPostExecute");
+
+            // we'd have to hand-type in the always menu (salad bar and whaterver)
+            alwaysMenu = new ArrayList<String>();
+
+            // should probably throw an error if the times overlap for some reason?
+
+            Log.d(TAG, "end of SharplesMenu constructor");
+        } catch (Exception e) {
+            Log.d(TAG, "exception in constructor: " + e);
         }
     }
 
