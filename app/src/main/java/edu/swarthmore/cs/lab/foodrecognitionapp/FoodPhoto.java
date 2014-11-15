@@ -1,6 +1,7 @@
 package edu.swarthmore.cs.lab.foodrecognitionapp;
 
 import android.net.Uri;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,6 +26,8 @@ public class FoodPhoto {
     private static final String JSON_DATE = "date";
     private static final String JSON_FILE_URI = "file";
 
+    private String TAG = "FoodPhoto";
+
     public FoodPhoto(){
         mId = UUID.randomUUID();
         mDate = new Date();
@@ -39,12 +42,19 @@ public class FoodPhoto {
         mTags = tags;
     }
 
-    public void setOneTag(int i, String foodName, float x, float y){
+    public void setOneTag(String foodName, float x, float y, int i){
         FoodPhotoTag tag = new FoodPhotoTag(foodName, x, y);
-        mTags.add(i,tag);
-        //todo: will this break if mTags has no things and i=6?
+        try{
+            mTags.add(i,tag);
+        } catch (Exception e){
+            Log.d(TAG, "broke trying to set a tag for invalid index; "+e);
+        }
     }
 
+    public void setOneTag(String foodName, float x, float y){
+        FoodPhotoTag tag = new FoodPhotoTag(foodName, x, y);
+        mTags.add(tag);
+    }
 
     public File getFile() {
         return mFile;

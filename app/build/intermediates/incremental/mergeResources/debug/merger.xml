@@ -93,9 +93,9 @@
                 </string>
                 <string name="menu_item_gallery" >Go to Gallery
                 </string>
-                <string name="pictureTagHint" >This is the nondynamic one
-                </string>
                 <string name="menu_item_add" >Add Food Photo
+                </string>
+                <string name="pictureTagHint" >This is the nondynamic one
                 </string>
             </file>
             <file

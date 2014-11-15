@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +19,8 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -43,7 +46,7 @@ public class PictureTakerFragment extends Fragment {
     public static Bitmap bitmap;
     public static ImageView mImageView;
     private AutoCompleteTextView mTagField;
-    private ArrayList<EditText> mTagFields;
+    private ArrayList<AutoCompleteTextView> mTagFields;
     private FoodPhoto mFoodPhoto;
     private FoodPhotoStore mFoodPhotoStore;
     private Button retakePhotoButton;
@@ -64,7 +67,7 @@ public class PictureTakerFragment extends Fragment {
         mFoodPhotoStore = FoodPhotoStore.get(getActivity());
         UUID foodPhotoId = (UUID)getArguments().getSerializable(EXTRA_FOODPHOTO_ID);
         beforePhotoTaken = true;
-        mTagFields = new ArrayList<EditText>();
+        mTagFields = new ArrayList<AutoCompleteTextView>();
         CreateDirectoryForPictures();
         mFoodPhoto = mFoodPhotoStore.getFoodPhoto(foodPhotoId);
 
@@ -125,7 +128,7 @@ public class PictureTakerFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String msg = s.toString();
-                mFoodPhoto.setOneTag(0, msg, 0, 0);
+                //mFoodPhoto.setOneTag(0, msg, 0, 0);
 
             }
 
@@ -149,22 +152,22 @@ public class PictureTakerFragment extends Fragment {
 //                        }
 //                    }
 //            });
+
         final LinearLayout tagContainer = (LinearLayout)v.findViewById(R.id.tagContainerLayout);
 
         mImageView.setOnTouchListener(new View.OnTouchListener(){
             @Override
             public boolean onTouch(View v, MotionEvent event){
-                if (beforePhotoTaken && !(using_emulator)){
-                    TakeAPicture();
-                }
-                else {
-                    // TODO: make toast only show after picture has actually been taken
-                    Toast toast = Toast.makeText(getActivity(), "Touched the location" + event.getX() + "," + event.getY(), Toast.LENGTH_SHORT);
-                    toast.show();
-                    addTagField(event.getX(), event.getY(), tagContainer);
-                    mTagField.setVisibility(View.VISIBLE);
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    if (beforePhotoTaken && !(using_emulator)) {
+                        TakeAPicture();
+                    } else {
+                        Log.d(TAG, "mImageView.onTouchListener");
+                        addTagField(event.getX(), event.getY(), tagContainer);
+                        //mTagField.setVisibility(View.VISIBLE);
 
-                    retakePhotoButton.setVisibility(View.VISIBLE);
+                        retakePhotoButton.setVisibility(View.VISIBLE);
+                    }
                 }
                 return true;
             }
@@ -176,41 +179,32 @@ public class PictureTakerFragment extends Fragment {
     }
 
     private void addTagField(final float x, final float y, final LinearLayout tagContainer){ // declared final so we can access in inner block
-        final EditText tag_field = new EditText(getActivity());
+        final AutoCompleteTextView tag_field = new AutoCompleteTextView(getActivity());
         tag_field.setHint("Tag this picture");
+        int index = mFoodPhoto.getTags().size();
+        mFoodPhoto.setOneTag("",x,y,index);
 
-        tag_field.addTextChangedListener(new TextWatcher() {
+        tag_field.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String msg = s.toString();
-                mFoodPhoto.setOneTag(mTagFields.size(), msg, x, y);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selection = (String)parent.getItemAtPosition(position);
+                mFoodPhoto.setOneTag(selection, x, y);
             }
         });
 
         // doing this after so that mTagFields.size() is the correct index for the new tag
         mTagFields.add(tag_field);
+        tagContainer.addView(tag_field);
 
-//        final LinearLayout dynamic_component = new LinearLayout(getActivity());
-//        dynamic_component.setOrientation(LinearLayout.VERTICAL); // MAYBE THE TAGS SHOULD BE LISTED HORIZONTALLY?
-//        dynamic_component.addView(tag_field);
-        tagContainer.post( new Runnable() {
-            @Override
-            public void run() {
-                tagContainer.addView(tag_field);
-            }
-        });
+        ArrayList<AutoCompleteTextView> final_tagfield = new ArrayList<AutoCompleteTextView>();
+        final_tagfield.add(tag_field);
+        if (menuIsLoaded) {
+            attachGuessesToTagFields(final_tagfield);
+        }
     }
 
     private void removeTag(){
-        //TODO: need to get index of tag and remove both from the layout and the foodphoto
+        //TODO: need to get index of tag and remove both from the layout and the foodphoto.maybe this could be called by pressing the ESC key
     }
 
     private void CreateDirectoryForPictures()
@@ -338,15 +332,6 @@ public class PictureTakerFragment extends Fragment {
         return fragment;
     }
 
-
-    // we want to only save it once we click the save button
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//        FoodPhotoStore.get(getActivity()).saveFoodPhotos();
-//    }
-
-
     private class AsyncSharplesGetter extends AsyncTask<String, Integer, String> {
         //todo: what are the string, int, string in the constructor?
 
@@ -385,13 +370,30 @@ public class PictureTakerFragment extends Fragment {
             menuIsLoaded = true;
 
             // populate the guesses
-            ArrayList<String> arrayListGuesses = mSharplesMenu.getMenu(new Date());
-            String[] guessesArr = new String[arrayListGuesses.size()];
-            guessesArr = arrayListGuesses.toArray(guessesArr);
-            Log.d(TAG, "how many guesses do we have: "+guessesArr.length);
-            Log.d(TAG, guessesArr.toString());
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, guessesArr);
-            mTagField.setAdapter(adapter);
+//            ArrayList<String> arrayListGuesses = mSharplesMenu.getMenu(new Date());
+//            String[] guessesArr = new String[arrayListGuesses.size()];
+//            guessesArr = arrayListGuesses.toArray(guessesArr);
+//            Log.d(TAG, "how many guesses do we have: "+guessesArr.length);
+//            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, guessesArr);
+//            mTagField.setAdapter(adapter);
+
+            attachGuessesToTagFields(mTagFields);
+
+        }
+    }
+
+    private void attachGuessesToTagFields(ArrayList<AutoCompleteTextView> tagFields){
+        ArrayList<String> arrayListGuesses = mSharplesMenu.getMenu(new Date());
+        String[] guessesArr = new String[arrayListGuesses.size()];
+        guessesArr = arrayListGuesses.toArray(guessesArr);
+        Log.d(TAG, "how many guesses do we have: "+guessesArr.length);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, guessesArr);
+
+        for (AutoCompleteTextView tagField : tagFields){
+            Log.d(TAG,"attaching guesses to a tag field");
+            tagField.setAdapter(adapter);
+            tagField.setHint("autocomplete tag field");
+
         }
     }
 
