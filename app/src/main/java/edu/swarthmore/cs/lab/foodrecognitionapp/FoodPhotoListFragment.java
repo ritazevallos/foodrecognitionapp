@@ -164,6 +164,7 @@ public class FoodPhotoListFragment  extends ListFragment {
         Intent i = new Intent(getActivity(), PictureTakerActivity.class);
         i.putExtra(PictureTakerFragment.EXTRA_FOODPHOTO_ID, fp.getId());
         startActivity(i);
+
     }
 
 }

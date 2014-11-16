@@ -40,4 +40,4 @@
         android:layout_height="wrap_content"
         android:text="@string/saveButton" />
 
-</LinearLayout><!-- From: file:/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/activity_picture_taker.xml -->
+</LinearLayout><!-- From: file:/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/activity_picture_taker.xml -->

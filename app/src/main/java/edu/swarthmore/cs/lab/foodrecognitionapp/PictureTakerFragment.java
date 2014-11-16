@@ -57,7 +57,7 @@ public class PictureTakerFragment extends Fragment {
             "edu.swarthmore.cs.lab.foodrecognitionapp.foodphoto_id";
 
     // make this true if you don't want it to break when opening up camera
-    public boolean using_emulator = true;
+    public boolean using_emulator = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -111,6 +111,7 @@ public class PictureTakerFragment extends Fragment {
                 } else{
                     mFoodPhotoStore.addFoodPhoto(mFoodPhoto);
                     FoodPhotoStore.get(getActivity()).saveFoodPhotos();
+                    getActivity().finish(); //TODO: This should kill the fragment but it doesn't seem to be working...
                     openGallery();
                 }
             }
