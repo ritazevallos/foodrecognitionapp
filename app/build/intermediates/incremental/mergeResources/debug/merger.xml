@@ -1,71 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merger version="2" >
 
+    <dataSet config="unspecified" >
+        <source path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/build/intermediates/exploded-aar/foodrecognitionapp.libraries/opencv/unspecified/res" >
+            <file
+                path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/build/intermediates/exploded-aar/foodrecognitionapp.libraries/opencv/unspecified/res/values/values.xml"
+                qualifiers="" >
+                <declare-styleable name="CameraBridgeViewBase" >
+                    <attr
+                        name="show_fps"
+                        format="boolean" />
+                    <attr
+                        name="camera_id"
+                        format="integer" >
+                        <enum
+                            name="any"
+                            value="-1" />
+                        <enum
+                            name="back"
+                            value="99" />
+                        <enum
+                            name="front"
+                            value="98" />
+                    </attr>
+                </declare-styleable>
+            </file>
+        </source>
+    </dataSet>
     <dataSet config="main" >
-        <source path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res" >
+        <source path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res" >
+            <file
+                name="ic_launcher"
+                path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/drawable-xxhdpi/ic_launcher.png"
+                qualifiers="xxhdpi-v4"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/drawable-xhdpi/ic_launcher.png"
+                qualifiers="xhdpi-v4"
+                type="drawable" />
+            <file
+                name="list_item_food_photo"
+                path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/list_item_food_photo.xml"
+                qualifiers=""
+                type="layout" />
             <file
                 name="activity_fragment"
-                path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/activity_fragment.xml"
+                path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/activity_fragment.xml"
                 qualifiers=""
                 type="layout" />
             <file
                 name="main_menu"
-                path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/main_menu.xml"
-                qualifiers=""
-                type="layout" />
-            <file
-                name="activity_foodphoto"
-                path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/activity_foodphoto.xml"
-                qualifiers=""
-                type="layout" />
-            <file
-                name="list_item_food_photo"
-                path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/list_item_food_photo.xml"
+                path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/main_menu.xml"
                 qualifiers=""
                 type="layout" />
             <file
                 name="activity_main_menu"
-                path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/activity_main_menu.xml"
+                path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/activity_main_menu.xml"
                 qualifiers=""
                 type="layout" />
             <file
                 name="activity_picture_taker"
-                path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/activity_picture_taker.xml"
+                path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/activity_picture_taker.xml"
                 qualifiers=""
                 type="layout" />
             <file
-                path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/values-w820dp/dimens.xml"
+                name="activity_sharples_menu"
+                path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/activity_sharples_menu.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="activity_foodphoto"
+                path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/activity_foodphoto.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/values-w820dp/dimens.xml"
                 qualifiers="w820dp-v13" >
                 <dimen name="activity_horizontal_margin" >64dp
                 </dimen>
             </file>
             <file
-                name="picture_taker"
-                path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/menu/picture_taker.xml"
-                qualifiers=""
-                type="menu" />
-            <file
                 name="ic_launcher"
-                path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/drawable-hdpi/ic_launcher.png"
-                qualifiers="hdpi-v4"
-                type="drawable" />
-            <file
-                name="ic_launcher"
-                path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/drawable-xhdpi/ic_launcher.png"
-                qualifiers="xhdpi-v4"
-                type="drawable" />
-            <file
-                name="ic_launcher"
-                path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/drawable-mdpi/ic_launcher.png"
+                path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/drawable-mdpi/ic_launcher.png"
                 qualifiers="mdpi-v4"
                 type="drawable" />
             <file
                 name="ic_launcher"
-                path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/drawable-xxhdpi/ic_launcher.png"
-                qualifiers="xxhdpi-v4"
+                path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/drawable-hdpi/ic_launcher.png"
+                qualifiers="hdpi-v4"
                 type="drawable" />
             <file
-                path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/values/strings.xml"
+                path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/values/strings.xml"
                 qualifiers="" >
                 <string name="todays_menu" >Today\'s Sharples Menu
                 </string>
@@ -93,21 +119,13 @@
                 </string>
                 <string name="menu_item_gallery" >Go to Gallery
                 </string>
-                <string name="menu_item_add" >Add Food Photo
-                </string>
                 <string name="pictureTagHint" >This is the nondynamic one
                 </string>
+                <string name="menu_item_add" >Add Food Photo
+                </string>
             </file>
             <file
-                path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/values/dimens.xml"
-                qualifiers="" >
-                <dimen name="activity_horizontal_margin" >16dp
-                </dimen>
-                <dimen name="activity_vertical_margin" >16dp
-                </dimen>
-            </file>
-            <file
-                path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/values/styles.xml"
+                path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/values/styles.xml"
                 qualifiers="" >
 
                 <style
@@ -118,16 +136,24 @@
                 </style>
             </file>
             <file
-                name="activity_sharples_menu"
-                path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/activity_sharples_menu.xml"
+                path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/values/dimens.xml"
+                qualifiers="" >
+                <dimen name="activity_horizontal_margin" >16dp
+                </dimen>
+                <dimen name="activity_vertical_margin" >16dp
+                </dimen>
+            </file>
+            <file
+                name="picture_taker"
+                path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/menu/picture_taker.xml"
                 qualifiers=""
-                type="layout" />
+                type="menu" />
         </source>
-        <source path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/build/generated/res/rs/debug" />
-        <source path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/build/generated/res/generated/debug" />
+        <source path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/build/generated/res/rs/debug" />
+        <source path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/build/generated/res/generated/debug" />
     </dataSet>
     <dataSet config="debug" >
-        <source path="/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/debug/res" />
+        <source path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/src/debug/res" />
     </dataSet>
 
 </merger>

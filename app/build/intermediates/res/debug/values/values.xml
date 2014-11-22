@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- From: file:/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/values/dimens.xml -->
+    <!-- From: file:/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/build/intermediates/exploded-aar/foodrecognitionapp.libraries/opencv/unspecified/res/values/values.xml -->
+    <eat-comment />
+
+    <declare-styleable name="CameraBridgeViewBase">
+        <attr name="show_fps" format="boolean" />
+        <attr name="camera_id" format="integer">
+            <enum name="any" value="-1" />
+            <enum name="back" value="99" />
+            <enum name="front" value="98" />
+        </attr>
+    </declare-styleable>
+    <!-- From: file:/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/values/dimens.xml -->
     <eat-comment />
 
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <!-- From: file:/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/values/strings.xml -->
+    <!-- From: file:/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/values/strings.xml -->
     <eat-comment />
 
     <string name="action_settings">Settings</string>
@@ -24,7 +35,7 @@
     <string name="saveButton">Save Food Photo</string>
     <string name="todays_menu">Today\'s Sharples Menu</string>
     <string name="view_nutrition_history">View Nutrition History</string>
-    <!-- From: file:/home/rzevall1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/values/styles.xml -->
+    <!-- From: file:/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/values/styles.xml -->
     <eat-comment />
 
     <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
