@@ -29,11 +29,19 @@
             android:hint="@string/pictureTagHint"/>
 
     </LinearLayout>
-    <Button
-        android:id="@+id/add_tags_button"
+
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/add_tags_button" />
+        android:orientation="horizontal"
+        android:id="@+id/segmentsContainerLayout">
+
+        </LinearLayout>
+    <!--<Button-->
+        <!--android:id="@+id/add_tags_button"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/add_tags_button" />-->
     <Button
         android:id="@+id/saveButton"
         android:layout_width="fill_parent"

@@ -45,7 +45,6 @@ containing a value of this type.
     }
     public static final class id {
         public static final int add_food_photo=0x7f040011;
-        public static final int add_tags_button=0x7f040009;
         public static final int any=0x7f040000;
         public static final int back=0x7f040001;
         public static final int breakfast_menu=0x7f04000b;
@@ -64,6 +63,7 @@ containing a value of this type.
         public static final int retake_photo_button=0x7f040005;
         public static final int root=0x7f040004;
         public static final int saveButton=0x7f04000a;
+        public static final int segmentsContainerLayout=0x7f040009;
         public static final int tagContainerLayout=0x7f040007;
         public static final int todays_menu=0x7f040013;
         public static final int view_nutrition_history=0x7f040012;

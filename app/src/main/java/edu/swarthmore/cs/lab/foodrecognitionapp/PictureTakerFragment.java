@@ -1,6 +1,7 @@
 package edu.swarthmore.cs.lab.foodrecognitionapp;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Editable;
+import android.text.Layout;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Display;
@@ -29,12 +31,30 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.CameraBridgeViewBase;
+import org.opencv.android.LoaderCallbackInterface;
+import org.opencv.android.Utils;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
+import org.opencv.core.Point;
+import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
+import org.opencv.core.Size;
+import org.opencv.imgproc.Imgproc;
+import org.opencv.android.OpenCVLoader;
+import org.opencv.objdetect.CascadeClassifier;
+
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -53,24 +73,87 @@ public class PictureTakerFragment extends Fragment {
     public boolean beforePhotoTaken;
     private SharplesMenu mSharplesMenu;
     private boolean menuIsLoaded = false;
+    private LinearLayout mSegmentsContainer;
     public static final String EXTRA_FOODPHOTO_ID =
             "edu.swarthmore.cs.lab.foodrecognitionapp.foodphoto_id";
-
+    private ArrayList<ImageView> mSegmentImageViews;
     // make this true if you don't want it to break when opening up camera
     public boolean using_emulator = true;
+
+
+    private File                   mCascadeFile;
+    private CascadeClassifier      mJavaDetector;
+    private CameraBridgeViewBase mOpenCvCameraView;
+
+    private BaseLoaderCallback  mLoaderCallback = new BaseLoaderCallback(this) {
+        @Override
+        public void onManagerConnected(int status) {
+            switch (status) {
+                case LoaderCallbackInterface.SUCCESS:
+                {
+                    Log.i(TAG, "OpenCV loaded successfully");
+
+                    // Load native library after(!) OpenCV initialization
+                    System.loadLibrary("detection_based_tracker");
+
+                    try {
+
+                        // load cascade file from application resources
+                        InputStream is = getResources().openRawResource(R.raw.lbpcascade_frontalface);
+                        File cascadeDir = getActivity().getDir("cascade", Context.MODE_PRIVATE);
+                        mCascadeFile = new File(cascadeDir, "lbpcascade_frontalface.xml");
+                        FileOutputStream os = new FileOutputStream(mCascadeFile);
+
+                        byte[] buffer = new byte[4096];
+                        int bytesRead;
+                        while ((bytesRead = is.read(buffer)) != -1) {
+                            os.write(buffer, 0, bytesRead);
+                        }
+                        is.close();
+                        os.close();
+
+                        mJavaDetector = new CascadeClassifier(mCascadeFile.getAbsolutePath());
+                        if (mJavaDetector.empty()) {
+                            Log.e(TAG, "Failed to load cascade classifier");
+                            mJavaDetector = null;
+                        } else
+                            Log.i(TAG, "Loaded cascade classifier from " + mCascadeFile.getAbsolutePath());
+
+                        cascadeDir.delete();
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Log.e(TAG, "Failed to load cascade. Exception thrown: " + e);
+                    }
+                } break;
+                default:
+                {
+                    super.onManagerConnected(status);
+                } break;
+            }
+        }
+    };
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_8,
+                this, mLoaderCallback);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // we are not making sure there is an app to take pictures
         setHasOptionsMenu(true);
+
         mFoodPhotoStore = FoodPhotoStore.get(getActivity());
         UUID foodPhotoId = (UUID)getArguments().getSerializable(EXTRA_FOODPHOTO_ID);
         beforePhotoTaken = true;
         mTagFields = new ArrayList<AutoCompleteTextView>();
         CreateDirectoryForPictures();
         mFoodPhoto = mFoodPhotoStore.getFoodPhoto(foodPhotoId);
-
+        mSegmentImageViews = new ArrayList<ImageView>();
         Log.d(TAG, "in onCreate");
         AsyncSharplesGetter dashScraper = new AsyncSharplesGetter();
         dashScraper.execute("go!");
@@ -81,6 +164,7 @@ public class PictureTakerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
         final View v = inflater.inflate(R.layout.activity_picture_taker, parent, false);
 
+        LinearLayout mSegmentsContainer = (LinearLayout)v.findViewById(R.id.segmentsContainerLayout);
 //        Button cameraButton = (Button)v.findViewById(R.id.cameraButton);
 //        cameraButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -257,6 +341,45 @@ public class PictureTakerFragment extends Fragment {
             e1.printStackTrace();
         }
         mImageView.setImageBitmap(bitmap);
+
+        segmentImage();
+    }
+
+
+    public void segmentImage(){
+        Mat imageMat = new Mat();
+        Mat mask = new Mat();
+        Utils.bitmapToMat(bitmap, imageMat);
+
+        Imgproc.cvtColor(imageMat, mask, Imgproc.COLOR_BayerRG2GRAY);
+        Imgproc.GaussianBlur(mask, mask, new Size(3, 3), 0);
+        Imgproc.threshold(mask, mask, 0, 255, Imgproc.THRESH_OTSU);
+
+        Core.multiply(mask, imageMat, imageMat);
+
+        List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
+        Imgproc.findContours(imageMat, contours, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
+
+        List<Mat> ROIs = new ArrayList<Mat>();
+        for(int i=0; i< contours.size();i++) {
+            if (Imgproc.contourArea(contours.get(i)) > 50) {
+                Rect rect = Imgproc.boundingRect(contours.get(i));
+                if (rect.height > 28) {
+                    Core.rectangle(imageMat, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(0, 0, 255));
+                    ROIs.add(imageMat.submat(rect.y, rect.y + rect.height, rect.x, rect.x + rect.width));
+
+                    ImageView segmentImageView = new ImageView(getActivity());
+
+                    Bitmap segmentBitmap = Bitmap.createBitmap(imageMat.width(), imageMat.height(), Bitmap.Config.ARGB_8888);
+                    Utils.matToBitmap(imageMat,segmentBitmap);
+                    segmentImageView.setImageBitmap(segmentBitmap);
+
+                    mSegmentsContainer.addView(segmentImageView);
+                }
+            }
+        }
+
+
     }
 
 
