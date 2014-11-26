@@ -81,65 +81,6 @@ public class PictureTakerFragment extends Fragment {
     public boolean using_emulator = true;
 
 
-    private File                   mCascadeFile;
-    private CascadeClassifier      mJavaDetector;
-    private CameraBridgeViewBase mOpenCvCameraView;
-
-    private BaseLoaderCallback  mLoaderCallback = new BaseLoaderCallback(this) {
-        @Override
-        public void onManagerConnected(int status) {
-            switch (status) {
-                case LoaderCallbackInterface.SUCCESS:
-                {
-                    Log.i(TAG, "OpenCV loaded successfully");
-
-                    // Load native library after(!) OpenCV initialization
-                    System.loadLibrary("detection_based_tracker");
-
-                    try {
-
-                        // load cascade file from application resources
-                        InputStream is = getResources().openRawResource(R.raw.lbpcascade_frontalface);
-                        File cascadeDir = getActivity().getDir("cascade", Context.MODE_PRIVATE);
-                        mCascadeFile = new File(cascadeDir, "lbpcascade_frontalface.xml");
-                        FileOutputStream os = new FileOutputStream(mCascadeFile);
-
-                        byte[] buffer = new byte[4096];
-                        int bytesRead;
-                        while ((bytesRead = is.read(buffer)) != -1) {
-                            os.write(buffer, 0, bytesRead);
-                        }
-                        is.close();
-                        os.close();
-
-                        mJavaDetector = new CascadeClassifier(mCascadeFile.getAbsolutePath());
-                        if (mJavaDetector.empty()) {
-                            Log.e(TAG, "Failed to load cascade classifier");
-                            mJavaDetector = null;
-                        } else
-                            Log.i(TAG, "Loaded cascade classifier from " + mCascadeFile.getAbsolutePath());
-
-                        cascadeDir.delete();
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        Log.e(TAG, "Failed to load cascade. Exception thrown: " + e);
-                    }
-                } break;
-                default:
-                {
-                    super.onManagerConnected(status);
-                } break;
-            }
-        }
-    };
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_8,
-                this, mLoaderCallback);
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -154,10 +95,11 @@ public class PictureTakerFragment extends Fragment {
         CreateDirectoryForPictures();
         mFoodPhoto = mFoodPhotoStore.getFoodPhoto(foodPhotoId);
         mSegmentImageViews = new ArrayList<ImageView>();
-        Log.d(TAG, "in onCreate");
         AsyncSharplesGetter dashScraper = new AsyncSharplesGetter();
         dashScraper.execute("go!");
         // populates mSharplesMenu, populates FOOD_GUESSES, and sets menuIsLoaded to true once done
+
+
     }
 
     @Override

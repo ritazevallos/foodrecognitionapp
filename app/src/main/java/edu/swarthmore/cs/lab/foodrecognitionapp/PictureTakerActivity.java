@@ -9,6 +9,10 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 
+import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.LoaderCallbackInterface;
+import org.opencv.android.OpenCVLoader;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.UUID;
@@ -18,6 +22,34 @@ import java.util.UUID;
  */
 public class PictureTakerActivity extends Activity {
     private String TAG = "PictureTakerActivity";
+
+
+    private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
+        @Override
+        public void onManagerConnected(int status) {
+            switch (status) {
+                case LoaderCallbackInterface.SUCCESS:
+                {
+                    Log.i(TAG, "OpenCV loaded successfully");
+
+                    // Load native library after(!) OpenCV initialization
+                    //System.loadLibrary("mixed_sample");
+
+                } break;
+                default:
+                {
+                    super.onManagerConnected(status);
+                } break;
+            }
+        }
+    };
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_9, this, mLoaderCallback);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
