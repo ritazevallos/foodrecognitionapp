@@ -119,9 +119,9 @@
                 </string>
                 <string name="menu_item_gallery" >Go to Gallery
                 </string>
-                <string name="menu_item_add" >Add Food Photo
-                </string>
                 <string name="pictureTagHint" >This is the nondynamic one
+                </string>
+                <string name="menu_item_add" >Add Food Photo
                 </string>
             </file>
             <file
@@ -148,6 +148,11 @@
                 path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/menu/picture_taker.xml"
                 qualifiers=""
                 type="menu" />
+            <file
+                name="lbpcascade_frontalface"
+                path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/raw/lbpcascade_frontalface.xml"
+                qualifiers=""
+                type="raw" />
         </source>
         <source path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/build/generated/res/rs/debug" />
         <source path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/build/generated/res/generated/debug" />
