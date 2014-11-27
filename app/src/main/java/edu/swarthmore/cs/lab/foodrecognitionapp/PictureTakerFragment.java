@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.opencv.android.BaseLoaderCallback;
@@ -36,6 +38,7 @@ import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
@@ -51,6 +54,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -78,8 +82,9 @@ public class PictureTakerFragment extends Fragment {
             "edu.swarthmore.cs.lab.foodrecognitionapp.foodphoto_id";
     private ArrayList<ImageView> mSegmentImageViews;
     // make this true if you don't want it to break when opening up camera
-    public boolean using_emulator = true;
-
+    public boolean using_emulator = false;
+    private ArrayList<Rect> ROIs;
+    private boolean clickNTagActivated;
 
 
     @Override
@@ -87,7 +92,7 @@ public class PictureTakerFragment extends Fragment {
         super.onCreate(savedInstanceState);
         // we are not making sure there is an app to take pictures
         setHasOptionsMenu(true);
-
+        clickNTagActivated = false;
         mFoodPhotoStore = FoodPhotoStore.get(getActivity());
         UUID foodPhotoId = (UUID)getArguments().getSerializable(EXTRA_FOODPHOTO_ID);
         beforePhotoTaken = true;
@@ -106,17 +111,34 @@ public class PictureTakerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
         final View v = inflater.inflate(R.layout.activity_picture_taker, parent, false);
 
-        LinearLayout mSegmentsContainer = (LinearLayout)v.findViewById(R.id.segmentsContainerLayout);
-//        Button cameraButton = (Button)v.findViewById(R.id.cameraButton);
-//        cameraButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                TakeAPicture();
-//            }
-//        });
+        mSegmentsContainer = (LinearLayout)v.findViewById(R.id.segmentsContainerLayout);
+
+        final Button addTagsButton = (Button)v.findViewById(R.id.add_tags_button);
+        final Button doneTagsButton = (Button)v.findViewById(R.id.done_tags_button);
+        doneTagsButton.setVisibility(View.GONE);
+
+        addTagsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickNTagActivated = true;
+                doneTagsButton.setVisibility(View.VISIBLE);
+                addTagsButton.setVisibility(View.GONE);
+
+            }
+        });
+        doneTagsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickNTagActivated = false;
+                addTagsButton.setVisibility(View.VISIBLE);
+                doneTagsButton.setVisibility(View.GONE);
+
+            }
+        });
+
         retakePhotoButton = (Button)v.findViewById(R.id.retake_photo_button);
         if(beforePhotoTaken) {
-            retakePhotoButton.setVisibility(View.INVISIBLE);
+            retakePhotoButton.setVisibility(View.GONE);
         }
         retakePhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,15 +192,6 @@ public class PictureTakerFragment extends Fragment {
             bitmap = null;
         }
 
-//            mImageView.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        if (beforePhotoTaken) {
-//                            TakeAPicture();
-//                        }
-//                    }
-//            });
-
         final LinearLayout tagContainer = (LinearLayout)v.findViewById(R.id.tagContainerLayout);
 
         mImageView.setOnTouchListener(new View.OnTouchListener(){
@@ -187,7 +200,7 @@ public class PictureTakerFragment extends Fragment {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     if (beforePhotoTaken && !(using_emulator)) {
                         TakeAPicture();
-                    } else {
+                    } else if (clickNTagActivated) {
                         Log.d(TAG, "mImageView.onTouchListener");
                         addTagField(event.getX(), event.getY(), tagContainer);
                         //mTagField.setVisibility(View.VISIBLE);
@@ -283,44 +296,116 @@ public class PictureTakerFragment extends Fragment {
             e1.printStackTrace();
         }
         mImageView.setImageBitmap(bitmap);
+        retakePhotoButton.setVisibility(View.VISIBLE);
 
         segmentImage();
     }
 
 
     public void segmentImage(){
-        Mat imageMat = new Mat();
-        Mat mask = new Mat();
-        Utils.bitmapToMat(bitmap, imageMat);
+        try {
+            Mat imageMat = new Mat(bitmap.getWidth(), bitmap.getHeight(), CvType.CV_8UC4); // fc means floating point matrices
 
-        Imgproc.cvtColor(imageMat, mask, Imgproc.COLOR_BayerRG2GRAY);
-        Imgproc.GaussianBlur(mask, mask, new Size(3, 3), 0);
-        Imgproc.threshold(mask, mask, 0, 255, Imgproc.THRESH_OTSU);
+            Utils.bitmapToMat(bitmap, imageMat);
+            Mat mask = new Mat(imageMat.size(), imageMat.type());
 
-        Core.multiply(mask, imageMat, imageMat);
+            Imgproc.cvtColor(imageMat, mask, Imgproc.COLOR_RGBA2GRAY, 4); // or should we use COLOR_BayerRG2GRAY? COLOR_BGR2GRAY
+            //mask.create(mask.rows(), mask.cols(), CvType.CV_8UC4);
+            Imgproc.GaussianBlur(mask, mask, new Size(3, 3), 0);
+            Imgproc.threshold(mask, mask, 0, 255, Imgproc.THRESH_OTSU);
 
-        List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
-        Imgproc.findContours(imageMat, contours, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
+            // uncomment to show the mask
 
-        List<Mat> ROIs = new ArrayList<Mat>();
-        for(int i=0; i< contours.size();i++) {
-            if (Imgproc.contourArea(contours.get(i)) > 50) {
-                Rect rect = Imgproc.boundingRect(contours.get(i));
-                if (rect.height > 28) {
-                    Core.rectangle(imageMat, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(0, 0, 255));
-                    ROIs.add(imageMat.submat(rect.y, rect.y + rect.height, rect.x, rect.x + rect.width));
+//            Bitmap maskBitmap = Bitmap.createBitmap(mask.cols(), mask.rows(), Bitmap.Config.ARGB_8888);
+//            Utils.matToBitmap(mask, maskBitmap);
+//            ImageView maskView = new ImageView(getActivity());
+//            maskView.setImageBitmap(maskBitmap);
+//            TextView maskText = new TextView(getActivity());
+//            maskText.setText("mask");
+//            mSegmentsContainer.addView(maskText);
+//            mSegmentsContainer.addView(maskView);
+
+            Mat maskedImg = new Mat(imageMat.size(), imageMat.type());
+            maskedImg.setTo(new Scalar(0,0,0));
+            imageMat.copyTo(maskedImg, mask);
+
+            // uncomment to show the masked image
+
+//            Bitmap maskedImgBitmap = Bitmap.createBitmap(maskedImg.cols(), maskedImg.rows(), Bitmap.Config.ARGB_8888);
+//            Utils.matToBitmap(maskedImg, maskedImgBitmap);
+//            ImageView maskedImgView = new ImageView(getActivity());
+//            maskedImgView.setImageBitmap(maskedImgBitmap);
+//            TextView maskedText = new TextView(getActivity());
+//            maskedText.setText("masked");
+//            mSegmentsContainer.addView(maskedText);
+//            mSegmentsContainer.addView(maskedImgView);
+
+            List <MatOfPoint> contours = new ArrayList<MatOfPoint>();
+            Imgproc.findContours(mask, contours, new Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+
+            ROIs = new ArrayList<Rect>();
+            Scalar colorGreen = new Scalar(0, 255, 0,255);
+            Scalar colorRed = new Scalar(255, 0, 0, 255);
+            int minSize = 500; // we can figure out what this should be using the tray size: they should position the camera
+            //so's the tray fills the camera screen
+
+            TextView segmentsText = new TextView(getActivity());
+            segmentsText.setText("segments");
+            mSegmentsContainer.addView(segmentsText);
+
+            List <MatOfPoint> bigContours = new ArrayList<MatOfPoint>();
+            List <Point> centers = new ArrayList<Point>();
+
+            for (int i = 0; i < contours.size(); i++) {
+                // draw contour in green
+                if (Imgproc.contourArea(contours.get(i)) > minSize) {
+                    bigContours.add(contours.get(i));
+                    Rect rect = Imgproc.boundingRect(contours.get(i));
+                    Point center = new Point(rect.x+rect.width/2.0, rect.y+rect.height/2.0);
+                    centers.add(center);
+                    // draw bounding rectangle in green
+//                        Core.rectangle(imageMat, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), colorGreen);
+
+                    Mat subMat = imageMat.submat(rect.y, rect.y + rect.height, rect.x, rect.x + rect.width);
+                    ROIs.add(rect);
 
                     ImageView segmentImageView = new ImageView(getActivity());
 
-                    Bitmap segmentBitmap = Bitmap.createBitmap(imageMat.width(), imageMat.height(), Bitmap.Config.ARGB_8888);
-                    Utils.matToBitmap(imageMat,segmentBitmap);
+                    Bitmap segmentBitmap = Bitmap.createBitmap(subMat.cols(), subMat.rows(), Bitmap.Config.ARGB_8888);
+                    Utils.matToBitmap(subMat, segmentBitmap);
                     segmentImageView.setImageBitmap(segmentBitmap);
-
                     mSegmentsContainer.addView(segmentImageView);
                 }
             }
-        }
 
+            // the image with contours
+            Mat drawnContours = new Mat(imageMat.size(), imageMat.type());
+            imageMat.copyTo(drawnContours);
+
+            Log.d(TAG, "number of big contours: " + bigContours.size());
+            for (int i=0; i< bigContours.size(); i++){
+                // switch around the commented section to draw contours instead of rectangles
+                //Imgproc.drawContours ( drawnContours, bigContours, i, colorGreen, 15);
+                Rect rect = ROIs.get(i);
+                Core.rectangle(drawnContours, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), colorGreen, 15);
+                Point center = centers.get(i);
+                Core.putText(drawnContours, Integer.toString(i+1), center, Core.FONT_HERSHEY_COMPLEX_SMALL, 0.8, colorRed);
+
+                Log.d(TAG, "trying to label at "+ center.toString());
+                //todo: labels aren't drawing
+            }
+
+            Bitmap contoursBitmap = Bitmap.createBitmap(imageMat.cols(), imageMat.rows(), Bitmap.Config.ARGB_8888);
+            Utils.matToBitmap(drawnContours, contoursBitmap);
+            ImageView contoursView = new ImageView(getActivity());
+            contoursView.setImageBitmap(contoursBitmap);
+            TextView contoursText = new TextView(getActivity());
+            mSegmentsContainer.addView(contoursText);
+            mImageView.setImageBitmap(contoursBitmap);
+
+        } catch(Exception ex){
+            Log.d(TAG, "Error in segmentImage: "+ex);
+        }
 
     }
 

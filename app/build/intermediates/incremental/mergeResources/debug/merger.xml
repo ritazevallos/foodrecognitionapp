@@ -109,6 +109,8 @@
                 </string>
                 <string name="saveButton" >Save Food Photo
                 </string>
+                <string name="done_tags_button" >Done Tagging
+                </string>
                 <string name="main_menu_title" >Main Menu
                 </string>
                 <string name="openCamera" >Open Camera
@@ -119,9 +121,9 @@
                 </string>
                 <string name="menu_item_gallery" >Go to Gallery
                 </string>
-                <string name="pictureTagHint" >This is the nondynamic one
-                </string>
                 <string name="menu_item_add" >Add Food Photo
+                </string>
+                <string name="pictureTagHint" >This is the nondynamic one
                 </string>
             </file>
             <file

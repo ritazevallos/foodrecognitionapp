@@ -24,6 +24,7 @@
     <string name="add_food_photo">Add New Food Photo</string>
     <string name="add_tags_button">Add Tags</string>
     <string name="app_name">FoodRecognitionApp</string>
+    <string name="done_tags_button">Done Tagging</string>
     <string name="food_photo_title">Food Photo</string>
     <string name="main_menu_title">Main Menu</string>
     <string name="menu_item_add">Add Food Photo</string>
