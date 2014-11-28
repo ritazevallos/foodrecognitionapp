@@ -82,7 +82,7 @@ public class PictureTakerFragment extends Fragment {
             "edu.swarthmore.cs.lab.foodrecognitionapp.foodphoto_id";
     private ArrayList<ImageView> mSegmentImageViews;
     // make this true if you don't want it to break when opening up camera
-    public boolean using_emulator = false;
+    public boolean using_emulator = true;
     private ArrayList<Rect> ROIs;
     private boolean clickNTagActivated;
 
@@ -202,7 +202,9 @@ public class PictureTakerFragment extends Fragment {
                         TakeAPicture();
                     } else if (clickNTagActivated) {
                         Log.d(TAG, "mImageView.onTouchListener");
-                        addTagField(event.getX(), event.getY(), tagContainer);
+                        Point ll = new Point(event.getX() - 20, event.getY() - 20);
+                        Point ur = new Point(event.getX() + 20, event.getY() + 20);
+                        addTagField(ll,ur, tagContainer);
                         //mTagField.setVisibility(View.VISIBLE);
 
                         retakePhotoButton.setVisibility(View.VISIBLE);
@@ -217,17 +219,17 @@ public class PictureTakerFragment extends Fragment {
 
     }
 
-    private void addTagField(final float x, final float y, final LinearLayout tagContainer){ // declared final so we can access in inner block
+    private void addTagField(final Point ll, final Point ur, final LinearLayout tagContainer){ // declared final so we can access in inner block
         final AutoCompleteTextView tag_field = new AutoCompleteTextView(getActivity());
         tag_field.setHint("Tag this picture");
         int index = mFoodPhoto.getTags().size();
-        mFoodPhoto.setOneTag("",x,y,index);
+        mFoodPhoto.setOneTag("",ll, ur,index);
 
         tag_field.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selection = (String)parent.getItemAtPosition(position);
-                mFoodPhoto.setOneTag(selection, x, y);
+                mFoodPhoto.setOneTag(selection, ll, ur);
             }
         });
 

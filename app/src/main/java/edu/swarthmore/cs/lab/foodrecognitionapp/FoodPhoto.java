@@ -6,6 +6,7 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.opencv.core.Point;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -42,8 +43,8 @@ public class FoodPhoto {
         mTags = tags;
     }
 
-    public void setOneTag(String foodName, float x, float y, int i){
-        FoodPhotoTag tag = new FoodPhotoTag(foodName, x, y);
+    public void setOneTag(String foodName, Point ll, Point ur, int i){
+        FoodPhotoTag tag = new FoodPhotoTag(foodName, ll, ur);
         try{
             mTags.add(i,tag);
         } catch (Exception e){
@@ -51,8 +52,8 @@ public class FoodPhoto {
         }
     }
 
-    public void setOneTag(String foodName, float x, float y){
-        FoodPhotoTag tag = new FoodPhotoTag(foodName, x, y);
+    public void setOneTag(String foodName, Point ll, Point ur){
+        FoodPhotoTag tag = new FoodPhotoTag(foodName, ll, ur);
         mTags.add(tag);
     }
 
@@ -97,7 +98,7 @@ public class FoodPhoto {
         mId = UUID.fromString(json.getString(JSON_ID));
         mTags = new ArrayList<FoodPhotoTag>();
         String string_tags = json.getString(JSON_TAGS); // currently just a single string
-        FoodPhotoTag new_tag = new FoodPhotoTag(string_tags, 0, 0);
+        FoodPhotoTag new_tag = new FoodPhotoTag(string_tags, new Point(), new Point());
         mTags.add(new_tag); // temporary losing all data except the string of the first tag
         mDate = new Date(json.getLong(JSON_DATE));
         mFile = new File(json.getString(JSON_FILE_URI));
@@ -106,13 +107,29 @@ public class FoodPhoto {
 
     public class FoodPhotoTag {
         private String mFoodName;
-        private float x;
-        private float y;
+        private Point ll;
+        private Point ur;
 
-        private FoodPhotoTag(String foodName, float x, float y) {
+        public Point getLl() {
+            return ll;
+        }
+
+        public void setLl(Point ll) {
+            this.ll = ll;
+        }
+
+        public Point getUr() {
+            return ur;
+        }
+
+        public void setUr(Point ur) {
+            this.ur = ur;
+        }
+
+        private FoodPhotoTag(String foodName, Point ll, Point ur) {
             mFoodName = foodName;
-            this.x = x;
-            this.y = y;
+            this.ll = ll;
+            this.ur = ur;
         }
 
         public String getFoodName() {
@@ -123,20 +140,5 @@ public class FoodPhoto {
             mFoodName = foodName;
         }
 
-        public float getX() {
-            return x;
-        }
-
-        public void setX(float x) {
-            this.x = x;
-        }
-
-        public float getY() {
-            return y;
-        }
-
-        public void setY(float y) {
-            this.y = y;
-        }
     }
 }
