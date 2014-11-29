@@ -110,6 +110,11 @@ public class FoodPhoto {
         private Point ll;
         private Point ur;
 
+        private FoodPhotoTag(String foodName, Point ll, Point ur) {
+            mFoodName = foodName;
+            this.ll = ll;
+            this.ur = ur;
+        }
         public Point getLl() {
             return ll;
         }
@@ -123,12 +128,6 @@ public class FoodPhoto {
         }
 
         public void setUr(Point ur) {
-            this.ur = ur;
-        }
-
-        private FoodPhotoTag(String foodName, Point ll, Point ur) {
-            mFoodName = foodName;
-            this.ll = ll;
             this.ur = ur;
         }
 

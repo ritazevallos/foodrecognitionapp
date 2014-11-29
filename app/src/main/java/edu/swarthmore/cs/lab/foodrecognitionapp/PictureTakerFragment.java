@@ -81,8 +81,7 @@ public class PictureTakerFragment extends Fragment {
     public static final String EXTRA_FOODPHOTO_ID =
             "edu.swarthmore.cs.lab.foodrecognitionapp.foodphoto_id";
     private ArrayList<ImageView> mSegmentImageViews;
-    // make this true if you don't want it to break when opening up camera
-    public boolean using_emulator = true;
+    public boolean using_emulator = true; // make this true if you don't want it to break when opening up camera
     private ArrayList<Rect> ROIs;
     private boolean clickNTagActivated;
 
@@ -103,7 +102,6 @@ public class PictureTakerFragment extends Fragment {
         AsyncSharplesGetter dashScraper = new AsyncSharplesGetter();
         dashScraper.execute("go!");
         // populates mSharplesMenu, populates FOOD_GUESSES, and sets menuIsLoaded to true once done
-
 
     }
 
@@ -205,7 +203,6 @@ public class PictureTakerFragment extends Fragment {
                         Point ll = new Point(event.getX() - 20, event.getY() - 20);
                         Point ur = new Point(event.getX() + 20, event.getY() + 20);
                         addTagField(ll,ur, tagContainer);
-                        //mTagField.setVisibility(View.VISIBLE);
 
                         retakePhotoButton.setVisibility(View.VISIBLE);
                     }
