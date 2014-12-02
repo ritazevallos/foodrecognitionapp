@@ -81,7 +81,7 @@ public class PictureTakerFragment extends Fragment {
     public static final String EXTRA_FOODPHOTO_ID =
             "edu.swarthmore.cs.lab.foodrecognitionapp.foodphoto_id";
     private ArrayList<ImageView> mSegmentImageViews;
-    public boolean using_emulator = true; // make this true if you don't want it to break when opening up camera
+    public boolean using_emulator = false; // make this true if you don't want it to break when opening up camera
     private ArrayList<Rect> ROIs;
     private boolean clickNTagActivated;
 
@@ -110,6 +110,7 @@ public class PictureTakerFragment extends Fragment {
         final View v = inflater.inflate(R.layout.activity_picture_taker, parent, false);
 
         mSegmentsContainer = (LinearLayout)v.findViewById(R.id.segmentsContainerLayout);
+        mSegmentsContainer.setVisibility(View.GONE); //todo: remove this if you're confused why segments are missing
 
         final Button addTagsButton = (Button)v.findViewById(R.id.add_tags_button);
         final Button doneTagsButton = (Button)v.findViewById(R.id.done_tags_button);
@@ -219,14 +220,14 @@ public class PictureTakerFragment extends Fragment {
     private void addTagField(final Point ll, final Point ur, final LinearLayout tagContainer){ // declared final so we can access in inner block
         final AutoCompleteTextView tag_field = new AutoCompleteTextView(getActivity());
         tag_field.setHint("Tag this picture");
-        int index = mFoodPhoto.getTags().size();
-        mFoodPhoto.setOneTag("",ll, ur,index);
+        final int index = mFoodPhoto.getTags().size();
+        mFoodPhoto.setOneTag("",ll, ur);
 
         tag_field.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selection = (String)parent.getItemAtPosition(position);
-                mFoodPhoto.setOneTag(selection, ll, ur);
+                mFoodPhoto.setOneTag(selection, ll, ur, index);
             }
         });
 
@@ -384,7 +385,7 @@ public class PictureTakerFragment extends Fragment {
             Log.d(TAG, "number of big contours: " + bigContours.size());
             for (int i=0; i< bigContours.size(); i++){
                 // switch around the commented section to draw contours instead of rectangles
-                //Imgproc.drawContours ( drawnContours, bigContours, i, colorGreen, 15);
+                Imgproc.drawContours ( drawnContours, bigContours, i, colorGreen, 15);
                 Rect rect = ROIs.get(i);
                 Core.rectangle(drawnContours, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), colorGreen, 15);
                 Point center = centers.get(i);

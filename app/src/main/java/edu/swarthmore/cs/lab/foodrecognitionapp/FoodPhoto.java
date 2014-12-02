@@ -46,7 +46,7 @@ public class FoodPhoto {
     public void setOneTag(String foodName, Point ll, Point ur, int i){
         FoodPhotoTag tag = new FoodPhotoTag(foodName, ll, ur);
         try{
-            mTags.add(i,tag);
+            mTags.set(i,tag);
         } catch (Exception e){
             Log.d(TAG, "broke trying to set a tag for invalid index; "+e);
         }
@@ -87,6 +87,7 @@ public class FoodPhoto {
     public JSONObject toJSON() throws JSONException {
         JSONObject json = new JSONObject();
         json.put(JSON_ID, mId.toString());
+        
         json.put(JSON_TAGS, mTags.get(0).getFoodName()); //TODO: only saving the first tag as a string
         json.put(JSON_DATE, mDate.getTime());
         json.put(JSON_FILE_URI, Uri.fromFile(mFile).toString());//todo: no idea if this is the right way to do this

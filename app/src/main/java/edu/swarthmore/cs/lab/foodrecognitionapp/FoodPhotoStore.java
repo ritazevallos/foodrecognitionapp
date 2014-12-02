@@ -27,7 +27,7 @@ public class FoodPhotoStore {
 
     public FoodPhotoStore(Context appContext) {
         mAppContext = appContext;
-        mNutritionGrid = new NutritionGrid();
+        //mNutritionGrid = new NutritionGrid();
         mSerializer = new FoodPhotoIntentJSONSerializer(mAppContext, "foodPhotos.json");
         try {
             mFoodPhotos = mSerializer.loadFoodPhotos();
