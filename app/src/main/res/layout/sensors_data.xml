@@ -7,11 +7,18 @@
         android:id="@+id/Xc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
         android:text="@string/textview_xc_str"
-        android:textColor="#FF0000" />
+        android:textColor="#ff4731ff" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:tint="#ffffffff"
+        android:src="@drawable/circle"/>
 
 </RelativeLayout>

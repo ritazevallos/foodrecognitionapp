@@ -19,5 +19,6 @@
     <string name="retake_photo_button">Retake Photo</string>
     <string name="button_log_str">Save Photo</string>
     <string name="textview_xc_str">Match your plate with the circle</string>
+    <string name="take_picture_button">Take picture</string>
 
 </resources>

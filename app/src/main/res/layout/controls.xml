@@ -5,12 +5,12 @@
                 android:orientation="horizontal" >
 
     <Button
-        android:id="@+id/button_log"
+        android:id="@+id/takePictureButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_centerHorizontal="true"
         android:onClick="logSensorData"
-        android:text="@string/button_log_str" />
+        android:text="@string/take_picture_button" />
 
 </RelativeLayout>

@@ -41,7 +41,8 @@ containing a value of this type.
         public static final int activity_vertical_margin=0x7f060001;
     }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
+        public static final int circle=0x7f020000;
+        public static final int ic_launcher=0x7f020001;
     }
     public static final class id {
         public static final int Xc=0x7f05001a;
@@ -50,7 +51,6 @@ containing a value of this type.
         public static final int any=0x7f050000;
         public static final int back=0x7f050001;
         public static final int breakfast_menu=0x7f05000d;
-        public static final int button_log=0x7f050010;
         public static final int camera_preview=0x7f050014;
         public static final int controls_layout=0x7f050015;
         public static final int dinner_menu=0x7f05000f;
@@ -72,6 +72,7 @@ containing a value of this type.
         public static final int segmentsContainerLayout=0x7f050009;
         public static final int sensors_data_layout=0x7f050016;
         public static final int tagContainerLayout=0x7f050007;
+        public static final int takePictureButton=0x7f050010;
         public static final int todays_menu=0x7f050019;
         public static final int view_nutrition_history=0x7f050018;
     }
@@ -109,9 +110,10 @@ containing a value of this type.
         public static final int pictureTagHint=0x7f07000c;
         public static final int retake_photo_button=0x7f07000d;
         public static final int saveButton=0x7f07000e;
-        public static final int textview_xc_str=0x7f07000f;
-        public static final int todays_menu=0x7f070010;
-        public static final int view_nutrition_history=0x7f070011;
+        public static final int take_picture_button=0x7f07000f;
+        public static final int textview_xc_str=0x7f070010;
+        public static final int todays_menu=0x7f070011;
+        public static final int view_nutrition_history=0x7f070012;
     }
     public static final class style {
         /**  Customize your theme here. 

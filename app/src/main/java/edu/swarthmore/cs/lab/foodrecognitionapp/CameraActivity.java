@@ -4,9 +4,14 @@ package edu.swarthmore.cs.lab.foodrecognitionapp;
  * Created by jschwar1 on 12/5/14.
  */
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.Camera;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.Surface;
 import android.view.View;
@@ -21,13 +26,61 @@ import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class CameraActivity extends Activity {
 
+    public static final int MEDIA_TYPE_IMAGE = 1;
     private Camera mCamera;
     private CameraPreview mPreview;
     public static final String EXTRA_URI = "edu.swarthmore.cs.lab.foodrecognitionapp";
     private Uri mUri;
     private static String TAG = "CameraActivity";
+    private File mFile;
+    private Bitmap mBitmap;
+
+    public CameraActivity() {
+        mPicture = new Camera.PictureCallback() {
+
+            @Override
+            public void onPictureTaken(byte[] data, Camera camera) {
+                Log.d("TAG","Callback start");
+
+                Bitmap mBitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+
+                mUri = Uri.parse(getIntent().getStringExtra(EXTRA_URI));
+                final File mFile = new File(mUri.getPath());
+
+                try {
+                    FileOutputStream fos = new FileOutputStream(mFile);
+                    mBitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
+                    Log.d("Ok", mFile.getAbsolutePath());
+                    fos.flush();
+                    fos.close();
+                    //File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Path");
+                    MediaScannerConnection.scanFile(getApplicationContext(), new String[]{mFile.getAbsolutePath()}, null, new MediaScannerConnection.OnScanCompletedListener() {
+
+                        @Override
+                        public void onScanCompleted(String path, Uri uri) {
+                            // TODO Auto-generated method stub
+                        }
+                    });
+                    Log.d("TAG","DONE");
+                } catch (FileNotFoundException e) {
+                    Log.d("Test", "File not found: " + e.getMessage());
+                } catch (IOException e) {
+                    Log.d("Test", "Error accessing file: " + e.getMessage());
+                }
+                setResult(Activity.RESULT_OK);
+                finish();
+            }
+        };
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,7 +91,6 @@ public class CameraActivity extends Activity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.main);
-
 
         // Create an instance of Camera
         mCamera = getCameraInstance();
@@ -56,18 +108,23 @@ public class CameraActivity extends Activity {
         RelativeLayout relativeLayoutSensorsData = (RelativeLayout) findViewById(R.id.sensors_data_layout);
         relativeLayoutSensorsData.bringToFront();
 
-        Button saveButton = (Button)relativeLayoutControls.findViewById(R.id.button_log);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mUri = Uri.parse(getIntent().getStringExtra(EXTRA_URI));
-                setResult(Activity.RESULT_OK);
-
-            }
-        });
-
+        Button captureButton = (Button) relativeLayoutControls.findViewById(R.id.takePictureButton);
+        captureButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // get an image from the camera
+                        Log.d("Take","Picture");
+                        mCamera.takePicture(null, null, mPicture);
+                        // mCamera.stopPreview();
+                        // mCamera.startPreview();
+                    }
+                }
+        );
 
     }
+
+    private Camera.PictureCallback mPicture;
 
     public void logSensorData(View view)
     {
@@ -101,7 +158,7 @@ public class CameraActivity extends Activity {
     }
 
     public static void setCameraDisplayOrientation(Activity activity, android.hardware.Camera camera) {
-        int cameraId = 0;
+        int cameraId = 0; // this is a hack - need to actually search for correct id if there are more than one
         android.hardware.Camera.CameraInfo info =
                 new android.hardware.Camera.CameraInfo();
         android.hardware.Camera.getCameraInfo(cameraId, info);

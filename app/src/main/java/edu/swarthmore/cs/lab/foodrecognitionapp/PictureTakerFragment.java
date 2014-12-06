@@ -281,10 +281,10 @@ public class PictureTakerFragment extends Fragment {
 
 
         // make it available in the gallery
-        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        //Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         Uri contentUri = Uri.fromFile(mFile);
-        mediaScanIntent.setData(contentUri);
-        getActivity().sendBroadcast(mediaScanIntent);
+        //mediaScanIntent.setData(contentUri);
+        //getActivity().sendBroadcast(mediaScanIntent);
 
         // display in ImageView. We will resize the bitmap to fit the display
         // Loading the full sized image will consume to much memory
@@ -298,12 +298,35 @@ public class PictureTakerFragment extends Fragment {
             // TODO Auto-generated catch block
             e1.printStackTrace();
         }
+
+        cropPhoto();
+
         mImageView.setImageBitmap(bitmap);
         retakePhotoButton.setVisibility(View.VISIBLE);
 
         segmentImage();
     }
 
+    public void cropPhoto(){
+        Mat imageMat = new Mat(bitmap.getWidth(), bitmap.getHeight(), CvType.CV_8UC4); // fc means floating point matrices
+        Utils.bitmapToMat(bitmap, imageMat);
+
+        Mat maskedImg = new Mat(bitmap.getWidth(), bitmap.getHeight(), CvType.CV_8UC4);
+
+        Mat mask = new Mat(imageMat.size(), imageMat.type());
+        Imgproc.cvtColor(imageMat, mask, Imgproc.COLOR_RGBA2GRAY, 4);
+
+        mask.setTo(new Scalar(0,0,0));
+
+        //Draw ellipse
+        int plateRadius = 900;
+        Core.circle(mask, new Point(bitmap.getWidth()/2, bitmap.getHeight()/2), plateRadius, new Scalar(234,155,55), -200);
+
+
+        imageMat.copyTo(maskedImg, mask);
+        Utils.matToBitmap(maskedImg, bitmap);
+
+    }
 
     public void segmentImage(){
         try {
