@@ -35,6 +35,10 @@
             android:name="edu.swarthmore.cs.lab.foodrecognitionapp.SharplesMenuActivity"
             android:label="@string/app_name" >
         </activity>
+
+        <activity android:name="edu.swarthmore.cs.lab.foodrecognitionapp.CameraActivity"
+                  android:label="FoodRecognitionApp" >
+        </activity>
     </application>
 
 </manifest>

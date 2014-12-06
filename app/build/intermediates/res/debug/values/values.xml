@@ -24,6 +24,7 @@
     <string name="add_food_photo">Add New Food Photo</string>
     <string name="add_tags_button">Add Tags</string>
     <string name="app_name">FoodRecognitionApp</string>
+    <string name="button_log_str">Save Photo</string>
     <string name="done_tags_button">Done Tagging</string>
     <string name="food_photo_title">Food Photo</string>
     <string name="main_menu_title">Main Menu</string>
@@ -34,6 +35,7 @@
     <string name="pictureTagHint">This is the nondynamic one</string>
     <string name="retake_photo_button">Retake Photo</string>
     <string name="saveButton">Save Food Photo</string>
+    <string name="textview_xc_str">Match your plate with the circle</string>
     <string name="todays_menu">Today\'s Sharples Menu</string>
     <string name="view_nutrition_history">View Nutrition History</string>
     <!-- From: file:/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/values/styles.xml -->

@@ -121,9 +121,13 @@
                 </string>
                 <string name="menu_item_gallery" >Go to Gallery
                 </string>
+                <string name="textview_xc_str" >Match your plate with the circle
+                </string>
                 <string name="menu_item_add" >Add Food Photo
                 </string>
                 <string name="pictureTagHint" >This is the nondynamic one
+                </string>
+                <string name="button_log_str" >Save Photo
                 </string>
             </file>
             <file
@@ -155,6 +159,21 @@
                 path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/raw/lbpcascade_frontalface.xml"
                 qualifiers=""
                 type="raw" />
+            <file
+                name="controls"
+                path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/controls.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="main"
+                path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/main.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="sensors_data"
+                path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/sensors_data.xml"
+                qualifiers=""
+                type="layout" />
         </source>
         <source path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/build/generated/res/rs/debug" />
         <source path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/build/generated/res/generated/debug" />

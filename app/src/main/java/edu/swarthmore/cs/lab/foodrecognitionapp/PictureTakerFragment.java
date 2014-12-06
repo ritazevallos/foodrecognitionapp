@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Camera;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -258,13 +259,15 @@ public class PictureTakerFragment extends Fragment {
 
     private void TakeAPicture()
     {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        //Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        Intent intent = new Intent(getActivity(), CameraActivity.class);
 
         mFile = new File(mDir, String.format("foodPhoto_"+ UUID.randomUUID() + ".jpg"));
         Log.d(TAG, "file path: " + mFile.toString());
         mFoodPhoto.setFile(mFile);
 
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mFile));
+        intent.putExtra(CameraActivity.EXTRA_URI, Uri.fromFile(mFile).toString());
 
         beforePhotoTaken = false;
         startActivityForResult(intent, 0);

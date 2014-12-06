@@ -17,5 +17,7 @@
     <string name="add_tags_button">Add Tags</string>
     <string name="done_tags_button">Done Tagging</string>
     <string name="retake_photo_button">Retake Photo</string>
+    <string name="button_log_str">Save Photo</string>
+    <string name="textview_xc_str">Match your plate with the circle</string>
 
 </resources>
