@@ -87,7 +87,7 @@ public class FoodPhoto {
     public JSONObject toJSON() throws JSONException {
         JSONObject json = new JSONObject();
         json.put(JSON_ID, mId.toString());
-        
+
         json.put(JSON_TAGS, mTags.get(0).getFoodName()); //TODO: only saving the first tag as a string
         json.put(JSON_DATE, mDate.getTime());
         json.put(JSON_FILE_URI, Uri.fromFile(mFile).toString());//todo: no idea if this is the right way to do this
