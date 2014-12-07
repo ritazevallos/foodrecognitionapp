@@ -87,7 +87,7 @@ public class PictureTakerFragment extends Fragment {
     public boolean using_emulator = false; // make this true if you don't want it to break when opening up camera
     private ArrayList<Rect> ROIs;
     private boolean clickNTagActivated;
-
+    private TextView mNumberOfSegmentsTextView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -176,6 +176,8 @@ public class PictureTakerFragment extends Fragment {
         }
 
         final LinearLayout tagContainer = (LinearLayout)v.findViewById(R.id.tagContainerLayout);
+
+        mNumberOfSegmentsTextView = (TextView)v.findViewById(R.id.number_of_segments);
 
         mImageView.setOnTouchListener(new View.OnTouchListener(){
             @Override
@@ -288,6 +290,41 @@ public class PictureTakerFragment extends Fragment {
         retakePhotoButton.setVisibility(View.VISIBLE);
 
         segmentImage();
+
+        mNumberOfSegmentsTextView.setText("Found "+ROIs.size()+" foods on your plate!");
+
+        beginTagging();
+    }
+
+    public void beginTagging(){
+        Mat imageMat = new Mat(bitmap.getWidth(), bitmap.getHeight(), CvType.CV_8UC4); // fc means floating point matrices
+        Utils.bitmapToMat(bitmap, imageMat);
+
+        Scalar colorPurple = new Scalar(180, 37, 216, 255); // the last value is necessary so that it's not transparent
+
+        // eventually, loop through all of the segments in ROIs, right now, only doing ROIs[0]
+        Rect rect = ROIs.get(0);
+
+        // highlight the segment we're talking about with a rectangle
+        Core.rectangle(imageMat, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), colorPurple, 15);
+        Utils.matToBitmap(imageMat, bitmap);
+
+
+        Mat subMat = imageMat.submat(rect.y, rect.y + rect.height, rect.x, rect.x + rect.width);
+        ArrayList<String> suggestions = getTagSuggestions(subMat);
+
+        mImageView.setImageBitmap(bitmap);
+    }
+
+    public ArrayList<String> getTagSuggestions(Mat foodMat){
+        // todo: get suggestions from classifier, given foodMat
+        ArrayList<String> suggestions = new ArrayList<String>();
+
+        suggestions.add("Lattice cut fries");
+        suggestions.add("Lemon squares");
+        suggestions.add("Personal size pizza");
+
+        return suggestions;
     }
 
     public void cropPhoto(){
@@ -310,7 +347,8 @@ public class PictureTakerFragment extends Fragment {
 
         imageMat.copyTo(maskedImg, mask);
         Mat submat = maskedImg.submat(rect.y, rect.y + rect.height, rect.x, rect.x + rect.width);
-        Utils.matToBitmap(maskedImg, bitmap);
+        bitmap = Bitmap.createBitmap(submat.cols(), submat.rows(), Bitmap.Config.ARGB_8888);
+        Utils.matToBitmap(submat, bitmap);
 
     }
 
@@ -356,8 +394,7 @@ public class PictureTakerFragment extends Fragment {
             Imgproc.findContours(mask, contours, new Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
 
             ROIs = new ArrayList<Rect>();
-            Scalar colorGreen = new Scalar(0, 255, 0,255);
-            Scalar colorRed = new Scalar(255, 0, 0, 255);
+            Scalar colorGreen = new Scalar(0, 255, 0, 255);
             int minSize = 500; // we can figure out what this should be using the tray size: they should position the camera
             //so's the tray fills the camera screen
 
@@ -375,9 +412,6 @@ public class PictureTakerFragment extends Fragment {
                     Rect rect = Imgproc.boundingRect(contours.get(i));
                     Point center = new Point(rect.x+rect.width/2.0, rect.y+rect.height/2.0);
                     centers.add(center);
-                    // draw bounding rectangle in green
-//                        Core.rectangle(imageMat, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), colorGreen);
-
                     Mat subMat = imageMat.submat(rect.y, rect.y + rect.height, rect.x, rect.x + rect.width);
                     ROIs.add(rect);
 
@@ -391,29 +425,24 @@ public class PictureTakerFragment extends Fragment {
             }
 
             // the image with contours
-            Mat drawnContours = new Mat(imageMat.size(), imageMat.type());
-            imageMat.copyTo(drawnContours);
+            Mat imageWithContoursAndRectangles = new Mat(imageMat.size(), imageMat.type());
+            imageMat.copyTo(imageWithContoursAndRectangles);
 
-            Log.d(TAG, "number of big contours: " + bigContours.size());
+            // draw contours and rectangles
             for (int i=0; i< bigContours.size(); i++){
                 // switch around the commented section to draw contours instead of rectangles
-                Imgproc.drawContours ( drawnContours, bigContours, i, colorGreen, 15);
+                Imgproc.drawContours ( imageWithContoursAndRectangles, bigContours, i, colorGreen, 15);
                 Rect rect = ROIs.get(i);
-                Core.rectangle(drawnContours, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), colorGreen, 15);
+                //Core.rectangle(imageWithContoursAndRectangles, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), colorGreen, 15);
                 Point center = centers.get(i);
-                Core.putText(drawnContours, Integer.toString(i+1), center, Core.FONT_HERSHEY_COMPLEX_SMALL, 0.8, colorRed);
-
-                Log.d(TAG, "trying to label at "+ center.toString());
-                //todo: labels aren't drawing
+                //todo: draw line from center to our tagging box
             }
 
-            Bitmap contoursBitmap = Bitmap.createBitmap(imageMat.cols(), imageMat.rows(), Bitmap.Config.ARGB_8888);
-            Utils.matToBitmap(drawnContours, contoursBitmap);
+            bitmap = Bitmap.createBitmap(imageWithContoursAndRectangles.cols(), imageWithContoursAndRectangles.rows(), Bitmap.Config.ARGB_8888);
+            Utils.matToBitmap(imageWithContoursAndRectangles, bitmap);
             ImageView contoursView = new ImageView(getActivity());
-            contoursView.setImageBitmap(contoursBitmap);
-            TextView contoursText = new TextView(getActivity());
-            mSegmentsContainer.addView(contoursText);
-            mImageView.setImageBitmap(contoursBitmap);
+            contoursView.setImageBitmap(bitmap);
+            mImageView.setImageBitmap(bitmap);
 
         } catch(Exception ex){
             Log.d(TAG, "Error in segmentImage: "+ex);

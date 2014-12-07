@@ -105,8 +105,8 @@ public class FoodPhotoListFragment  extends ListFragment {
             //Uri contentUri = Uri.parse(path);
             //Uri contentUri = Uri.fromFile(fp.getFile());
 
-            Log.e(TAG, "File: " + file.toString());
-            Log.e(TAG, "Absolute path: " + path);
+            Log.d(TAG, "File: " + file.toString());
+            Log.d(TAG, "Absolute path: " + path);
 
 
             BitmapFactory.Options options = new BitmapFactory.Options();
