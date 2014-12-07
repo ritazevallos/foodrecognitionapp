@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- From: file:/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/libraries/opencv/build/intermediates/bundles/debug/res/values/values.xml -->
+    <!-- From: file:/Users/Jonah/Desktop/Swat/Senior%20Conference/foodrecognitionapp/libraries/opencv/build/intermediates/bundles/debug/res/values/values.xml -->
     <eat-comment />
 
     <declare-styleable name="CameraBridgeViewBase">

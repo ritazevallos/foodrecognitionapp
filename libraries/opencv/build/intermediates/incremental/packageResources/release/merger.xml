@@ -2,9 +2,9 @@
 <merger version="2" >
 
     <dataSet config="main" >
-        <source path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/libraries/opencv/res" >
+        <source path="/Users/Jonah/Desktop/Swat/Senior Conference/foodrecognitionapp/libraries/opencv/res" >
             <file
-                path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/libraries/opencv/res/values/attrs.xml"
+                path="/Users/Jonah/Desktop/Swat/Senior Conference/foodrecognitionapp/libraries/opencv/res/values/attrs.xml"
                 qualifiers="" >
                 <declare-styleable name="CameraBridgeViewBase" >
                     <attr
@@ -26,11 +26,11 @@
                 </declare-styleable>
             </file>
         </source>
-        <source path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/libraries/opencv/build/generated/res/rs/release" />
-        <source path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/libraries/opencv/build/generated/res/generated/release" />
+        <source path="/Users/Jonah/Desktop/Swat/Senior Conference/foodrecognitionapp/libraries/opencv/build/generated/res/rs/release" />
+        <source path="/Users/Jonah/Desktop/Swat/Senior Conference/foodrecognitionapp/libraries/opencv/build/generated/res/generated/release" />
     </dataSet>
     <dataSet config="release" >
-        <source path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/libraries/opencv/src/release/res" />
+        <source path="/Users/Jonah/Desktop/Swat/Senior Conference/foodrecognitionapp/libraries/opencv/src/release/res" />
     </dataSet>
 
 </merger>
