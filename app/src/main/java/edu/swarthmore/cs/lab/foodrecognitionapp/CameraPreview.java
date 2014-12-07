@@ -16,6 +16,14 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     public CameraPreview(Context context, Camera camera) {
         super(context);
+
+        try {
+            camera = Camera.open();
+            Log.d(TAG, "getCameraInstance()open:: " + camera);
+        } catch (Exception e) {
+            Log.d(TAG, "Open camera error: " + e.getMessage());
+        }
+
         mCamera = camera;
 
         // Install a SurfaceHolder.Callback so we get notified when the
@@ -31,8 +39,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         try {
             mCamera.setPreviewDisplay(holder);
             mCamera.startPreview();
-        } catch (IOException e) {
-            Log.d(TAG, "Error setting camera preview: " + e.getMessage());
+        } catch (Exception e) {
+            Log.d(TAG, "Error setting !!!CAMERA!!! preview: " + e.getMessage());
         }
     }
 

@@ -97,6 +97,7 @@ public class CameraActivity extends Activity {
 
         setCameraDisplayOrientation(this, mCamera);
 
+
         // Create our Preview view and set it as the content of our activity.
         mPreview = new CameraPreview(this, mCamera);
         FrameLayout frameLayout = (FrameLayout) findViewById(R.id.camera_preview);
@@ -135,7 +136,7 @@ public class CameraActivity extends Activity {
     protected void onPause()
     {
         super.onPause();
-        releaseCamera();
+        //releaseCamera();
 
     }
     /** A safe way to get an instance of the Camera object. */

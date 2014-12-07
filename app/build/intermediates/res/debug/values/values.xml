@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- From: file:/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/values/colors.xml -->
+    <eat-comment />
+
+    <color name="black">#ff000000</color>
+    <color name="blue">#ff0fedff</color>
     <!-- From: file:/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/build/intermediates/exploded-aar/foodrecognitionapp.libraries/opencv/unspecified/res/values/values.xml -->
     <eat-comment />
 

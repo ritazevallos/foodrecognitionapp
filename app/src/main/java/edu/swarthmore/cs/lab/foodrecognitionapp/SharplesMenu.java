@@ -104,6 +104,7 @@ public class SharplesMenu {
 
             // we'd have to hand-type in the always menu (salad bar and whaterver)
             alwaysMenu = new ArrayList<String>();
+            alwaysMenu.add("Salad");
 
             // should probably throw an error if the times overlap for some reason?
 

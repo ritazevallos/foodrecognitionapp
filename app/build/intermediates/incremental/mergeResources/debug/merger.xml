@@ -115,21 +115,21 @@
                 </string>
                 <string name="openCamera" >Open Camera
                 </string>
-                <string name="app_name" >FoodRecognitionApp
-                </string>
                 <string name="add_tags_button" >Add Tags
+                </string>
+                <string name="app_name" >FoodRecognitionApp
                 </string>
                 <string name="take_picture_button" >Take picture
                 </string>
                 <string name="menu_item_gallery" >Go to Gallery
                 </string>
-                <string name="button_log_str" >Save Photo
-                </string>
-                <string name="pictureTagHint" >This is the nondynamic one
+                <string name="textview_xc_str" >Match your plate with the circle
                 </string>
                 <string name="menu_item_add" >Add Food Photo
                 </string>
-                <string name="textview_xc_str" >Match your plate with the circle
+                <string name="pictureTagHint" >This is the nondynamic one
+                </string>
+                <string name="button_log_str" >Save Photo
                 </string>
             </file>
             <file
@@ -181,6 +181,14 @@
                 path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/drawable/circle.xml"
                 qualifiers=""
                 type="drawable" />
+            <file
+                path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/values/colors.xml"
+                qualifiers="" >
+                <color name="blue" >#ff0fedff
+                </color>
+                <color name="black" >#ff000000
+                </color>
+            </file>
         </source>
         <source path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/build/generated/res/rs/debug" />
         <source path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/build/generated/res/generated/debug" />

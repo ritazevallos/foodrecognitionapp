@@ -1,8 +1,12 @@
 package edu.swarthmore.cs.lab.foodrecognitionapp;
 
 import android.app.ListFragment;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -93,18 +97,41 @@ public class FoodPhotoListFragment  extends ListFragment {
             tagsTextView.setText(all_tags);
 
             ImageView imageView = (ImageView) convertView.findViewById(R.id.list_image);
-            Uri contentUri = Uri.fromFile(fp.getFile());
-            Bitmap bitmap;
+            File file = fp.getFile();
+            String path = file.getAbsolutePath();
+            int start = path.indexOf("/storage");
+            path = path.substring(start, path.length());
+            
+            //Uri contentUri = Uri.parse(path);
+            //Uri contentUri = Uri.fromFile(fp.getFile());
+
+            Log.e(TAG, "File: " + file.toString());
+            Log.e(TAG, "Absolute path: " + path);
+
+
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+            Bitmap bitmap = BitmapFactory.decodeFile(path, options);
+            imageView.setImageBitmap(bitmap);
+
+
+            //Bitmap bitmap;
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), contentUri);
+                //bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), contentUri);
+                //imageView.setImageBitmap(bitmap);
+                bitmap = BitmapFactory.decodeFile(path, options);
                 imageView.setImageBitmap(bitmap);
-            } catch (FileNotFoundException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            } catch (IOException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
+            } catch (Exception e){
+                Log.e(TAG, "ERROR: " + e.getMessage());
             }
+//            } catch (FileNotFoundException e1) {
+//                // TODO Auto-generated catch block
+//                Log.d(TAG, "FILE NOT FOUND ~~~~~~????");
+//                e1.printStackTrace();
+//            } catch (IOException e1) {
+//                // TODO Auto-generated catch block
+//                e1.printStackTrace();
+//            }
 
             return convertView;
         }

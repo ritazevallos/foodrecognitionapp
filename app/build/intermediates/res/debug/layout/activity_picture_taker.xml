@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent" >
+            android:layout_height="fill_parent"
+            android:background="@color/blue">
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:id="@+id/root">
-    <Button
-        android:id="@+id/retake_photo_button"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/retake_photo_button" />
+
     <ImageView
         android:src="@android:drawable/ic_menu_camera"
         android:layout_width="fill_parent"
-        android:layout_height="300.0dp"
+        android:layout_height="fill_parent"
         android:id="@+id/imageView1"
         android:adjustViewBounds="true" />
 
@@ -45,21 +42,26 @@
 
         </LinearLayout>
         </HorizontalScrollView>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_gravity="center_horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    >
+
     <Button
-        android:id="@+id/add_tags_button"
-        android:layout_width="fill_parent"
+        android:id="@+id/retake_photo_button"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/add_tags_button" />
-    <Button
-        android:id="@+id/done_tags_button"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/done_tags_button" />
+        android:text="@string/retake_photo_button" />
     <Button
         android:id="@+id/saveButton"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/saveButton" />
-
+</LinearLayout>
 </LinearLayout>
     </ScrollView><!-- From: file:/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/activity_picture_taker.xml -->

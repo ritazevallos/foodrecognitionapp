@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Camera;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -92,7 +94,7 @@ public class PictureTakerFragment extends Fragment {
         super.onCreate(savedInstanceState);
         // we are not making sure there is an app to take pictures
         setHasOptionsMenu(true);
-        clickNTagActivated = false;
+        clickNTagActivated = true;
         mFoodPhotoStore = FoodPhotoStore.get(getActivity());
         UUID foodPhotoId = (UUID)getArguments().getSerializable(EXTRA_FOODPHOTO_ID);
         beforePhotoTaken = true;
@@ -104,6 +106,8 @@ public class PictureTakerFragment extends Fragment {
         dashScraper.execute("go!");
         // populates mSharplesMenu, populates FOOD_GUESSES, and sets menuIsLoaded to true once done
 
+        TakeAPicture();
+
     }
 
     @Override
@@ -113,28 +117,7 @@ public class PictureTakerFragment extends Fragment {
         mSegmentsContainer = (LinearLayout)v.findViewById(R.id.segmentsContainerLayout);
         mSegmentsContainer.setVisibility(View.GONE); //todo: remove this if you're confused why segments are missing
 
-        final Button addTagsButton = (Button)v.findViewById(R.id.add_tags_button);
-        final Button doneTagsButton = (Button)v.findViewById(R.id.done_tags_button);
-        doneTagsButton.setVisibility(View.GONE);
 
-        addTagsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clickNTagActivated = true;
-                doneTagsButton.setVisibility(View.VISIBLE);
-                addTagsButton.setVisibility(View.GONE);
-
-            }
-        });
-        doneTagsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clickNTagActivated = false;
-                addTagsButton.setVisibility(View.VISIBLE);
-                doneTagsButton.setVisibility(View.GONE);
-
-            }
-        });
 
         retakePhotoButton = (Button)v.findViewById(R.id.retake_photo_button);
         if(beforePhotoTaken) {
@@ -199,7 +182,7 @@ public class PictureTakerFragment extends Fragment {
             public boolean onTouch(View v, MotionEvent event){
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     if (beforePhotoTaken && !(using_emulator)) {
-                        TakeAPicture();
+
                     } else if (clickNTagActivated) {
                         Log.d(TAG, "mImageView.onTouchListener");
                         Point ll = new Point(event.getX() - 20, event.getY() - 20);
@@ -264,7 +247,7 @@ public class PictureTakerFragment extends Fragment {
         Intent intent = new Intent(getActivity(), CameraActivity.class);
 
         mFile = new File(mDir, String.format("foodPhoto_"+ UUID.randomUUID() + ".jpg"));
-        Log.d(TAG, "file path: " + mFile.toString());
+        Log.e(TAG, "file path: " + mFile.toString());
         mFoodPhoto.setFile(mFile);
 
         intent.putExtra(CameraActivity.EXTRA_URI, Uri.fromFile(mFile).toString());
@@ -312,18 +295,21 @@ public class PictureTakerFragment extends Fragment {
         Utils.bitmapToMat(bitmap, imageMat);
 
         Mat maskedImg = new Mat(bitmap.getWidth(), bitmap.getHeight(), CvType.CV_8UC4);
+        maskedImg.setTo(new Scalar(102,51,153));
 
         Mat mask = new Mat(imageMat.size(), imageMat.type());
         Imgproc.cvtColor(imageMat, mask, Imgproc.COLOR_RGBA2GRAY, 4);
 
-        mask.setTo(new Scalar(0,0,0));
+        mask.setTo(new Scalar(0, 0, 0));
 
         //Draw ellipse
-        int plateRadius = 900;
-        Core.circle(mask, new Point(bitmap.getWidth()/2, bitmap.getHeight()/2), plateRadius, new Scalar(234,155,55), -200);
-
+        int plateRadius = 800;
+        Point center = new Point(bitmap.getWidth()/2, bitmap.getHeight()/2);
+        Rect rect = new Rect(new Point(center.x - plateRadius, center.y - plateRadius), new Point(center.x + plateRadius, center.y + plateRadius));
+        Core.circle(mask, center, plateRadius, new Scalar(255,255,255), -200);
 
         imageMat.copyTo(maskedImg, mask);
+        Mat submat = maskedImg.submat(rect.y, rect.y + rect.height, rect.x, rect.x + rect.width);
         Utils.matToBitmap(maskedImg, bitmap);
 
     }
