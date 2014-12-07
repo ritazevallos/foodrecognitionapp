@@ -109,8 +109,7 @@ public class CameraActivity extends Activity {
         RelativeLayout relativeLayoutSensorsData = (RelativeLayout) findViewById(R.id.sensors_data_layout);
         relativeLayoutSensorsData.bringToFront();
 
-        Button captureButton = (Button) relativeLayoutControls.findViewById(R.id.takePictureButton);
-        captureButton.setOnClickListener(
+        frameLayout.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

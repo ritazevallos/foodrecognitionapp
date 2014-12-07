@@ -48,6 +48,7 @@ import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
+import org.opencv.highgui.Highgui;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.objdetect.CascadeClassifier;
@@ -88,6 +89,7 @@ public class PictureTakerFragment extends Fragment {
     private ArrayList<Rect> ROIs;
     private boolean clickNTagActivated;
     private TextView mNumberOfSegmentsTextView;
+    private LinearLayout mTagSuggestionsLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -117,7 +119,7 @@ public class PictureTakerFragment extends Fragment {
         mSegmentsContainer = (LinearLayout)v.findViewById(R.id.segmentsContainerLayout);
         mSegmentsContainer.setVisibility(View.GONE); //todo: remove this if you're confused why segments are missing
 
-
+        mTagSuggestionsLayout = (LinearLayout)v.findViewById(R.id.tag_buttons_layout);
 
         retakePhotoButton = (Button)v.findViewById(R.id.retake_photo_button);
         if(beforePhotoTaken) {
@@ -300,19 +302,47 @@ public class PictureTakerFragment extends Fragment {
         Mat imageMat = new Mat(bitmap.getWidth(), bitmap.getHeight(), CvType.CV_8UC4); // fc means floating point matrices
         Utils.bitmapToMat(bitmap, imageMat);
 
-        Scalar colorPurple = new Scalar(180, 37, 216, 255); // the last value is necessary so that it's not transparent
-
         // eventually, loop through all of the segments in ROIs, right now, only doing ROIs[0]
         Rect rect = ROIs.get(0);
+        final Point ll = new Point(rect.x, rect.y);
+        final Point ur = new Point(rect.x + rect.width, rect.y + rect.height);
 
+        Scalar colorLine = new Scalar(0, 255, 0, 255);
         // highlight the segment we're talking about with a rectangle
-        Core.rectangle(imageMat, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), colorPurple, 15);
+        Core.rectangle(imageMat, ll, ur, colorLine, 15);
         Utils.matToBitmap(imageMat, bitmap);
 
 
         Mat subMat = imageMat.submat(rect.y, rect.y + rect.height, rect.x, rect.x + rect.width);
-        ArrayList<String> suggestions = getTagSuggestions(subMat);
 
+        final ArrayList<String> suggestions = getTagSuggestions(subMat);
+
+        Button firstButtonSuggestion = (Button)mTagSuggestionsLayout.findViewById(R.id.first_tag_suggestion);
+        firstButtonSuggestion.setText(suggestions.get(0));
+        firstButtonSuggestion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mFoodPhoto.setOneTag(suggestions.get(0), ll, ur);
+            }
+        });
+
+        Button secondButtonSuggestion = (Button)mTagSuggestionsLayout.findViewById(R.id.second_tag_suggestion);
+        secondButtonSuggestion.setText(suggestions.get(1));
+        secondButtonSuggestion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mFoodPhoto.setOneTag(suggestions.get(1), ll, ur);
+            }
+        });
+
+        Button thirdButtonSuggestion = (Button)mTagSuggestionsLayout.findViewById(R.id.third_tag_suggestion);
+        thirdButtonSuggestion.setText(suggestions.get(2));
+        thirdButtonSuggestion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mFoodPhoto.setOneTag(suggestions.get(2),ll, ur);
+            }
+        });
         mImageView.setImageBitmap(bitmap);
     }
 
@@ -320,6 +350,7 @@ public class PictureTakerFragment extends Fragment {
         // todo: get suggestions from classifier, given foodMat
         ArrayList<String> suggestions = new ArrayList<String>();
 
+        //todo: if we don't do machine learning in time, get a random three from this meal period from sharples menu
         suggestions.add("Lattice cut fries");
         suggestions.add("Lemon squares");
         suggestions.add("Personal size pizza");
@@ -349,6 +380,10 @@ public class PictureTakerFragment extends Fragment {
         Mat submat = maskedImg.submat(rect.y, rect.y + rect.height, rect.x, rect.x + rect.width);
         bitmap = Bitmap.createBitmap(submat.cols(), submat.rows(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(submat, bitmap);
+
+
+        // store the cropped image in mFile
+        Highgui.imwrite(mFile.toString(),submat);
 
     }
 
@@ -394,7 +429,8 @@ public class PictureTakerFragment extends Fragment {
             Imgproc.findContours(mask, contours, new Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
 
             ROIs = new ArrayList<Rect>();
-            Scalar colorGreen = new Scalar(0, 255, 0, 255);
+            Scalar colorLine = new Scalar(180, 37, 216, 255); // PURPLE the last value is necessary so that it's not transparent
+
             int minSize = 500; // we can figure out what this should be using the tray size: they should position the camera
             //so's the tray fills the camera screen
 
@@ -431,7 +467,7 @@ public class PictureTakerFragment extends Fragment {
             // draw contours and rectangles
             for (int i=0; i< bigContours.size(); i++){
                 // switch around the commented section to draw contours instead of rectangles
-                Imgproc.drawContours ( imageWithContoursAndRectangles, bigContours, i, colorGreen, 15);
+                Imgproc.drawContours ( imageWithContoursAndRectangles, bigContours, i, colorLine, 15);
                 Rect rect = ROIs.get(i);
                 //Core.rectangle(imageWithContoursAndRectangles, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), colorGreen, 15);
                 Point center = centers.get(i);

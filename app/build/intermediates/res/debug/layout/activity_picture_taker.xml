@@ -23,6 +23,27 @@
         android:id="@+id/number_of_segments"/>
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tag_buttons_layout">
+        <Button
+            android:id="@+id/first_tag_suggestion"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/second_tag_suggestion"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/third_tag_suggestion"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -59,12 +80,14 @@
 
     <Button
         android:id="@+id/retake_photo_button"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
         android:text="@string/retake_photo_button" />
     <Button
         android:id="@+id/saveButton"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
         android:text="@string/saveButton" />
 </LinearLayout>
