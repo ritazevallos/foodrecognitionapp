@@ -1,43 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.swarthmore.cs.lab.foodrecognitionapp" >
+
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="edu.swarthmore.cs.lab.foodrecognitionapp.MainMenuActivity"
+            android:name=".MainMenuActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="edu.swarthmore.cs.lab.foodrecognitionapp.PictureTakerActivity"
+            android:name=".PictureTakerActivity"
             android:label="@string/app_name" >
-
         </activity>
         <activity
-            android:name="edu.swarthmore.cs.lab.foodrecognitionapp.FoodPhotoListActivity"
+            android:name=".FoodPhotoListActivity"
             android:label="@string/app_name" >
         </activity>
-
         <activity
-            android:name="edu.swarthmore.cs.lab.foodrecognitionapp.SharplesMenuActivity"
+            android:name=".SharplesMenuActivity"
             android:label="@string/app_name" >
         </activity>
-
-        <activity android:name="edu.swarthmore.cs.lab.foodrecognitionapp.CameraActivity"
-                  android:label="FoodRecognitionApp" >
+        <activity
+            android:name=".CameraActivity"
+            android:label="FoodRecognitionApp" >
+        </activity>
+        <activity
+            android:name=".FromGalleryActivity"
+            android:label="@string/title_activity_from_gallery" >
         </activity>
     </application>
 

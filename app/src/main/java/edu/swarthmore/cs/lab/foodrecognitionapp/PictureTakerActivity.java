@@ -5,6 +5,8 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -27,36 +29,33 @@ import java.util.UUID;
  */
 public class PictureTakerActivity extends Activity {
     private String TAG = "PictureTakerActivity";
+    private File                   mCascadeFile;
+    private CascadeClassifier      mJavaDetector;
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_fragment);
 
-//    private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
-//        @Override
-//        public void onManagerConnected(int status) {
-//            switch (status) {
-//                case LoaderCallbackInterface.SUCCESS:
-//                {
-//                    Log.i(TAG, "OpenCV loaded successfully");
-//
-//                    // Load native library after(!) OpenCV initialization
-//                    //System.loadLibrary("mixed_sample");
-//
-//                } break;
-//                default:
-//                {
-//                    super.onManagerConnected(status);
-//                } break;
-//            }
-//        }
-//    };
-//
+        FragmentManager fm = getFragmentManager();
+
+        Fragment fragment = fm.findFragmentById(R.id.fragmentContainer);
+
+        if (fragment == null) {
+            UUID foodPhotoId = (UUID)getIntent().getSerializableExtra(PictureTakerFragment.EXTRA_FOODPHOTO_ID);
+            fragment = PictureTakerFragment.newInstance(foodPhotoId);
+            fm.beginTransaction().add(R.id.fragmentContainer, fragment).commit();
+
+        }
+    }
+
     @Override
     public void onResume()
     {
         super.onResume();
         OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_9, this, mLoaderCallback);
     }
-    private File                   mCascadeFile;
-    private CascadeClassifier      mJavaDetector;
+
     private BaseLoaderCallback  mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
         public void onManagerConnected(int status) {
@@ -107,24 +106,6 @@ public class PictureTakerActivity extends Activity {
         }
     };
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fragment);
-
-        FragmentManager fm = getFragmentManager();
-
-        Fragment fragment = fm.findFragmentById(R.id.fragmentContainer);
-
-        if (fragment == null) {
-            UUID foodPhotoId = (UUID)getIntent().getSerializableExtra(PictureTakerFragment.EXTRA_FOODPHOTO_ID);
-            fragment = PictureTakerFragment.newInstance(foodPhotoId);
-            fm.beginTransaction().add(R.id.fragmentContainer, fragment).commit();
-
-        }
-
-
-    }
 
 
 

@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -52,12 +53,26 @@ public class MainMenuFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
         View v = inflater.inflate(R.layout.main_menu, parent, false);
 
+        /* ADD FOOD PHOTO BUTTON */
         Button addPhotoButton = (Button)v.findViewById(R.id.add_food_photo);
         addPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FoodPhoto fp = new FoodPhoto();
-                //mFoodPhotoStore.addFoodPhoto(fp);
+
+                Intent i = new Intent(getActivity(), PictureTakerActivity.class);
+                i.putExtra(PictureTakerFragment.EXTRA_FOODPHOTO_ID, fp.getId());
+                startActivity(i);
+            }
+        });
+
+        /* LOAD FROM GALLERY BUTTON */
+        Button addFromGallery = (Button)v.findViewById(R.id.add_photo_from_gallery);
+        addFromGallery.setOnClickListener(new Button.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                FoodPhoto fp = new FoodPhoto();
+
                 Intent i = new Intent(getActivity(), PictureTakerActivity.class);
                 i.putExtra(PictureTakerFragment.EXTRA_FOODPHOTO_ID, fp.getId());
                 startActivity(i);

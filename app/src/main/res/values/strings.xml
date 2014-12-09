@@ -20,5 +20,10 @@
     <string name="button_log_str">Save Photo</string>
     <string name="textview_xc_str">Match your plate with the circle</string>
     <string name="take_picture_button">Take picture</string>
+    <string name="add_from_gallery">Add Photo from Gallery</string>
+    <string name="title_activity_from_gallery">FromGalleryActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="new_photo">Take New Photo</string>
+    <string name="load_photo">Load Photo from Gallery</string>
 
 </resources>

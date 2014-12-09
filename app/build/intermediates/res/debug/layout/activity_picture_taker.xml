@@ -17,6 +17,7 @@
         android:id="@+id/imageView1"
         android:adjustViewBounds="true" />
 
+
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -41,6 +42,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -90,6 +92,12 @@
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:text="@string/saveButton" />
+    <Button
+        android:id="@+id/loadPhoto"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:text="@string/load_photo" />
 </LinearLayout>
 </LinearLayout>
     </ScrollView><!-- From: file:/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/activity_picture_taker.xml -->

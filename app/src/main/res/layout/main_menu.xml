@@ -24,4 +24,13 @@
         android:layout_below="@+id/view_nutrition_history"
         android:text="@string/todays_menu" />
 
+    <Button
+        android:id="@+id/add_photo_from_gallery"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/todays_menu"
+        android:text="Load Image"
+        />
+
+
 </RelativeLayout>

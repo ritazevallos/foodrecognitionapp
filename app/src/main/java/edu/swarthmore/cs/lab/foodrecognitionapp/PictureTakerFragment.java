@@ -1,23 +1,16 @@
 package edu.swarthmore.cs.lab.foodrecognitionapp;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Camera;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Editable;
-import android.text.Layout;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,20 +18,14 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.opencv.android.BaseLoaderCallback;
-import org.opencv.android.CameraBridgeViewBase;
-import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -50,15 +37,9 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.highgui.Highgui;
 import org.opencv.imgproc.Imgproc;
-import org.opencv.android.OpenCVLoader;
-import org.opencv.objdetect.CascadeClassifier;
-
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -66,7 +47,7 @@ import java.util.List;
 import java.util.UUID;
 
 
-public class PictureTakerFragment extends Fragment {
+public class PictureTakerFragment extends Fragment{
     public static final int MEDIA_TYPE_IMAGE = 1;
     private static final String TAG = "PictureTakerFragment";
     public static File mFile;
@@ -91,6 +72,7 @@ public class PictureTakerFragment extends Fragment {
     private TextView mNumberOfSegmentsTextView;
     private LinearLayout mTagSuggestionsLayout;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,9 +90,12 @@ public class PictureTakerFragment extends Fragment {
         dashScraper.execute("go!");
         // populates mSharplesMenu, populates FOOD_GUESSES, and sets menuIsLoaded to true once done
 
+
         TakeAPicture();
 
+
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
@@ -120,6 +105,8 @@ public class PictureTakerFragment extends Fragment {
         mSegmentsContainer.setVisibility(View.GONE); //todo: remove this if you're confused why segments are missing
 
         mTagSuggestionsLayout = (LinearLayout)v.findViewById(R.id.tag_buttons_layout);
+
+
 
         retakePhotoButton = (Button)v.findViewById(R.id.retake_photo_button);
         if(beforePhotoTaken) {
@@ -132,6 +119,13 @@ public class PictureTakerFragment extends Fragment {
             }
         });
 
+        Button loadPhoto = (Button)v.findViewById(R.id.loadPhoto);
+        loadPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoadPicture();
+            }
+        });
 
         Button saveButton = (Button)v.findViewById(R.id.saveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -144,6 +138,7 @@ public class PictureTakerFragment extends Fragment {
                 } else{
                     mFoodPhotoStore.addFoodPhoto(mFoodPhoto);
                     FoodPhotoStore.get(getActivity()).saveFoodPhotos();
+                    bitmap.recycle();
                     openGallery();
                 }
             }
@@ -244,14 +239,19 @@ public class PictureTakerFragment extends Fragment {
         }
     }
 
-    private void TakeAPicture()
-    {
+    private void LoadPicture(){
+
+        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, 0);
+    }
+
+    private void TakeAPicture(){
         //Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         Intent intent = new Intent(getActivity(), CameraActivity.class);
 
         mFile = new File(mDir, String.format("foodPhoto_"+ UUID.randomUUID() + ".jpg"));
-        Log.e(TAG, "file path: " + mFile.toString());
+        Log.d(TAG, "file path: " + mFile.toString());
         mFoodPhoto.setFile(mFile);
 
         intent.putExtra(CameraActivity.EXTRA_URI, Uri.fromFile(mFile).toString());
@@ -266,12 +266,13 @@ public class PictureTakerFragment extends Fragment {
 
         super.onActivityResult(requestCode,resultCode,data);
 
+        Uri contentUri;
+        if(data == null){
+            contentUri = Uri.fromFile(mFile);
+        } else {
+            contentUri = data.getData();
+        }
 
-        // make it available in the gallery
-        //Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        Uri contentUri = Uri.fromFile(mFile);
-        //mediaScanIntent.setData(contentUri);
-        //getActivity().sendBroadcast(mediaScanIntent);
 
         // display in ImageView. We will resize the bitmap to fit the display
         // Loading the full sized image will consume to much memory
@@ -301,6 +302,8 @@ public class PictureTakerFragment extends Fragment {
     public void beginTagging(){
         Mat imageMat = new Mat(bitmap.getWidth(), bitmap.getHeight(), CvType.CV_8UC4); // fc means floating point matrices
         Utils.bitmapToMat(bitmap, imageMat);
+
+        //todo: save original image (w/o) any rectangles so we can display each of the rects one by one
 
         // eventually, loop through all of the segments in ROIs, right now, only doing ROIs[0]
         Rect rect = ROIs.get(0);

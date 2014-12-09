@@ -21,6 +21,8 @@ public class FoodPhoto {
     private File mFile;
     private UUID mId;
     private Date mDate;
+    private Uri mUri;
+    private Boolean mFromGallery;
 
     private static final String JSON_ID = "id";
     private static final String JSON_TAGS = "tags";
@@ -81,6 +83,14 @@ public class FoodPhoto {
         mDate = date;
     }
 
+    public Uri getUri() { return Uri.fromFile(this.mFile); }
+
+    public void setUri(Uri uri) { this.mUri = uri; }
+
+    public Boolean getFromGallery() { return mFromGallery; }
+
+    public void setFromGallery(Boolean fromGallery) { mFromGallery = fromGallery;  }
+
     @Override
     public String toString() { return mFile.toString();}
 
@@ -88,7 +98,10 @@ public class FoodPhoto {
         JSONObject json = new JSONObject();
         json.put(JSON_ID, mId.toString());
 
+
         json.put(JSON_TAGS, mTags.get(0).getFoodName()); //TODO: only saving the first tag as a string
+
+
         json.put(JSON_DATE, mDate.getTime());
         json.put(JSON_FILE_URI, Uri.fromFile(mFile).toString());//todo: no idea if this is the right way to do this
         return json;

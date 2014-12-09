@@ -27,21 +27,26 @@
 
     <string name="action_settings">Settings</string>
     <string name="add_food_photo">Add New Food Photo</string>
+    <string name="add_from_gallery">Add Photo from Gallery</string>
     <string name="add_tags_button">Add Tags</string>
     <string name="app_name">FoodRecognitionApp</string>
     <string name="button_log_str">Save Photo</string>
     <string name="done_tags_button">Done Tagging</string>
     <string name="food_photo_title">Food Photo</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="load_photo">Load Photo from Gallery</string>
     <string name="main_menu_title">Main Menu</string>
     <string name="menu_item_add">Add Food Photo</string>
     <string name="menu_item_deleteAll">Delete All Photos</string>
     <string name="menu_item_gallery">Go to Gallery</string>
+    <string name="new_photo">Take New Photo</string>
     <string name="openCamera">Open Camera</string>
     <string name="pictureTagHint">This is the nondynamic one</string>
     <string name="retake_photo_button">Retake Photo</string>
     <string name="saveButton">Save Food Photo</string>
     <string name="take_picture_button">Take picture</string>
     <string name="textview_xc_str">Match your plate with the circle</string>
+    <string name="title_activity_from_gallery">FromGalleryActivity</string>
     <string name="todays_menu">Today\'s Sharples Menu</string>
     <string name="view_nutrition_history">View Nutrition History</string>
     <!-- From: file:/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/values/styles.xml -->

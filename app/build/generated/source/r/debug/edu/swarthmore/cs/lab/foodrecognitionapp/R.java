@@ -49,53 +49,63 @@ containing a value of this type.
         public static final int ic_launcher=0x7f020001;
     }
     public static final class id {
-        public static final int Xc=0x7f06001c;
-        public static final int add_food_photo=0x7f060019;
+        public static final int Xc=0x7f060022;
+        public static final int action_settings=0x7f060023;
+        public static final int add_food_photo=0x7f06001e;
+        public static final int add_photo_from_gallery=0x7f060021;
         public static final int any=0x7f060000;
         public static final int back=0x7f060001;
-        public static final int breakfast_menu=0x7f060010;
-        public static final int camera_preview=0x7f060016;
-        public static final int controls_layout=0x7f060017;
-        public static final int dinner_menu=0x7f060012;
-        public static final int first_tag_suggestion=0x7f060008;
-        public static final int food_photo_list_dateTextView=0x7f060013;
-        public static final int food_photo_list_tagsTextView=0x7f060014;
+        public static final int breakfast_menu=0x7f060012;
+        public static final int camera_preview=0x7f06001b;
+        public static final int container=0x7f060004;
+        public static final int controls_layout=0x7f06001c;
+        public static final int dinner_menu=0x7f060014;
+        public static final int first_tag_suggestion=0x7f060009;
+        public static final int food_photo_list_dateTextView=0x7f060018;
+        public static final int food_photo_list_tagsTextView=0x7f060019;
         public static final int fragmentContainer=0x7f060003;
         public static final int front=0x7f060002;
-        public static final int imageView1=0x7f060005;
-        public static final int list_image=0x7f060015;
-        public static final int lunch_menu=0x7f060011;
-        public static final int menu_item_add=0x7f06001d;
-        public static final int menu_item_deleteAll=0x7f06001f;
-        public static final int menu_item_gallery=0x7f06001e;
-        public static final int number_of_segments=0x7f060006;
-        public static final int pictureTag=0x7f06000c;
-        public static final int retake_photo_button=0x7f06000e;
-        public static final int root=0x7f060004;
-        public static final int saveButton=0x7f06000f;
-        public static final int second_tag_suggestion=0x7f060009;
-        public static final int segmentsContainerLayout=0x7f06000d;
-        public static final int sensors_data_layout=0x7f060018;
-        public static final int tagContainerLayout=0x7f06000b;
-        public static final int tag_buttons_layout=0x7f060007;
-        public static final int third_tag_suggestion=0x7f06000a;
-        public static final int todays_menu=0x7f06001b;
-        public static final int view_nutrition_history=0x7f06001a;
+        public static final int imageView1=0x7f060006;
+        public static final int list_image=0x7f06001a;
+        public static final int loadPhoto=0x7f060011;
+        public static final int loadimage=0x7f060015;
+        public static final int lunch_menu=0x7f060013;
+        public static final int menu_item_add=0x7f060024;
+        public static final int menu_item_deleteAll=0x7f060026;
+        public static final int menu_item_gallery=0x7f060025;
+        public static final int number_of_segments=0x7f060007;
+        public static final int pictureTag=0x7f06000d;
+        public static final int retake_photo_button=0x7f06000f;
+        public static final int root=0x7f060005;
+        public static final int saveButton=0x7f060010;
+        public static final int second_tag_suggestion=0x7f06000a;
+        public static final int segmentsContainerLayout=0x7f06000e;
+        public static final int sensors_data_layout=0x7f06001d;
+        public static final int tagContainerLayout=0x7f06000c;
+        public static final int tag_buttons_layout=0x7f060008;
+        public static final int targetimage=0x7f060017;
+        public static final int targeturi=0x7f060016;
+        public static final int third_tag_suggestion=0x7f06000b;
+        public static final int todays_menu=0x7f060020;
+        public static final int view_nutrition_history=0x7f06001f;
     }
     public static final class layout {
         public static final int activity_foodphoto=0x7f030000;
         public static final int activity_fragment=0x7f030001;
-        public static final int activity_main_menu=0x7f030002;
-        public static final int activity_picture_taker=0x7f030003;
-        public static final int activity_sharples_menu=0x7f030004;
-        public static final int controls=0x7f030005;
-        public static final int list_item_food_photo=0x7f030006;
-        public static final int main=0x7f030007;
-        public static final int main_menu=0x7f030008;
-        public static final int sensors_data=0x7f030009;
+        public static final int activity_from_gallery=0x7f030002;
+        public static final int activity_main_menu=0x7f030003;
+        public static final int activity_picture_taker=0x7f030004;
+        public static final int activity_sharples_menu=0x7f030005;
+        public static final int controls=0x7f030006;
+        public static final int fragment_from_gallery=0x7f030007;
+        public static final int list_item_food_photo=0x7f030008;
+        public static final int main=0x7f030009;
+        public static final int main_menu=0x7f03000a;
+        public static final int sensors_data=0x7f03000b;
     }
     public static final class menu {
-        public static final int picture_taker=0x7f0a0000;
+        public static final int from_gallery=0x7f0a0000;
+        public static final int picture_taker=0x7f0a0001;
     }
     public static final class raw {
         public static final int lbpcascade_frontalface=0x7f040000;
@@ -103,23 +113,28 @@ containing a value of this type.
     public static final class string {
         public static final int action_settings=0x7f080000;
         public static final int add_food_photo=0x7f080001;
-        public static final int add_tags_button=0x7f080002;
-        public static final int app_name=0x7f080003;
-        public static final int button_log_str=0x7f080004;
-        public static final int done_tags_button=0x7f080005;
-        public static final int food_photo_title=0x7f080006;
-        public static final int main_menu_title=0x7f080007;
-        public static final int menu_item_add=0x7f080008;
-        public static final int menu_item_deleteAll=0x7f080009;
-        public static final int menu_item_gallery=0x7f08000a;
-        public static final int openCamera=0x7f08000b;
-        public static final int pictureTagHint=0x7f08000c;
-        public static final int retake_photo_button=0x7f08000d;
-        public static final int saveButton=0x7f08000e;
-        public static final int take_picture_button=0x7f08000f;
-        public static final int textview_xc_str=0x7f080010;
-        public static final int todays_menu=0x7f080011;
-        public static final int view_nutrition_history=0x7f080012;
+        public static final int add_from_gallery=0x7f080002;
+        public static final int add_tags_button=0x7f080003;
+        public static final int app_name=0x7f080004;
+        public static final int button_log_str=0x7f080005;
+        public static final int done_tags_button=0x7f080006;
+        public static final int food_photo_title=0x7f080007;
+        public static final int hello_world=0x7f080008;
+        public static final int load_photo=0x7f080009;
+        public static final int main_menu_title=0x7f08000a;
+        public static final int menu_item_add=0x7f08000b;
+        public static final int menu_item_deleteAll=0x7f08000c;
+        public static final int menu_item_gallery=0x7f08000d;
+        public static final int new_photo=0x7f08000e;
+        public static final int openCamera=0x7f08000f;
+        public static final int pictureTagHint=0x7f080010;
+        public static final int retake_photo_button=0x7f080011;
+        public static final int saveButton=0x7f080012;
+        public static final int take_picture_button=0x7f080013;
+        public static final int textview_xc_str=0x7f080014;
+        public static final int title_activity_from_gallery=0x7f080015;
+        public static final int todays_menu=0x7f080016;
+        public static final int view_nutrition_history=0x7f080017;
     }
     public static final class style {
         /**  Customize your theme here. 
