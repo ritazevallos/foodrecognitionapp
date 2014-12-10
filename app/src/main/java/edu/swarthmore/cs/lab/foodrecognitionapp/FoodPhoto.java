@@ -99,7 +99,13 @@ public class FoodPhoto {
     public void setUri(Uri uri) { this.mUri = uri; }
 
     @Override
-    public String toString() { return mFile.toString();  }
+    public String toString() {
+        if(mFile!=null) {
+            return mFile.toString();
+        } else {
+            return "No file found";
+        }
+    }
 
     public JSONObject toJSON() throws JSONException {
         JSONObject json = new JSONObject();

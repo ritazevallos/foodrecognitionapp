@@ -90,8 +90,9 @@ public class PictureTakerFragment extends Fragment{
         dashScraper.execute("go!");
         // populates mSharplesMenu, populates FOOD_GUESSES, and sets menuIsLoaded to true once done
 
-
-        TakeAPicture();
+        if(mFoodPhoto.getFile()==null) {
+            TakeAPicture();
+        }
 
 
     }
