@@ -87,10 +87,10 @@ public class FoodPhotoIntentJSONSerializer {
                 }
             }
         } catch (FileNotFoundException e) {
-            Log.d(TAG, "got an error!" + e);
+            Log.e(TAG, "got an error!" + e);
             // We can ignore this one as it can happen when starting with no list
         } catch (Exception e){
-            Log.d(TAG, "got an error that isn't FileNotFoundException!" + e);
+            Log.e(TAG, "got an error that isn't FileNotFoundException!" + e);
         }
         finally {
             if (reader != null) {
