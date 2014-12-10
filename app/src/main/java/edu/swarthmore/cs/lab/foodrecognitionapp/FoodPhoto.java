@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.UUID;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 
 import junit.framework.TestCase;
@@ -97,12 +98,8 @@ public class FoodPhoto {
 
     public void setUri(Uri uri) { this.mUri = uri; }
 
-    public Boolean getFromGallery() { return mFromGallery; }
-
-    public void setFromGallery(Boolean fromGallery) { mFromGallery = fromGallery;  }
-
     @Override
-    public String toString() { return mFile.toString();}
+    public String toString() { return mFile.toString();  }
 
     public JSONObject toJSON() throws JSONException {
         JSONObject json = new JSONObject();
@@ -114,7 +111,7 @@ public class FoodPhoto {
         Log.d(TAG, "Tags saved: " + mTags.get(1).getFoodName());
 
         json.put(JSON_TAGS, jsonTags);
-        //json.put(JSON_TAGS, mTags.get(0).getFoodName()); //TODO: only saving the first tag as a string
+        //json.put(JSON_TAGS, mTags.get(0).getFoodName()); //only saving the first tag as a string
 
 
         json.put(JSON_DATE, mDate.getTime());
@@ -128,13 +125,11 @@ public class FoodPhoto {
         mTags = new ArrayList<FoodPhotoTag>();
         if(gson == null){ gson = new Gson();  }
 
-        //Type type = new TypeToken<ArrayList<FoodPhotoTag>>(){}.getType();
-        //mTags = gson.fromJson(JSON_TAGS, type);
+        Type type = new TypeToken<ArrayList<FoodPhotoTag>>(){}.getType();
+        Object obj = json.get(JSON_TAGS);
+        String string = obj.toString();
+        mTags = gson.fromJson(string, type);
 
-        //String stringTags = gson.fromJson(JSON_TAGS, String.class);
-        //ArrayList<String> items = Arrays.asList(stringTags.split("\\s*,\\s*"));
-
-        Log.e(TAG, "Tags from gson: " + mTags.get(1).getFoodName());
 
         //String string_tags = json.getString(JSON_TAGS); // currently just a single string
         //FoodPhotoTag new_tag = new FoodPhotoTag(string_tags, new Point(), new Point());
@@ -143,7 +138,6 @@ public class FoodPhoto {
         mFile = new File(json.getString(JSON_FILE_URI));
 
     }
-
 
     public class FoodPhotoTag {
         private String mFoodName;
