@@ -119,9 +119,9 @@
                 </string>
                 <string name="openCamera" >Open Camera
                 </string>
-                <string name="add_tags_button" >Add Tags
-                </string>
                 <string name="app_name" >FoodRecognitionApp
+                </string>
+                <string name="add_tags_button" >Add Tags
                 </string>
                 <string name="take_picture_button" >Take picture
                 </string>
@@ -131,15 +131,15 @@
                 </string>
                 <string name="menu_item_gallery" >Go to Gallery
                 </string>
-                <string name="textview_xc_str" >Match your plate with the circle
-                </string>
-                <string name="menu_item_add" >Add Food Photo
-                </string>
-                <string name="pictureTagHint" >This is the nondynamic one
+                <string name="load_photo" >Load Photo from Gallery
                 </string>
                 <string name="button_log_str" >Save Photo
                 </string>
-                <string name="load_photo" >Load Photo from Gallery
+                <string name="pictureTagHint" >This is the nondynamic one
+                </string>
+                <string name="menu_item_add" >Add Food Photo
+                </string>
+                <string name="textview_xc_str" >Match your plate with the circle
                 </string>
             </file>
             <file
@@ -199,11 +199,6 @@
                 <color name="black" >#ff000000
                 </color>
             </file>
-            <file
-                name="from_gallery"
-                path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/menu/from_gallery.xml"
-                qualifiers=""
-                type="menu" />
             <file
                 name="activity_from_gallery"
                 path="/home/jschwar1/AndroidStudioProjects/foodrecognitionapp/app/src/main/res/layout/activity_from_gallery.xml"

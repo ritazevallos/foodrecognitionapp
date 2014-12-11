@@ -20,5 +20,11 @@
         android:showAsAction="ifRoom|withText"
         android:title="@string/menu_item_deleteAll"/>
 
+    <item
+        android:id="@+id/menu_item_main_menu"
+        android:icon="@android:drawable/ic_menu_compass"
+        android:showAsAction="ifRoom|withText"
+        android:title="Go to Main Menu"
+        />
 
 </menu>

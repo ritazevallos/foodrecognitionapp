@@ -107,6 +107,7 @@ public class FoodPhoto {
         }
     }
 
+
     public JSONObject toJSON() throws JSONException {
         JSONObject json = new JSONObject();
         json.put(JSON_ID, mId.toString());

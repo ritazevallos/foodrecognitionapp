@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Date;
 
@@ -80,12 +81,45 @@ public class SharplesMenuFragment extends Fragment {
             openGallery();
         }
 
+        if(item.getItemId() == R.id.menu_item_add){
+            Log.d(TAG, "Add Food Photo (from gallery)");
+            newFoodPhoto();
+        }
+
+        if(item.getItemId() == R.id.menu_item_deleteAll) {
+            Log.d(TAG, "Delete all (from picture taker)");
+            Toast toast = Toast.makeText(getActivity(), "Delete things from gallery please", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+
+        if(item.getItemId() == R.id.menu_item_main_menu) {
+            Log.d(TAG, "Go to main menu (from picture taker)");
+            openMainMenu();
+        }
+
         return true;
     }
 
     public void openGallery() {
         Intent i = new Intent(getActivity(), FoodPhotoListActivity.class);
         startActivity(i);
+    }
+
+    /* newFoodPhoto
+     * Creates new food photo object */
+    public void newFoodPhoto(){
+        FoodPhoto fp = new FoodPhoto();
+        //mFoodPhotoStore.addFoodPhoto(fp);
+        Intent i = new Intent(getActivity(), PictureTakerActivity.class);
+        i.putExtra(PictureTakerFragment.EXTRA_FOODPHOTO_ID, fp.getId());
+        startActivity(i);
+        getActivity().finish();
+    }
+
+    public void openMainMenu(){
+        Intent i = new Intent(getActivity(), MainMenuActivity.class);
+        startActivity(i);
+        getActivity().finish();
     }
 
 

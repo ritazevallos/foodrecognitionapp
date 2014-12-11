@@ -20,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -157,21 +158,23 @@ public class FoodPhotoListFragment  extends ListFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         if(item.getItemId() == R.id.menu_item_gallery) {
-            Log.d(TAG, "Go to Gallery selected");
-
+            Log.d(TAG, "Go to Gallery (from gallery)");
             openGallery();
         }
 
         if(item.getItemId() == R.id.menu_item_add){
-            Log.d(TAG, "Add Food Photo selected");
-
+            Log.d(TAG, "Add Food Photo (from gallery)");
             newFoodPhoto();
         }
 
         if(item.getItemId() == R.id.menu_item_deleteAll){
+            Log.d(TAG, "Delete all (from gallery)");
             mFoodPhotoStore.deleteAllPhotos();
             openGallery();
-
+        }
+        if(item.getItemId() == R.id.menu_item_main_menu) {
+            Log.d(TAG, "Go to main menu (from picture taker)");
+            openMainMenu();
         }
 
         return true;
@@ -182,6 +185,7 @@ public class FoodPhotoListFragment  extends ListFragment {
     public void openGallery(){
         Intent i = new Intent(getActivity(), FoodPhotoListActivity.class);
         startActivity(i);
+        getActivity().finish();
     }
 
     /* newFoodPhoto
@@ -192,6 +196,12 @@ public class FoodPhotoListFragment  extends ListFragment {
         Intent i = new Intent(getActivity(), PictureTakerActivity.class);
         i.putExtra(PictureTakerFragment.EXTRA_FOODPHOTO_ID, fp.getId());
         startActivity(i);
+        getActivity().finish();
     }
 
+    public void openMainMenu(){
+        Intent i = new Intent(getActivity(), MainMenuActivity.class);
+        startActivity(i);
+        getActivity().finish();
+    }
 }

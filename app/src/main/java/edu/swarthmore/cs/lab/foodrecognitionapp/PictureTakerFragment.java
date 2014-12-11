@@ -44,6 +44,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 
@@ -53,6 +54,7 @@ public class PictureTakerFragment extends Fragment{
     public static File mFile;
     public static File mDir;
     public static Bitmap bitmap;
+    public static Bitmap mapbit;
     public static ImageView mImageView;
     private AutoCompleteTextView mTagField;
     private ArrayList<AutoCompleteTextView> mTagFields;
@@ -71,6 +73,10 @@ public class PictureTakerFragment extends Fragment{
     private boolean clickNTagActivated;
     private TextView mNumberOfSegmentsTextView;
     private LinearLayout mTagSuggestionsLayout;
+    private LinearLayout mNotFoodLayout;
+    private Boolean isFood;
+    private boolean canContinue = false;
+    private int count;
 
 
     @Override
@@ -106,6 +112,7 @@ public class PictureTakerFragment extends Fragment{
         mSegmentsContainer.setVisibility(View.GONE); //todo: remove this if you're confused why segments are missing
 
         mTagSuggestionsLayout = (LinearLayout)v.findViewById(R.id.tag_buttons_layout);
+        mNotFoodLayout = (LinearLayout)v.findViewById(R.id.notFoodLayout);
 
 
 
@@ -139,7 +146,7 @@ public class PictureTakerFragment extends Fragment{
                 } else{
                     mFoodPhotoStore.addFoodPhoto(mFoodPhoto);
                     FoodPhotoStore.get(getActivity()).saveFoodPhotos();
-                    bitmap.recycle();
+                    //bitmap.recycle();
                     openGallery();
                 }
             }
@@ -297,69 +304,139 @@ public class PictureTakerFragment extends Fragment{
 
         mNumberOfSegmentsTextView.setText("Found "+ROIs.size()+" foods on your plate!");
 
-        beginTagging();
+
+        count = 0;
+        tagSegment(count);
+
+        Button nextSegmentButton = (Button) mNotFoodLayout.findViewById(R.id.next_segment);
+        nextSegmentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(canContinue) {
+                    if(count<ROIs.size()){
+                       tagSegment(count);
+                        count++;
+                    } else {
+                        Toast toast = Toast.makeText(getActivity(), "All segments have been tagged", Toast.LENGTH_SHORT);
+                        toast.show();
+                        canContinue = true;
+                    }
+
+                    canContinue = false;
+                } else {
+                    Toast toast = Toast.makeText(getActivity(), "Tag this segment, or hit 'Not Food'", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            }
+        });
+
     }
 
-    public void beginTagging(){
-        Mat imageMat = new Mat(bitmap.getWidth(), bitmap.getHeight(), CvType.CV_8UC4); // fc means floating point matrices
-        Utils.bitmapToMat(bitmap, imageMat);
+    public void tagSegment(int segmentNum){
+        Bitmap.Config config = bitmap.getConfig();
+        mapbit = bitmap.copy(config, true);
+        Mat imageMat = new Mat(mapbit.getWidth(), mapbit.getHeight(), CvType.CV_8UC4); // fc means floating point matrices
+        Utils.bitmapToMat(mapbit, imageMat);
+
 
         //todo: save original image (w/o) any rectangles so we can display each of the rects one by one
 
         // eventually, loop through all of the segments in ROIs, right now, only doing ROIs[0]
-        Rect rect = ROIs.get(0);
+
+        isFood = true;
+        Rect rect = ROIs.get(segmentNum);
         final Point ll = new Point(rect.x, rect.y);
         final Point ur = new Point(rect.x + rect.width, rect.y + rect.height);
 
         Scalar colorLine = new Scalar(0, 255, 0, 255);
         // highlight the segment we're talking about with a rectangle
         Core.rectangle(imageMat, ll, ur, colorLine, 15);
-        Utils.matToBitmap(imageMat, bitmap);
+        Utils.matToBitmap(imageMat, mapbit);
 
 
         Mat subMat = imageMat.submat(rect.y, rect.y + rect.height, rect.x, rect.x + rect.width);
 
         final ArrayList<String> suggestions = getTagSuggestions(subMat);
 
-        Button firstButtonSuggestion = (Button)mTagSuggestionsLayout.findViewById(R.id.first_tag_suggestion);
+        Button firstButtonSuggestion = (Button) mTagSuggestionsLayout.findViewById(R.id.first_tag_suggestion);
         firstButtonSuggestion.setText(suggestions.get(0));
         firstButtonSuggestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mFoodPhoto.setOneTag(suggestions.get(0), ll, ur);
+                canContinue = true;
             }
         });
 
-        Button secondButtonSuggestion = (Button)mTagSuggestionsLayout.findViewById(R.id.second_tag_suggestion);
+        Button secondButtonSuggestion = (Button) mTagSuggestionsLayout.findViewById(R.id.second_tag_suggestion);
         secondButtonSuggestion.setText(suggestions.get(1));
         secondButtonSuggestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mFoodPhoto.setOneTag(suggestions.get(1), ll, ur);
+                canContinue = true;
             }
         });
 
-        Button thirdButtonSuggestion = (Button)mTagSuggestionsLayout.findViewById(R.id.third_tag_suggestion);
+        Button thirdButtonSuggestion = (Button) mTagSuggestionsLayout.findViewById(R.id.third_tag_suggestion);
         thirdButtonSuggestion.setText(suggestions.get(2));
         thirdButtonSuggestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mFoodPhoto.setOneTag(suggestions.get(2),ll, ur);
+                mFoodPhoto.setOneTag(suggestions.get(2), ll, ur);
+                canContinue = true;
             }
         });
-        mImageView.setImageBitmap(bitmap);
+
+        Button notFoodButton = (Button) mNotFoodLayout.findViewById(R.id.not_food_button);
+        notFoodButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isFood = false;
+                canContinue = true;
+            }
+        });
+
+        if (!isFood) {
+            ROIs.remove(segmentNum);
+        }
+
+
+        mImageView.setImageBitmap(mapbit);
+
     }
 
     public ArrayList<String> getTagSuggestions(Mat foodMat){
         // todo: get suggestions from classifier, given foodMat
         ArrayList<String> suggestions = new ArrayList<String>();
 
+        ArrayList<String> foodItems = mSharplesMenu.getMenu(new Date());
+
+
         //todo: if we don't do machine learning in time, get a random three from this meal period from sharples menu
-        suggestions.add("Lattice cut fries");
-        suggestions.add("Lemon squares");
-        suggestions.add("Personal size pizza");
+        while(suggestions.size()<4) {
+            String newSug = foodItems.get(randInt(0, foodItems.size() - 1));
+            if(suggestions.contains(newSug)){
+                continue;
+            }
+            suggestions.add(newSug);
+        }
 
         return suggestions;
+    }
+
+
+    public static int randInt(int min, int max) {
+
+        // NOTE: Usually this should be a field rather than a method
+        // variable so that it is not re-seeded every call.
+        Random rand = new Random();
+
+        // nextInt is normally exclusive of the top value,
+        // so add 1 to make it inclusive
+        int randomNum = rand.nextInt((max - min) + 1) + min;
+
+        return randomNum;
     }
 
     public void cropPhoto(){
@@ -502,9 +579,24 @@ public class PictureTakerFragment extends Fragment{
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         if(item.getItemId() == R.id.menu_item_gallery) {
-            Log.d(TAG, "In OptionsItemSelected");
-
+            Log.d(TAG, "Go to gallery (from picture taker)");
             openGallery();
+        }
+        if(item.getItemId() == R.id.menu_item_add) {
+            Log.d(TAG, "Add new photo (from picture taker)");
+            Toast toast = Toast.makeText(getActivity(), "Save your current photo first!", Toast.LENGTH_SHORT);
+            toast.show();
+
+        }
+        if(item.getItemId() == R.id.menu_item_main_menu) {
+            Log.d(TAG, "Go to main menu (from picture taker)");
+            openMainMenu();
+        }
+        if(item.getItemId() == R.id.menu_item_deleteAll) {
+            Log.d(TAG, "Delete all (from picture taker)");
+            Toast toast = Toast.makeText(getActivity(), "Delete things from gallery please", Toast.LENGTH_SHORT);
+            toast.show();
+
         }
 
         return true;
@@ -513,6 +605,13 @@ public class PictureTakerFragment extends Fragment{
     public void openGallery(){
         Intent i = new Intent(getActivity(), FoodPhotoListActivity.class);
         startActivity(i);
+        getActivity().finish();
+    }
+
+    public void openMainMenu(){
+        Intent i = new Intent(getActivity(), MainMenuActivity.class);
+        startActivity(i);
+        getActivity().finish();
     }
 
     /** Create a file Uri for saving an image or video */

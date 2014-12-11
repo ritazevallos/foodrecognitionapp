@@ -63,21 +63,24 @@ public class MainMenuFragment extends Fragment{
                 Intent i = new Intent(getActivity(), PictureTakerActivity.class);
                 i.putExtra(PictureTakerFragment.EXTRA_FOODPHOTO_ID, fp.getId());
                 startActivity(i);
+                getActivity().finish();
+
             }
         });
 
-        /* LOAD FROM GALLERY BUTTON */
-        Button addFromGallery = (Button)v.findViewById(R.id.add_photo_from_gallery);
-        addFromGallery.setOnClickListener(new Button.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                FoodPhoto fp = new FoodPhoto();
-
-                Intent i = new Intent(getActivity(), PictureTakerActivity.class);
-                i.putExtra(PictureTakerFragment.EXTRA_FOODPHOTO_ID, fp.getId());
-                startActivity(i);
-            }
-        });
+//        /* LOAD FROM GALLERY BUTTON */
+//        Button addFromGallery = (Button)v.findViewById(R.id.add_photo_from_gallery);
+//        addFromGallery.setOnClickListener(new Button.OnClickListener(){
+//            @Override
+//            public void onClick(View v) {
+//                FoodPhoto fp = new FoodPhoto();
+//
+//                Intent i = new Intent(getActivity(), PictureTakerActivity.class);
+//                i.putExtra(PictureTakerFragment.EXTRA_FOODPHOTO_ID, fp.getId());
+//                startActivity(i);
+//                getActivity().finish();
+//            }
+//        });
 
         Button nutritionButton = (Button)v.findViewById(R.id.view_nutrition_history);
         nutritionButton.setOnClickListener(new View.OnClickListener() {
@@ -93,6 +96,7 @@ public class MainMenuFragment extends Fragment{
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), SharplesMenuActivity.class);
                 startActivity(i);
+                getActivity().finish();
             }
         });
 
@@ -112,17 +116,30 @@ public class MainMenuFragment extends Fragment{
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         if(item.getItemId() == R.id.menu_item_gallery) {
-            Log.d(TAG, "Go to Gallery selected");
+            Log.d(TAG, "Go to Gallery selected (main menu)");
 
             openGallery();
         }
 
         if(item.getItemId() == R.id.menu_item_add){
-            Log.d(TAG, "Add Food Photo selected");
+            Log.d(TAG, "Add Food Photo selected (main menu)");
 
             newFoodPhoto();
         }
 
+        if(item.getItemId() == R.id.menu_item_main_menu) {
+            Log.d(TAG, "Go to Main Menu (already there)");
+            Toast toast = Toast.makeText(getActivity(), "You're already here!", Toast.LENGTH_SHORT);
+            toast.show();
+
+        }
+
+        if(item.getItemId() == R.id.menu_item_deleteAll) {
+            Log.d(TAG, "Delete all selected in main menu");
+            Toast toast = Toast.makeText(getActivity(), "Delete all from gallery", Toast.LENGTH_SHORT);
+            toast.show();
+
+        }
         return true;
     }
 
@@ -131,6 +148,7 @@ public class MainMenuFragment extends Fragment{
     public void openGallery(){
         Intent i = new Intent(getActivity(), FoodPhotoListActivity.class);
         startActivity(i);
+        getActivity().finish();
     }
 
     /* newFoodPhoto
@@ -141,6 +159,7 @@ public class MainMenuFragment extends Fragment{
         Intent i = new Intent(getActivity(), PictureTakerActivity.class);
         i.putExtra(PictureTakerFragment.EXTRA_FOODPHOTO_ID, fp.getId());
         startActivity(i);
+        getActivity().finish();
     }
 
 }
