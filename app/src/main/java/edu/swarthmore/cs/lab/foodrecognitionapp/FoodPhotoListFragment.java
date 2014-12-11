@@ -94,7 +94,11 @@ public class FoodPhotoListFragment  extends ListFragment {
             // todo: catch if no tag
             String all_tags = "";
             for (int i=0; i<tags.size(); i++){
-                all_tags += tags.get(i).getFoodName() + "\t";
+                if(i == tags.size()-1){
+                    all_tags += tags.get(i).getFoodName();
+                }else {
+                    all_tags += tags.get(i).getFoodName() + ", ";
+                }
             }
             tagsTextView.setText(all_tags);
 

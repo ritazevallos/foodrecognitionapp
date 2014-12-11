@@ -63,7 +63,7 @@ public class MainMenuFragment extends Fragment{
                 Intent i = new Intent(getActivity(), PictureTakerActivity.class);
                 i.putExtra(PictureTakerFragment.EXTRA_FOODPHOTO_ID, fp.getId());
                 startActivity(i);
-                getActivity().finish();
+                //getActivity().finish();
 
             }
         });
@@ -96,7 +96,7 @@ public class MainMenuFragment extends Fragment{
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), SharplesMenuActivity.class);
                 startActivity(i);
-                getActivity().finish();
+                //getActivity().finish();
             }
         });
 
@@ -148,7 +148,7 @@ public class MainMenuFragment extends Fragment{
     public void openGallery(){
         Intent i = new Intent(getActivity(), FoodPhotoListActivity.class);
         startActivity(i);
-        getActivity().finish();
+        //getActivity().finish();
     }
 
     /* newFoodPhoto
@@ -159,7 +159,7 @@ public class MainMenuFragment extends Fragment{
         Intent i = new Intent(getActivity(), PictureTakerActivity.class);
         i.putExtra(PictureTakerFragment.EXTRA_FOODPHOTO_ID, fp.getId());
         startActivity(i);
-        getActivity().finish();
+        //getActivity().finish();
     }
 
 }

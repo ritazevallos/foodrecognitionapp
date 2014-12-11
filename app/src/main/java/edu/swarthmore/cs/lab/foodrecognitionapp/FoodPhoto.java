@@ -56,13 +56,18 @@ public class FoodPhoto {
         mTags = tags;
     }
 
-    public void setOneTag(String foodName, Point ll, Point ur, int i){
-        FoodPhotoTag tag = new FoodPhotoTag(foodName, ll, ur);
-        try{
-            mTags.set(i,tag);
-        } catch (Exception e){
-            Log.d(TAG, "broke trying to set a tag for invalid index; "+e);
-        }
+//    public void setOneTag(String foodName, Point ll, Point ur, int i){
+//        FoodPhotoTag tag = new FoodPhotoTag(foodName, ll, ur);
+//        try{
+//            mTags.set(i,tag);
+//        } catch (Exception e){
+//            Log.d(TAG, "broke trying to set a tag for invalid index; "+e);
+//        }
+//    }
+
+    public void setOneTag(String foodName, Point ll, Point ur, int guessScore){
+        FoodPhotoTag tag = new FoodPhotoTag(foodName, ll, ur, guessScore);
+        mTags.add(tag);
     }
 
     public void setOneTag(String foodName, Point ll, Point ur){
@@ -150,12 +155,22 @@ public class FoodPhoto {
         private String mFoodName;
         private Point ll;
         private Point ur;
+        private int guessScore;
 
         private FoodPhotoTag(String foodName, Point ll, Point ur) {
             mFoodName = foodName;
             this.ll = ll;
             this.ur = ur;
+            this.guessScore = 0;
         }
+
+        private FoodPhotoTag(String foodName, Point ll, Point ur, int guessScore){
+            mFoodName = foodName;
+            this.ll = ll;
+            this.ur = ur;
+            this.guessScore = guessScore;
+        }
+
         public Point getLl() {
             return ll;
         }
@@ -179,6 +194,10 @@ public class FoodPhoto {
         public void setFoodName(String foodName) {
             mFoodName = foodName;
         }
+
+        public int getGuessScore() { return guessScore;  }
+
+        public void setGuessScore(int guessScore) {  this.guessScore = guessScore;}
 
     }
 }

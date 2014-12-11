@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -42,6 +41,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -58,8 +58,11 @@ public class PictureTakerFragment extends Fragment{
     public static ImageView mImageView;
     private AutoCompleteTextView mTagField;
     private ArrayList<AutoCompleteTextView> mTagFields;
+    private ArrayList<MenuFood> mLunchFoods;
+    private ArrayList<ArrayList<Integer>> mLunchColors;
     private FoodPhoto mFoodPhoto;
     private FoodPhotoStore mFoodPhotoStore;
+    private FoodPhoto.FoodPhotoTag mFoodPhotoTag;
     private Button retakePhotoButton;
     public boolean beforePhotoTaken;
     private SharplesMenu mSharplesMenu;
@@ -77,6 +80,7 @@ public class PictureTakerFragment extends Fragment{
     private Boolean isFood;
     private boolean canContinue = false;
     private int count;
+    private float guessScore = 0;
 
 
     @Override
@@ -147,6 +151,7 @@ public class PictureTakerFragment extends Fragment{
                     mFoodPhotoStore.addFoodPhoto(mFoodPhoto);
                     FoodPhotoStore.get(getActivity()).saveFoodPhotos();
                     //bitmap.recycle();
+                    Log.d(TAG, "Average guess score: " + String.valueOf(guessScore/mFoodPhoto.getTags().size()));
                     openGallery();
                 }
             }
@@ -183,25 +188,25 @@ public class PictureTakerFragment extends Fragment{
         final LinearLayout tagContainer = (LinearLayout)v.findViewById(R.id.tagContainerLayout);
 
         mNumberOfSegmentsTextView = (TextView)v.findViewById(R.id.number_of_segments);
-
-        mImageView.setOnTouchListener(new View.OnTouchListener(){
-            @Override
-            public boolean onTouch(View v, MotionEvent event){
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    if (beforePhotoTaken && !(using_emulator)) {
-
-                    } else if (clickNTagActivated) {
-                        Log.d(TAG, "mImageView.onTouchListener");
-                        Point ll = new Point(event.getX() - 20, event.getY() - 20);
-                        Point ur = new Point(event.getX() + 20, event.getY() + 20);
-                        addTagField(ll,ur, tagContainer);
-
-                        retakePhotoButton.setVisibility(View.VISIBLE);
-                    }
-                }
-                return true;
-            }
-        });
+//
+//        mImageView.setOnTouchListener(new View.OnTouchListener(){
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event){
+//                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+//                    if (beforePhotoTaken && !(using_emulator)) {
+//
+//                    } else if (clickNTagActivated) {
+//                        Log.d(TAG, "mImageView.onTouchListener");
+//                        Point ll = new Point(event.getX() - 20, event.getY() - 20);
+//                        Point ur = new Point(event.getX() + 20, event.getY() + 20);
+//                        addTagField(ll,ur, tagContainer);
+//
+//                        retakePhotoButton.setVisibility(View.VISIBLE);
+//                    }
+//                }
+//                return true;
+//            }
+//        });
 
         return v;
 
@@ -306,7 +311,8 @@ public class PictureTakerFragment extends Fragment{
 
 
         count = 0;
-        tagSegment(count);
+        tagSegment(0);
+        count++;
 
         Button nextSegmentButton = (Button) mNotFoodLayout.findViewById(R.id.next_segment);
         nextSegmentButton.setOnClickListener(new View.OnClickListener() {
@@ -314,7 +320,8 @@ public class PictureTakerFragment extends Fragment{
             public void onClick(View v) {
                 if(canContinue) {
                     if(count<ROIs.size()){
-                       tagSegment(count);
+                        tagSegment(count);
+                        mNumberOfSegmentsTextView.setText(ROIs.size()-count + " foods left to tag!");
                         count++;
                     } else {
                         Toast toast = Toast.makeText(getActivity(), "All segments have been tagged", Toast.LENGTH_SHORT);
@@ -347,6 +354,9 @@ public class PictureTakerFragment extends Fragment{
         Rect rect = ROIs.get(segmentNum);
         final Point ll = new Point(rect.x, rect.y);
         final Point ur = new Point(rect.x + rect.width, rect.y + rect.height);
+        Log.d(TAG, "Rect width: " + rect.width);
+        Log.d(TAG, "Rect height: " + rect.height);
+
 
         Scalar colorLine = new Scalar(0, 255, 0, 255);
         // highlight the segment we're talking about with a rectangle
@@ -355,16 +365,49 @@ public class PictureTakerFragment extends Fragment{
 
 
         Mat subMat = imageMat.submat(rect.y, rect.y + rect.height, rect.x, rect.x + rect.width);
+        // sample color
+        int rows = (int)subMat.size().height;
+        int cols = (int)subMat.size().width;
+        int Rr = 0;
+        int Gg = 0;
+        int Bb = 0;
+        int num = 0;
 
-        final ArrayList<String> suggestions = getTagSuggestions(subMat);
+        for(int i = rows-(2*rows/3); i < rows-(rows/3); i++){
+            for(int j = cols-(2*cols/3); j < cols-(cols/3); j++) {
+                double[] c = subMat.get(i, j);
+                if(c == null){
+                    continue;
+                }else if(c[0]==0&&c[1]==255&&c[2]==0) {
+                    continue;
+                }else if(c[0]==102&&c[1]==51&&c[2]==153){
+                    continue;
+                } else {
+                    Rr+=c[0];
+                    Gg+=c[1];
+                    Bb+=c[2];
+                    num++;
+                }
+            }
+        }
+
+        Rr = Rr/num;
+        Gg = Gg/num;
+        Bb = Bb/num;
+
+        Log.d(TAG, "Average color values: " + String.valueOf(Rr) + ", " + String.valueOf(Gg) + ", " + String.valueOf(Bb));
+
+        final ArrayList<String> suggestions = getTagSuggestions(Rr, Gg, Bb);
 
         Button firstButtonSuggestion = (Button) mTagSuggestionsLayout.findViewById(R.id.first_tag_suggestion);
         firstButtonSuggestion.setText(suggestions.get(0));
         firstButtonSuggestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mFoodPhoto.setOneTag(suggestions.get(0), ll, ur);
+                mFoodPhoto.setOneTag(suggestions.get(0), ll, ur, 1);
                 canContinue = true;
+                guessScore++;
+
             }
         });
 
@@ -373,8 +416,9 @@ public class PictureTakerFragment extends Fragment{
         secondButtonSuggestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mFoodPhoto.setOneTag(suggestions.get(1), ll, ur);
+                mFoodPhoto.setOneTag(suggestions.get(1), ll, ur, 2);
                 canContinue = true;
+                guessScore+=2;
             }
         });
 
@@ -383,8 +427,9 @@ public class PictureTakerFragment extends Fragment{
         thirdButtonSuggestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mFoodPhoto.setOneTag(suggestions.get(2), ll, ur);
+                mFoodPhoto.setOneTag(suggestions.get(2), ll, ur, 3);
                 canContinue = true;
+                guessScore+=3;
             }
         });
 
@@ -406,25 +451,120 @@ public class PictureTakerFragment extends Fragment{
 
     }
 
-    public ArrayList<String> getTagSuggestions(Mat foodMat){
+    public ArrayList<String> getTagSuggestions(int R, int G, int B){
         // todo: get suggestions from classifier, given foodMat
         ArrayList<String> suggestions = new ArrayList<String>();
+        mLunchFoods = new ArrayList<MenuFood>();
+        //ArrayList<String> foodItems = mSharplesMenu.getMenu(new Date());
+        parseLunchMenu();
+        ArrayList<Integer> comp = new ArrayList<Integer>(mLunchFoods.size()*2);
 
-        ArrayList<String> foodItems = mSharplesMenu.getMenu(new Date());
-
-
-        //todo: if we don't do machine learning in time, get a random three from this meal period from sharples menu
-        while(suggestions.size()<4) {
-            String newSug = foodItems.get(randInt(0, foodItems.size() - 1));
-            if(suggestions.contains(newSug)){
-                continue;
-            }
-            suggestions.add(newSug);
+        for(int i =0; i<mLunchFoods.size(); i++){
+            MenuFood food = mLunchFoods.get(i);
+            ArrayList<Integer> color1 = food.getColor1();
+            ArrayList<Integer> color2 = food.getColor2();
+            int compNum = Math.abs(R-color1.get(0)) + Math.abs(G - color1.get(1)) + Math.abs(B-color1.get(2));
+            int compNum2 = Math.abs(R-color2.get(0)) + Math.abs(G-color2.get(1)) + Math.abs(B-color2.get(2));
+            comp.add(compNum);
+            comp.add(compNum2);
         }
+
+        ArrayList<Integer> smallestComps = new ArrayList<Integer>(Arrays.asList(1000,1000,1000));
+        ArrayList<Integer> indices = new ArrayList<Integer>(Arrays.asList(0,0,0));
+        for(int j = 0; j<comp.size();j++){
+
+            if(comp.get(j)<smallestComps.get(0)){
+                smallestComps.set(2, smallestComps.get(1));
+                smallestComps.set(1, smallestComps.get(0));
+                smallestComps.set(0, comp.get(j));
+                indices.set(2, indices.get(1));
+                indices.set(1, indices.get(0));
+                indices.set(0, j);
+            } else if (comp.get(j)<smallestComps.get(1)){
+                smallestComps.set(2, smallestComps.get(1));
+                smallestComps.set(1, comp.get(j));
+                indices.set(2, indices.get(1));
+                indices.set(1, j);
+            } else if (comp.get(j)<smallestComps.get(2)){
+                smallestComps.set(2, comp.get(j));
+                indices.set(2, j);
+            }
+        }
+        for(int k = 0; k<3; k++){
+            int index = (indices.get(k)/2);
+            suggestions.add(mLunchFoods.get(index).getFoodName());
+        }
+
+
+//        //todo: if we don't do machine learning in time, get a random three from this meal period from sharples menu
+//        while(suggestions.size()<4) {
+//            String newSug = foodItems.get(randInt(0, foodItems.size() - 1));
+//            //guess food here
+//
+//            if(suggestions.contains(newSug)){
+//                continue;
+//            }
+//            suggestions.add(newSug);
+//        }
 
         return suggestions;
     }
 
+    public void parseLunchMenu(){
+        int colorCount = 0;
+        parseLunchColors();
+        ArrayList<String> foodItems = mSharplesMenu.getMenu(new Date());
+        for(int i = 0; i<foodItems.size(); i++){
+            MenuFood food = new MenuFood(foodItems.get(i), mLunchColors.get(colorCount), mLunchColors.get(colorCount+1));
+            mLunchFoods.add(food);
+            colorCount+=2;
+        }
+    }
+
+    public void parseLunchColors(){
+        mLunchColors = new ArrayList<ArrayList<Integer>>();
+        ArrayList<Integer> color = new ArrayList<Integer>(Arrays.asList(175,113,55));
+        mLunchColors.add(color);
+        color = new ArrayList<Integer>(Arrays.asList(183,110,38));
+        mLunchColors.add(color);
+        color = new ArrayList<Integer>(Arrays.asList(198,109,33));
+        mLunchColors.add(color);
+        color = new ArrayList<Integer>(Arrays.asList(193,115,29));
+        mLunchColors.add(color);
+        color = new ArrayList<Integer>(Arrays.asList(222,75,28));
+        mLunchColors.add(color);
+        color = new ArrayList<Integer>(Arrays.asList(205,78,25));
+        mLunchColors.add(color);
+        color = new ArrayList<Integer>(Arrays.asList(147,117,50));
+        mLunchColors.add(color);
+        color = new ArrayList<Integer>(Arrays.asList(135,94,24));
+        mLunchColors.add(color);
+        color = new ArrayList<Integer>(Arrays.asList(187,166,97));
+        mLunchColors.add(color);
+        color = new ArrayList<Integer>(Arrays.asList(173,149,80));
+        mLunchColors.add(color);
+        color = new ArrayList<Integer>(Arrays.asList(224,169,107));
+        mLunchColors.add(color);
+        color = new ArrayList<Integer>(Arrays.asList(208,153,87));
+        mLunchColors.add(color);
+        color = new ArrayList<Integer>(Arrays.asList(175,127,67));
+        mLunchColors.add(color);
+        color = new ArrayList<Integer>(Arrays.asList(202,91,47));
+        mLunchColors.add(color);
+        color = new ArrayList<Integer>(Arrays.asList(157,94,29));
+        mLunchColors.add(color);
+        color = new ArrayList<Integer>(Arrays.asList(146,93,19));
+        mLunchColors.add(color);
+        color = new ArrayList<Integer>(Arrays.asList(131,56,4));
+        mLunchColors.add(color);
+        color = new ArrayList<Integer>(Arrays.asList(175,94,43));
+        mLunchColors.add(color);
+        color = new ArrayList<Integer>(Arrays.asList(213,209,176));
+        mLunchColors.add(color);
+        color = new ArrayList<Integer>(Arrays.asList(224,191,156));
+        mLunchColors.add(color);
+
+    }
 
     public static int randInt(int min, int max) {
 
@@ -527,6 +667,9 @@ public class PictureTakerFragment extends Fragment{
                 if (Imgproc.contourArea(contours.get(i)) > minSize) {
                     bigContours.add(contours.get(i));
                     Rect rect = Imgproc.boundingRect(contours.get(i));
+                    if(rect.width<250||rect.height<250){
+                        continue;
+                    }
                     Point center = new Point(rect.x+rect.width/2.0, rect.y+rect.height/2.0);
                     centers.add(center);
                     Mat subMat = imageMat.submat(rect.y, rect.y + rect.height, rect.x, rect.x + rect.width);
