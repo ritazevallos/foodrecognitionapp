@@ -189,7 +189,7 @@ public class FoodPhotoListFragment  extends ListFragment {
     public void openGallery(){
         Intent i = new Intent(getActivity(), FoodPhotoListActivity.class);
         startActivity(i);
-        getActivity().finish();
+        //getActivity().finish();
     }
 
     /* newFoodPhoto
@@ -200,12 +200,12 @@ public class FoodPhotoListFragment  extends ListFragment {
         Intent i = new Intent(getActivity(), PictureTakerActivity.class);
         i.putExtra(PictureTakerFragment.EXTRA_FOODPHOTO_ID, fp.getId());
         startActivity(i);
-        getActivity().finish();
+        //getActivity().finish();
     }
 
     public void openMainMenu(){
         Intent i = new Intent(getActivity(), MainMenuActivity.class);
         startActivity(i);
-        getActivity().finish();
+        //getActivity().finish();
     }
 }

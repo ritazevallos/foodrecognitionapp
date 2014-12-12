@@ -23,6 +23,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import org.opencv.android.Utils;
@@ -59,7 +60,9 @@ public class PictureTakerFragment extends Fragment{
     private AutoCompleteTextView mTagField;
     private ArrayList<AutoCompleteTextView> mTagFields;
     private ArrayList<MenuFood> mLunchFoods;
+    private ArrayList<MenuFood> mDinnerFoods;
     private ArrayList<ArrayList<Integer>> mLunchColors;
+    private ArrayList<ArrayList<Integer>> mDinnerColors;
     private FoodPhoto mFoodPhoto;
     private FoodPhotoStore mFoodPhotoStore;
     private FoodPhoto.FoodPhotoTag mFoodPhotoTag;
@@ -77,10 +80,12 @@ public class PictureTakerFragment extends Fragment{
     private TextView mNumberOfSegmentsTextView;
     private LinearLayout mTagSuggestionsLayout;
     private LinearLayout mNotFoodLayout;
+    private RelativeLayout mTagContainer;
     private Boolean isFood;
     private boolean canContinue = false;
     private int count;
     private float guessScore = 0;
+    private String inputTag;
 
 
     @Override
@@ -117,6 +122,7 @@ public class PictureTakerFragment extends Fragment{
 
         mTagSuggestionsLayout = (LinearLayout)v.findViewById(R.id.tag_buttons_layout);
         mNotFoodLayout = (LinearLayout)v.findViewById(R.id.notFoodLayout);
+        mTagContainer = (RelativeLayout)v.findViewById(R.id.tagContainerLayout);
 
 
 
@@ -152,32 +158,32 @@ public class PictureTakerFragment extends Fragment{
                     FoodPhotoStore.get(getActivity()).saveFoodPhotos();
                     //bitmap.recycle();
                     Log.d(TAG, "Average guess score: " + String.valueOf(guessScore/mFoodPhoto.getTags().size()));
-                    openGallery();
+                    openNutrition();
                 }
             }
         });
 
-        mTagField = (AutoCompleteTextView)v.findViewById(R.id.pictureTag);
-        mTagField.setVisibility(View.INVISIBLE);
-
-        mTagField.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String msg = s.toString();
-                //mFoodPhoto.setOneTag(0, msg, 0, 0);
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
+//        mTagField = (AutoCompleteTextView)v.findViewById(R.id.pictureTag);
+//        //mTagField.setVisibility(View.INVISIBLE);
+//
+//        mTagField.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                String msg = s.toString();
+//                //mFoodPhoto.setOneTag(0, msg, 0, 0);
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//
+//            }
+//        });
 
         mImageView = (ImageView)v.findViewById(R.id.imageView1);
         if (bitmap != null) {
@@ -185,7 +191,7 @@ public class PictureTakerFragment extends Fragment{
             bitmap = null;
         }
 
-        final LinearLayout tagContainer = (LinearLayout)v.findViewById(R.id.tagContainerLayout);
+        //final LinearLayout tagContainer = (LinearLayout)v.findViewById(R.id.tagContainerLayout);
 
         mNumberOfSegmentsTextView = (TextView)v.findViewById(R.id.number_of_segments);
 //
@@ -315,28 +321,45 @@ public class PictureTakerFragment extends Fragment{
         count++;
 
         Button nextSegmentButton = (Button) mNotFoodLayout.findViewById(R.id.next_segment);
-        nextSegmentButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(canContinue) {
-                    if(count<ROIs.size()){
-                        tagSegment(count);
-                        mNumberOfSegmentsTextView.setText(ROIs.size()-count + " foods left to tag!");
-                        count++;
-                    } else {
-                        Toast toast = Toast.makeText(getActivity(), "All segments have been tagged", Toast.LENGTH_SHORT);
-                        toast.show();
-                        canContinue = true;
-                    }
+//
+//        // changed this listener from nextSegmentButton to the three guessButtons
+//        final Button firstButtonSuggestion = (Button) mTagSuggestionsLayout.findViewById(R.id.first_tag_suggestion);
+//        final Button secondButtonSuggestion = (Button) mTagSuggestionsLayout.findViewById(R.id.second_tag_suggestion);
+//        final Button thirdButtonSuggestion = (Button) mTagSuggestionsLayout.findViewById(R.id.third_tag_suggestion);
 
-                    canContinue = false;
-                } else {
-                    Toast toast = Toast.makeText(getActivity(), "Tag this segment, or hit 'Not Food'", Toast.LENGTH_SHORT);
-                    toast.show();
+        ArrayList<Button> buttons = new ArrayList<Button>();
+//        buttons.add(firstButtonSuggestion);
+//        buttons.add(secondButtonSuggestion);
+//        buttons.add(thirdButtonSuggestion);
+        buttons.add(nextSegmentButton);
+        for (Button button: buttons){
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goToNextSegment();
                 }
-            }
-        });
+            });
+        }
 
+    }
+
+    public void goToNextSegment(){
+        if(canContinue) {
+            if(count<ROIs.size()){
+                tagSegment(count);
+                mNumberOfSegmentsTextView.setText(ROIs.size()-count + " foods left to tag!");
+                count++;
+            } else {
+                Toast toast = Toast.makeText(getActivity(), "All segments have been tagged", Toast.LENGTH_SHORT);
+                toast.show();
+                canContinue = true;
+            }
+
+            canContinue = false;
+        } else {
+            Toast toast = Toast.makeText(getActivity(), "Tag this segment, or hit 'Not Food'", Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 
     public void tagSegment(int segmentNum){
@@ -399,37 +422,51 @@ public class PictureTakerFragment extends Fragment{
 
         final ArrayList<String> suggestions = getTagSuggestions(Rr, Gg, Bb);
 
-        Button firstButtonSuggestion = (Button) mTagSuggestionsLayout.findViewById(R.id.first_tag_suggestion);
+        final Button firstButtonSuggestion = (Button) mTagSuggestionsLayout.findViewById(R.id.first_tag_suggestion);
         firstButtonSuggestion.setText(suggestions.get(0));
+        firstButtonSuggestion.setEnabled(true);
+        final Button secondButtonSuggestion = (Button) mTagSuggestionsLayout.findViewById(R.id.second_tag_suggestion);
+        secondButtonSuggestion.setText(suggestions.get(1));
+        secondButtonSuggestion.setEnabled(true);
+        final Button thirdButtonSuggestion = (Button) mTagSuggestionsLayout.findViewById(R.id.third_tag_suggestion);
+        thirdButtonSuggestion.setText(suggestions.get(2));
+        thirdButtonSuggestion.setEnabled(true);
+        mTagField = (AutoCompleteTextView)mTagContainer.findViewById(R.id.pictureTag);
+        mTagField.setEnabled(true);
         firstButtonSuggestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mFoodPhoto.setOneTag(suggestions.get(0), ll, ur, 1);
                 canContinue = true;
                 guessScore++;
+                secondButtonSuggestion.setEnabled(false);
+                thirdButtonSuggestion.setEnabled(false);
+                mTagField.setEnabled(false);
 
             }
         });
 
-        Button secondButtonSuggestion = (Button) mTagSuggestionsLayout.findViewById(R.id.second_tag_suggestion);
-        secondButtonSuggestion.setText(suggestions.get(1));
         secondButtonSuggestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mFoodPhoto.setOneTag(suggestions.get(1), ll, ur, 2);
                 canContinue = true;
                 guessScore+=2;
+                firstButtonSuggestion.setEnabled(false);
+                thirdButtonSuggestion.setEnabled(false);
+                mTagField.setEnabled(false);
             }
         });
 
-        Button thirdButtonSuggestion = (Button) mTagSuggestionsLayout.findViewById(R.id.third_tag_suggestion);
-        thirdButtonSuggestion.setText(suggestions.get(2));
         thirdButtonSuggestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mFoodPhoto.setOneTag(suggestions.get(2), ll, ur, 3);
                 canContinue = true;
                 guessScore+=3;
+                firstButtonSuggestion.setEnabled(false);
+                secondButtonSuggestion.setEnabled(false);
+                mTagField.setEnabled(false);
             }
         });
 
@@ -441,6 +478,50 @@ public class PictureTakerFragment extends Fragment{
                 canContinue = true;
             }
         });
+
+
+        ArrayList<AutoCompleteTextView> final_tagfield = new ArrayList<AutoCompleteTextView>();
+        final_tagfield.add(mTagField);
+        attachGuessesToTagFields(final_tagfield);
+        mTagField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                inputTag = s.toString();
+                firstButtonSuggestion.setEnabled(false);
+                secondButtonSuggestion.setEnabled(false);
+                thirdButtonSuggestion.setEnabled(false);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        Button doneButton = (Button) mTagContainer.findViewById(R.id.done_button);
+        doneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (inputTag != null) {
+                    mFoodPhoto.setOneTag(inputTag, ll, ur, 4);
+                    canContinue = true;
+                    guessScore += 4;
+                    inputTag = null;
+                    Toast toast = Toast.makeText(getActivity(), "Custom tag added", Toast.LENGTH_SHORT);
+                    toast.show();
+                } else {
+                    Toast toast = Toast.makeText(getActivity(), "Type in your custom tag", Toast.LENGTH_SHORT);
+                    toast.show();
+
+                }
+            }
+        });
+
 
         if (!isFood) {
             ROIs.remove(segmentNum);
@@ -455,12 +536,14 @@ public class PictureTakerFragment extends Fragment{
         // todo: get suggestions from classifier, given foodMat
         ArrayList<String> suggestions = new ArrayList<String>();
         mLunchFoods = new ArrayList<MenuFood>();
+        mDinnerFoods = new ArrayList<MenuFood>();
         //ArrayList<String> foodItems = mSharplesMenu.getMenu(new Date());
-        parseLunchMenu();
-        ArrayList<Integer> comp = new ArrayList<Integer>(mLunchFoods.size()*2);
+        //parseLunchMenu();
+        parseDinnerMenu();
+        ArrayList<Integer> comp = new ArrayList<Integer>(mDinnerFoods.size()*2);
 
-        for(int i =0; i<mLunchFoods.size(); i++){
-            MenuFood food = mLunchFoods.get(i);
+        for(int i =0; i<mDinnerFoods.size(); i++){
+            MenuFood food = mDinnerFoods.get(i);
             ArrayList<Integer> color1 = food.getColor1();
             ArrayList<Integer> color2 = food.getColor2();
             int compNum = Math.abs(R-color1.get(0)) + Math.abs(G - color1.get(1)) + Math.abs(B-color1.get(2));
@@ -492,7 +575,7 @@ public class PictureTakerFragment extends Fragment{
         }
         for(int k = 0; k<3; k++){
             int index = (indices.get(k)/2);
-            suggestions.add(mLunchFoods.get(index).getFoodName());
+            suggestions.add(mDinnerFoods.get(index).getFoodName());
         }
 
 
@@ -517,6 +600,21 @@ public class PictureTakerFragment extends Fragment{
         for(int i = 0; i<foodItems.size(); i++){
             MenuFood food = new MenuFood(foodItems.get(i), mLunchColors.get(colorCount), mLunchColors.get(colorCount+1));
             mLunchFoods.add(food);
+            colorCount+=2;
+        }
+    }
+
+    public void parseDinnerMenu(){
+        int colorCount = 0;
+        parseDinnerColors();
+        //ArrayList<String> foodItems = mSharplesMenu.getMenu(new Date());
+        ArrayList<String> foodItems = mSharplesMenu.getDinnerMenu();
+        for(int i = 0; i<foodItems.size(); i++){
+            String foodName = foodItems.get(i);
+            ArrayList<Integer> color1 = mDinnerColors.get(colorCount);
+            ArrayList<Integer> color2 = mDinnerColors.get(colorCount+1);
+            MenuFood food = new MenuFood(foodItems.get(i), mDinnerColors.get(colorCount), mDinnerColors.get(colorCount+1));
+            mDinnerFoods.add(food);
             colorCount+=2;
         }
     }
@@ -566,6 +664,52 @@ public class PictureTakerFragment extends Fragment{
 
     }
 
+    public void parseDinnerColors(){
+        mDinnerColors = new ArrayList<ArrayList<Integer>>();
+
+        ArrayList<Integer> color = new ArrayList<Integer>(Arrays.asList(92,63,39));
+        mDinnerColors.add(color);
+        color = new ArrayList<Integer>(Arrays.asList(96,67,65));
+        mDinnerColors.add(color);
+
+        color = new ArrayList<Integer>(Arrays.asList(128,89,79));
+        mDinnerColors.add(color);
+        color = new ArrayList<Integer>(Arrays.asList(154,92,44));
+        mDinnerColors.add(color);
+
+        color = new ArrayList<Integer>(Arrays.asList(86,121,43));
+        mDinnerColors.add(color);
+        color = new ArrayList<Integer>(Arrays.asList(105,92,64));
+        mDinnerColors.add(color);
+
+        color = new ArrayList<Integer>(Arrays.asList(210,144,27));
+        mDinnerColors.add(color);
+        color = new ArrayList<Integer>(Arrays.asList(201,133,60));
+        mDinnerColors.add(color);
+
+        color = new ArrayList<Integer>(Arrays.asList(88,55,41));
+        mDinnerColors.add(color);
+        color = new ArrayList<Integer>(Arrays.asList(90,59,34));
+        mDinnerColors.add(color);
+
+        color = new ArrayList<Integer>(Arrays.asList(121,90,21));
+        mDinnerColors.add(color);
+        color = new ArrayList<Integer>(Arrays.asList(120,93,48));
+        mDinnerColors.add(color);
+
+        color = new ArrayList<Integer>(Arrays.asList(93,60,25));
+        mDinnerColors.add(color);
+        color = new ArrayList<Integer>(Arrays.asList(121,72,15));
+        mDinnerColors.add(color);
+
+        color = new ArrayList<Integer>(Arrays.asList(247,215,109));
+        mDinnerColors.add(color);
+        color = new ArrayList<Integer>(Arrays.asList(130,78,63));
+        mDinnerColors.add(color);
+    }
+
+
+
     public static int randInt(int min, int max) {
 
         // NOTE: Usually this should be a field rather than a method
@@ -600,10 +744,13 @@ public class PictureTakerFragment extends Fragment{
         imageMat.copyTo(maskedImg, mask);
         Mat submat = maskedImg.submat(rect.y, rect.y + rect.height, rect.x, rect.x + rect.width);
         bitmap = Bitmap.createBitmap(submat.cols(), submat.rows(), Bitmap.Config.ARGB_8888);
+//        Mat newmat = new Mat(submat.size(), submat.type());
+//        Imgproc.cvtColor(submat, newmat, Imgproc.COLOR_RGBA2BGRA, 4);
         Utils.matToBitmap(submat, bitmap);
 
 
         // store the cropped image in mFile
+
         Highgui.imwrite(mFile.toString(),submat);
 
     }
@@ -748,13 +895,19 @@ public class PictureTakerFragment extends Fragment{
     public void openGallery(){
         Intent i = new Intent(getActivity(), FoodPhotoListActivity.class);
         startActivity(i);
-        getActivity().finish();
+        //getActivity().finish();
+    }
+
+    public void openNutrition(){
+        //ideally this will do all the nutrition api stuff...
+        Intent i = new Intent(getActivity(), NutritionActivity.class);
+        startActivity(i);
     }
 
     public void openMainMenu(){
         Intent i = new Intent(getActivity(), MainMenuActivity.class);
         startActivity(i);
-        getActivity().finish();
+        //getActivity().finish();
     }
 
     /** Create a file Uri for saving an image or video */
@@ -856,7 +1009,7 @@ public class PictureTakerFragment extends Fragment{
     }
 
     private void attachGuessesToTagFields(ArrayList<AutoCompleteTextView> tagFields){
-        ArrayList<String> arrayListGuesses = mSharplesMenu.getMenu(new Date());
+        ArrayList<String> arrayListGuesses = mSharplesMenu.getDinnerMenu();
         String[] guessesArr = new String[arrayListGuesses.size()];
         guessesArr = arrayListGuesses.toArray(guessesArr);
         Log.d(TAG, "how many guesses do we have: "+guessesArr.length);

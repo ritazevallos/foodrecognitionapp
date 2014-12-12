@@ -48,6 +48,10 @@
             android:name=".FromGalleryActivity"
             android:label="@string/title_activity_from_gallery" >
         </activity>
+        <activity
+            android:name=".NutritionActivity"
+            android:label="@string/view_nutrition_history" >
+        </activity>
     </application>
 
 </manifest>

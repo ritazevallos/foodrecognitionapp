@@ -135,7 +135,7 @@ public class CameraActivity extends Activity {
     protected void onPause()
     {
         super.onPause();
-        //releaseCamera();
+        releaseCamera();
 
     }
     /** A safe way to get an instance of the Camera object. */

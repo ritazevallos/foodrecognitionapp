@@ -86,7 +86,8 @@ public class MainMenuFragment extends Fragment{
         nutritionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: hook up nutrition history
+                Intent i = new Intent(getActivity(), NutritionActivity.class);
+                startActivity(i);
             }
         });
 
