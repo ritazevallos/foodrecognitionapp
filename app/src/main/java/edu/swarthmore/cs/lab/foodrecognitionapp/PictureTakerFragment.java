@@ -29,6 +29,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONException;
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -93,6 +95,7 @@ public class PictureTakerFragment extends Fragment{
     private String inputTag;
     private ArrayList<Mat> segmentMats;
     private ArrayList<TagScore> mScores;
+    private TagScoresJSONSerializer mSerializer;
 
     // SOME DEVELOPER SETTINGS
     private boolean viewMaskAndMaskedImage = false;
@@ -100,13 +103,14 @@ public class PictureTakerFragment extends Fragment{
     private boolean using_emulator = false; // make this true if you don't want it to break when opening up camera
     private boolean loggingTrainingData = true;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // todo: we are not making sure there is an app to take pictures
         setHasOptionsMenu(true);
         beforePhotoTaken = true;
-
+        mSerializer = new TagScoresJSONSerializer(getActivity(), "tagScores.json");
         //store these views for accessing later
         mTagFields = new ArrayList<AutoCompleteTextView>();
         mSegmentImageViews = new ArrayList<ImageView>();
@@ -162,6 +166,13 @@ public class PictureTakerFragment extends Fragment{
 
     private void saveAccuracyData(){
         //todo, using mScores
+        try {
+            mSerializer.saveTagScores(mScores);
+        } catch (JSONException e){
+            Log.d(TAG, "Error in saveAccuracyData calling mSerializer.saveTagScores()"+e);
+        } catch (IOException e){
+            Log.d(TAG, "Error in saveAccuracyData calling mSerializer.saveTagScores()"+e);
+        }
     }
 
     //endregion

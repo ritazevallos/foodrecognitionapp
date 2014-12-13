@@ -1,5 +1,12 @@
 package edu.swarthmore.cs.lab.foodrecognitionapp;
 
+import android.net.Uri;
+import android.util.Log;
+
+import com.google.gson.Gson;
+
+import org.json.JSONObject;
+
 /**
  * Created by ritazevallos on 12/13/14.
  */
@@ -11,6 +18,14 @@ public class TagScore {
     boolean correctlyClassifiedFirstGuess;
     boolean correctlyClassified;
     int guessesTaken; // 1, 2, 3, 4 (did not guess)
+
+    private static final String JSON_CORRECT = "CORRECT";
+    private static final String JSON_FIRST = "FIRST";
+    private static final String JSON_SECOND = "SECOND";
+    private static final String JSON_THIRD = "THIRD";
+    private static final String JSON_CORRECTLY_FIRST = "CORRECTLY_FIRST";
+    private static final String JSON_CORRECTLY = "CORRECTLY";
+    private static final String JSON_GUESSES_TAKEN = "GUESSES_TAKEN";
 
     TagScore(String correct, String first, String second, String third) {
         this.correctTag = correct;
