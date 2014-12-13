@@ -118,6 +118,7 @@ public class FoodPhotoListFragment  extends ListFragment {
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inPreferredConfig = Bitmap.Config.ARGB_8888;
             options.inSampleSize = 2;
+            options.inDither = true;
             System.gc();
             Bitmap bitmap = BitmapFactory.decodeFile(path, options);
             imageView.setImageBitmap(bitmap);
