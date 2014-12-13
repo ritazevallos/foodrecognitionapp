@@ -49,6 +49,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import java.util.Vector;
 
 public class PictureTakerFragment extends Fragment{
 
@@ -91,11 +92,13 @@ public class PictureTakerFragment extends Fragment{
     private float guessScore = 0;
     private String inputTag;
     private ArrayList<Mat> segmentMats;
+    private ArrayList<TagScore> mScores;
 
     // SOME DEVELOPER SETTINGS
     private boolean viewMaskAndMaskedImage = false;
     private boolean viewSegments = true;
-    public boolean using_emulator = false; // make this true if you don't want it to break when opening up camera
+    private boolean using_emulator = false; // make this true if you don't want it to break when opening up camera
+    private boolean loggingTrainingData = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -107,6 +110,7 @@ public class PictureTakerFragment extends Fragment{
         //store these views for accessing later
         mTagFields = new ArrayList<AutoCompleteTextView>();
         mSegmentImageViews = new ArrayList<ImageView>();
+        mScores = new ArrayList<TagScore>();
 
         // Either create a new food photo, or get the one with the id added to the intent
         CreateDirectoryForPictures();
@@ -136,6 +140,28 @@ public class PictureTakerFragment extends Fragment{
         fragment.setArguments(args);
 
         return fragment;
+    }
+
+    //endregion
+
+    //region Data tracking
+
+    private void saveTrainingData(){
+        for (int i=0; i<segmentMats.size(); i++){
+            Mat segment = segmentMats.get(i);
+            String tag = mFoodPhoto.getTags().get(i).getFoodName();
+
+            Vector feature_vector = new Vector();
+            // todo: put all the features in here
+
+            // stick the feature vector into the Naive Bayes
+            // should probably also save the image file in case we want to extract more features later
+            // so save the file and store the uri somewhere
+        }
+    }
+
+    private void saveAccuracyData(){
+        //todo, using mScores
     }
 
     //endregion
@@ -189,6 +215,10 @@ public class PictureTakerFragment extends Fragment{
                 else{
                     mFoodPhotoStore.addFoodPhoto(mFoodPhoto);
                     FoodPhotoStore.get(getActivity()).saveFoodPhotos();
+                    if (loggingTrainingData) {
+                        saveTrainingData();
+                    }
+                    saveAccuracyData();
                     Log.d(TAG, "Average guess score: " + String.valueOf(guessScore/mFoodPhoto.getTags().size()));
                     openNutrition();
                 }
@@ -231,6 +261,11 @@ public class PictureTakerFragment extends Fragment{
     //endregion
 
     //region Tagging UI things
+
+    private void commenceTagging(){
+
+        displayTaggingUI();
+    }
 
     private void displayTaggingUI(){
         //todo: if ROIs is empty, error out
@@ -311,53 +346,39 @@ public class PictureTakerFragment extends Fragment{
 
         final ArrayList<String> suggestions = getTagSuggestions(1, 2, 3);
 
-        final Button firstButtonSuggestion = (Button) mTagSuggestionsLayout.findViewById(R.id.first_tag_suggestion);
-        firstButtonSuggestion.setText(suggestions.get(0));
-        firstButtonSuggestion.setEnabled(true);
-        final Button secondButtonSuggestion = (Button) mTagSuggestionsLayout.findViewById(R.id.second_tag_suggestion);
-        secondButtonSuggestion.setText(suggestions.get(1));
-        secondButtonSuggestion.setEnabled(true);
-        final Button thirdButtonSuggestion = (Button) mTagSuggestionsLayout.findViewById(R.id.third_tag_suggestion);
-        thirdButtonSuggestion.setText(suggestions.get(2));
-        thirdButtonSuggestion.setEnabled(true);
+        final ArrayList<Button> suggestionButtons = new ArrayList<Button>(){{
+            add((Button) mTagSuggestionsLayout.findViewById(R.id.first_tag_suggestion));
+            add((Button) mTagSuggestionsLayout.findViewById(R.id.second_tag_suggestion));
+            add((Button) mTagSuggestionsLayout.findViewById(R.id.third_tag_suggestion));
+        }};
         mTagField = (AutoCompleteTextView)mTagContainer.findViewById(R.id.pictureTag);
         mTagField.setEnabled(true);
-        firstButtonSuggestion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mFoodPhoto.setOneTag(suggestions.get(0), ll, ur, 1);
-                canContinue = true;
-                guessScore++;
-                secondButtonSuggestion.setEnabled(false);
-                thirdButtonSuggestion.setEnabled(false);
-                mTagField.setEnabled(false);
 
-            }
-        });
-        Log.e(TAG, "GOT HERE");
-        secondButtonSuggestion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mFoodPhoto.setOneTag(suggestions.get(1), ll, ur, 2);
-                canContinue = true;
-                guessScore+=2;
-                firstButtonSuggestion.setEnabled(false);
-                thirdButtonSuggestion.setEnabled(false);
-                mTagField.setEnabled(false);
-            }
-        });
+        for (int index=0; index<suggestionButtons.size(); index++){
+            final int i = index;
+            Button button = suggestionButtons.get(i);
+            button.setText(suggestions.get(i));
+            button.setEnabled(true);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
-        thirdButtonSuggestion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mFoodPhoto.setOneTag(suggestions.get(2), ll, ur, 3);
-                canContinue = true;
-                guessScore+=3;
-                firstButtonSuggestion.setEnabled(false);
-                secondButtonSuggestion.setEnabled(false);
-                mTagField.setEnabled(false);
-            }
-        });
+                    String selectedTag = suggestions.get(i);
+                    TagScore tagScore = new TagScore(selectedTag, suggestions.get(0), suggestions.get(1), suggestions.get(2));
+                    mScores.add(tagScore);
+
+                    mFoodPhoto.setOneTag(selectedTag, ll, ur, i+1);
+                    canContinue = true;
+                    guessScore+= i+1;
+                    for (int j=0; j<suggestionButtons.size(); j++){
+                        if (j!=i){
+                            suggestionButtons.get(i).setEnabled(false);
+                        }
+                    }
+                    mTagField.setEnabled(false);
+                }
+            });
+        }
 
         Button notFoodButton = (Button) mNotFoodLayout.findViewById(R.id.not_food_button);
         notFoodButton.setOnClickListener(new View.OnClickListener() {
@@ -376,10 +397,16 @@ public class PictureTakerFragment extends Fragment{
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                String selectedTag = s.toString();
+
+                TagScore tagScore = new TagScore(selectedTag, suggestions.get(0),suggestions.get(1),suggestions.get(2));
+                mScores.add(tagScore);
+
                 inputTag = s.toString();
-                firstButtonSuggestion.setEnabled(false);
-                secondButtonSuggestion.setEnabled(false);
-                thirdButtonSuggestion.setEnabled(false);
+                for (Button button: suggestionButtons) {
+                    button.setEnabled(false);
+                }
             }
 
             @Override
@@ -506,7 +533,7 @@ public class PictureTakerFragment extends Fragment{
 
         cropSegmentsToContours();
 
-        displayTaggingUI();
+        commenceTagging();
 
     }
 
@@ -529,6 +556,7 @@ public class PictureTakerFragment extends Fragment{
 
     public void cropSegmentsToContours(){
 
+        ArrayList<Mat> croppedSegmentMats = new ArrayList<Mat>();
 
         for (int i=0; i<segmentMats.size(); i++){
             Mat segmentMat = segmentMats.get(i);
@@ -544,6 +572,7 @@ public class PictureTakerFragment extends Fragment{
 
             Bitmap maskedImgBitmap = Bitmap.createBitmap(maskedImg.cols(), maskedImg.rows(), Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(maskedImg, maskedImgBitmap);
+            croppedSegmentMats.add(maskedImg);
             ImageView maskedImgView = new ImageView(getActivity());
             maskedImgView.setImageBitmap(maskedImgBitmap);
             mSegmentsContainer.addView(maskedImgView);
@@ -551,6 +580,8 @@ public class PictureTakerFragment extends Fragment{
             // todo: store the cropped image in a file ex: //Highgui.imwrite(mFile.toString(),submat);
 
         }
+
+        segmentMats = croppedSegmentMats;
     }
 
     public ArrayList<String> getTagSuggestions(int R, int G, int B){
