@@ -108,8 +108,6 @@ public class PictureTakerFragment extends Fragment{
         if(mFoodPhoto.getFile()==null) {
             TakeAPicture();
         }
-
-
     }
 
 
@@ -586,7 +584,7 @@ public class PictureTakerFragment extends Fragment{
         foodItems.add("Falafel Bar with Hummus");
 
 //        //todo: if we don't do machine learning in time, get a random three from this meal period from sharples menu
-        while(suggestions.size()<4) {
+        while(suggestions.size()<3) {
             String newSug = foodItems.get(randInt(0, foodItems.size() - 1));
             //guess food here
 
@@ -847,8 +845,6 @@ public class PictureTakerFragment extends Fragment{
                 Imgproc.drawContours ( imageWithContoursAndRectangles, bigContours, i, colorLine, 15);
                 Rect rect = ROIs.get(i);
                 //Core.rectangle(imageWithContoursAndRectangles, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), colorGreen, 15);
-                Point center = centers.get(i);
-                //todo: draw line from center to our tagging box
             }
 
             bitmap = Bitmap.createBitmap(imageWithContoursAndRectangles.cols(), imageWithContoursAndRectangles.rows(), Bitmap.Config.ARGB_8888);
