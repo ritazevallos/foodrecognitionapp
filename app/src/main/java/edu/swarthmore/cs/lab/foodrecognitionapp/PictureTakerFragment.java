@@ -50,8 +50,10 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-
 public class PictureTakerFragment extends Fragment{
+
+    //region Variable initialization, onCreate, newInstance
+
     public static final int MEDIA_TYPE_IMAGE = 1;
     private static final String TAG = "PictureTakerFragment";
     public static File mFile;
@@ -92,8 +94,6 @@ public class PictureTakerFragment extends Fragment{
     private boolean viewMaskAndMaskedImage = false;
     public boolean using_emulator = false; // make this true if you don't want it to break when opening up camera
 
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,6 +124,20 @@ public class PictureTakerFragment extends Fragment{
             TakeAPicture(); // launches camera intent
         }
     }
+
+    public static PictureTakerFragment newInstance(UUID healthID) {
+        Bundle args = new Bundle();
+        args.putSerializable(EXTRA_FOODPHOTO_ID, healthID);
+
+        PictureTakerFragment fragment = new PictureTakerFragment();
+        fragment.setArguments(args);
+
+        return fragment;
+    }
+
+    //endregion
+
+    //region Initializing the the menu and UI, including listeners for buttons
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
@@ -181,23 +195,24 @@ public class PictureTakerFragment extends Fragment{
             mImageView.setImageBitmap(bitmap);
             bitmap = null;
         }
-
-        mNumberOfSegmentsTextView = (TextView)v.findViewById(R.id.number_of_segments);
-
         mImageView.setOnTouchListener(new View.OnTouchListener(){
             @Override
             public boolean onTouch(View v, MotionEvent event){
+                // at the moment, taggingUnSegmentedBit is always false. We may change
+                // this if we want to allow users to tag unsegmented bits
                 if ((taggingUnSegmentedBit) && (event.getAction() == MotionEvent.ACTION_DOWN)) {
-                        Log.d(TAG, "mImageView.onTouchListener");
-                        Point ll = new Point(event.getX() - 20, event.getY() - 20);
-                        Point ur = new Point(event.getX() + 20, event.getY() + 20);
-                        //todo:
+                    Log.d(TAG, "mImageView.onTouchListener");
+                    Point ll = new Point(event.getX() - 20, event.getY() - 20);
+                    Point ur = new Point(event.getX() + 20, event.getY() + 20);
+                    //todo:
 
-                        retakePhotoButton.setVisibility(View.VISIBLE);
+                    retakePhotoButton.setVisibility(View.VISIBLE);
                 }
                 return true;
             }
         });
+
+        mNumberOfSegmentsTextView = (TextView)v.findViewById(R.id.number_of_segments);
 
         return v;
 
@@ -208,60 +223,13 @@ public class PictureTakerFragment extends Fragment{
         toast.show();
     }
 
-    private void CreateDirectoryForPictures()
-    {
-        mDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "BOOKS");
-        if (!mDir.exists())
-        {
-            mDir.mkdirs();
-        }
-    }
+    //endregion
 
-    private void LoadPicture(){
+    //region Tagging UI things
 
-        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent, 0);
-    }
-
-    private void TakeAPicture(){
-
-        Intent intent = new Intent(getActivity(), CameraActivity.class);
-
-        mFile = new File(mDir, String.format("foodPhoto_"+ UUID.randomUUID() + ".jpg"));
-        Log.d(TAG, "file path: " + mFile.toString());
-        mFoodPhoto.setFile(mFile);
-
-        intent.putExtra(CameraActivity.EXTRA_URI, Uri.fromFile(mFile).toString());
-
-        beforePhotoTaken = false;
-        startActivityForResult(intent, 0);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d(TAG, "in onActivityResult");
-
-        super.onActivityResult(requestCode,resultCode,data);
-
-        Uri contentUri;
-        if(data == null){
-            contentUri = Uri.fromFile(mFile);
-        } else {
-            contentUri = data.getData();
-        }
-
-        loadBitmapFromUri(contentUri);
-
-        cropPhoto();
-
-        mImageView.setImageBitmap(bitmap);
-        retakePhotoButton.setVisibility(View.VISIBLE);
-
-        segmentImage();
-
+    private void displayTaggingUI(){
+        //todo: if ROIs is empty, error out
         mNumberOfSegmentsTextView.setText("Found "+ROIs.size()+" foods on your plate!");
-
 
         count = 0;
         tagSegment(0);
@@ -287,20 +255,8 @@ public class PictureTakerFragment extends Fragment{
                 }
             });
         }
-
     }
 
-    private void loadBitmapFromUri(Uri uri){
-        try {
-            bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
-        } catch (FileNotFoundException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        } catch (IOException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
-    }
 
     public void goToNextSegment(){
         if(canContinue) {
@@ -345,8 +301,6 @@ public class PictureTakerFragment extends Fragment{
 
 
         Mat subMat = imageMat.submat(rect.y, rect.y + rect.height, rect.x, rect.x + rect.width);
-
-
 
         final ArrayList<String> suggestions = getTagSuggestions(1, 2, 3);
 
@@ -456,6 +410,117 @@ public class PictureTakerFragment extends Fragment{
         mImageView.setImageBitmap(mapbit);
 
     }
+
+    //endregion
+
+    //region Getting the picture from the camera or gallery, including all the file IO
+
+    private void CreateDirectoryForPictures()
+    {
+        mDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "BOOKS");
+        if (!mDir.exists())
+        {
+            mDir.mkdirs();
+        }
+    }
+
+    /** Create a File for saving an image or video */
+    private static File getOutputMediaFile(int type){
+        // To be safe, you should check that the SDCard is mounted
+        // using Environment.getExternalStorageState() before doing this.
+
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "Food");
+        // This location works best if you want the created images to be shared
+        // between applications and persist after your app has been uninstalled.
+
+        // Create the storage directory if it does not exist
+        if (! mediaStorageDir.exists()){
+            if (! mediaStorageDir.mkdirs()){
+                Log.d("Food", "failed to create directory");
+                return null;
+            } else {
+                Log.d("Food", "successfully created directory");
+            }
+        }
+
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        File mediaFile;
+        if (type == MEDIA_TYPE_IMAGE){
+            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
+                    "IMG_"+ timeStamp + ".jpg");
+        } else {
+            return null;
+        }
+
+        return mediaFile;
+    }
+
+    private void LoadPicture(){
+
+        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, 0);
+    }
+
+    private void TakeAPicture(){
+
+        Intent intent = new Intent(getActivity(), CameraActivity.class);
+
+        mFile = new File(mDir, String.format("foodPhoto_"+ UUID.randomUUID() + ".jpg"));
+        Log.d(TAG, "file path: " + mFile.toString());
+        mFoodPhoto.setFile(mFile);
+
+        intent.putExtra(CameraActivity.EXTRA_URI, Uri.fromFile(mFile).toString());
+
+        beforePhotoTaken = false;
+        startActivityForResult(intent, 0);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(TAG, "in onActivityResult");
+
+        super.onActivityResult(requestCode,resultCode,data);
+
+        Uri contentUri;
+        if(data == null){
+            contentUri = Uri.fromFile(mFile);
+        } else {
+            contentUri = data.getData();
+        }
+
+        loadBitmapFromUri(contentUri);
+
+        cropPhoto();
+
+        mImageView.setImageBitmap(bitmap);
+        retakePhotoButton.setVisibility(View.VISIBLE);
+
+        segmentImage();
+
+        displayTaggingUI();
+
+    }
+
+
+    private void loadBitmapFromUri(Uri uri){
+        try {
+            bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
+        } catch (FileNotFoundException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+    }
+
+    //endregion
+
+    // region Classification
+
 
     public ArrayList<String> getTagSuggestions(int R, int G, int B){
         // todo: get suggestions from classifier, given foodMat
@@ -636,8 +701,6 @@ public class PictureTakerFragment extends Fragment{
 //        mDinnerColors.add(color);
 //    }
 
-
-
     public static int randInt(int min, int max) {
 
         // NOTE: Usually this should be a field rather than a method
@@ -650,6 +713,10 @@ public class PictureTakerFragment extends Fragment{
 
         return randomNum;
     }
+
+    //endregion
+
+    //region Segmentation
 
     public void cropPhoto(){
         Mat imageMat = new Mat(bitmap.getWidth(), bitmap.getHeight(), CvType.CV_8UC4); // fc means floating point matrices
@@ -695,31 +762,31 @@ public class PictureTakerFragment extends Fragment{
             Imgproc.GaussianBlur(mask, mask, new Size(3, 3), 0);
             Imgproc.threshold(mask, mask, 0, 255, Imgproc.THRESH_OTSU);
 
-            // uncomment to show the mask
-
-//            Bitmap maskBitmap = Bitmap.createBitmap(mask.cols(), mask.rows(), Bitmap.Config.ARGB_8888);
-//            Utils.matToBitmap(mask, maskBitmap);
-//            ImageView maskView = new ImageView(getActivity());
-//            maskView.setImageBitmap(maskBitmap);
-//            TextView maskText = new TextView(getActivity());
-//            maskText.setText("mask");
-//            mSegmentsContainer.addView(maskText);
-//            mSegmentsContainer.addView(maskView);
+            if (viewMaskAndMaskedImage) {
+                Bitmap maskBitmap = Bitmap.createBitmap(mask.cols(), mask.rows(), Bitmap.Config.ARGB_8888);
+                Utils.matToBitmap(mask, maskBitmap);
+                ImageView maskView = new ImageView(getActivity());
+                maskView.setImageBitmap(maskBitmap);
+                TextView maskText = new TextView(getActivity());
+                maskText.setText("mask");
+                mSegmentsContainer.addView(maskText);
+                mSegmentsContainer.addView(maskView);
+            }
 
             Mat maskedImg = new Mat(imageMat.size(), imageMat.type());
             maskedImg.setTo(new Scalar(0,0,0));
             imageMat.copyTo(maskedImg, mask);
 
-            // uncomment to show the masked image
-
-//            Bitmap maskedImgBitmap = Bitmap.createBitmap(maskedImg.cols(), maskedImg.rows(), Bitmap.Config.ARGB_8888);
-//            Utils.matToBitmap(maskedImg, maskedImgBitmap);
-//            ImageView maskedImgView = new ImageView(getActivity());
-//            maskedImgView.setImageBitmap(maskedImgBitmap);
-//            TextView maskedText = new TextView(getActivity());
-//            maskedText.setText("masked");
-//            mSegmentsContainer.addView(maskedText);
-//            mSegmentsContainer.addView(maskedImgView);
+            if (viewMaskAndMaskedImage) {
+                Bitmap maskedImgBitmap = Bitmap.createBitmap(maskedImg.cols(), maskedImg.rows(), Bitmap.Config.ARGB_8888);
+                Utils.matToBitmap(maskedImg, maskedImgBitmap);
+                ImageView maskedImgView = new ImageView(getActivity());
+                maskedImgView.setImageBitmap(maskedImgBitmap);
+                TextView maskedText = new TextView(getActivity());
+                maskedText.setText("masked");
+                mSegmentsContainer.addView(maskedText);
+                mSegmentsContainer.addView(maskedImgView);
+            }
 
             List <MatOfPoint> contours = new ArrayList<MatOfPoint>();
             Imgproc.findContours(mask, contours, new Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
@@ -783,6 +850,9 @@ public class PictureTakerFragment extends Fragment{
 
     }
 
+    //endregion
+
+    //region The App Options Menu
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -848,53 +918,9 @@ public class PictureTakerFragment extends Fragment{
         //getActivity().finish();
     }
 
-    /** Create a file Uri for saving an image or video */
-    private static Uri getOutputMediaFileUri(int type){
-        return Uri.fromFile(getOutputMediaFile(type));
-    }
+    //endregion
 
-    /** Create a File for saving an image or video */
-    private static File getOutputMediaFile(int type){
-        // To be safe, you should check that the SDCard is mounted
-        // using Environment.getExternalStorageState() before doing this.
-
-        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "Food");
-        // This location works best if you want the created images to be shared
-        // between applications and persist after your app has been uninstalled.
-
-        // Create the storage directory if it does not exist
-        if (! mediaStorageDir.exists()){
-            if (! mediaStorageDir.mkdirs()){
-                Log.d("Food", "failed to create directory");
-                return null;
-            } else {
-                Log.d("Food", "successfully created directory");
-            }
-        }
-
-        // Create a media file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        File mediaFile;
-        if (type == MEDIA_TYPE_IMAGE){
-            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    "IMG_"+ timeStamp + ".jpg");
-        } else {
-            return null;
-        }
-
-        return mediaFile;
-    }
-
-    public static PictureTakerFragment newInstance(UUID healthID) {
-        Bundle args = new Bundle();
-        args.putSerializable(EXTRA_FOODPHOTO_ID, healthID);
-
-        PictureTakerFragment fragment = new PictureTakerFragment();
-        fragment.setArguments(args);
-
-        return fragment;
-    }
+    //region SharplesMenu asynchronous loader
 
     private class AsyncSharplesGetter extends AsyncTask<String, Integer, String> {
         //todo: what are the string, int, string in the constructor?
@@ -953,5 +979,7 @@ public class PictureTakerFragment extends Fragment{
 
         }
     }
+
+    //endregion
 
 }

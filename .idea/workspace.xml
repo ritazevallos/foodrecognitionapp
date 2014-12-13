@@ -31,8 +31,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e557c951-0733-49f2-8012-94cb2564ad19" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhoto.java" afterPath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhoto.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhotoListFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhotoListFragment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -60,24 +58,55 @@
       <file leaf-file-name="PictureTakerFragment.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.21052632" vertical-offset="11858" max-vertical-offset="14070">
-              <caret line="819" column="42" selection-start-line="819" selection-start-column="42" selection-end-line="819" selection-end-column="42" />
+            <state vertical-scroll-proportion="0.31428573" vertical-offset="0" max-vertical-offset="525">
+              <caret line="414" column="0" selection-start-line="414" selection-start-column="0" selection-end-line="414" selection-end-column="0" />
               <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#5998#6888#0" expanded="true" />
-                <element signature="e#6877#6878#0" expanded="true" />
-                <element signature="e#7198#7816#0" expanded="true" />
-                <element signature="e#7805#7806#0" expanded="true" />
-                <element signature="e#10207#10215#0" expanded="true" />
-                <element signature="e#10474#10645#0" expanded="true" />
-                <element signature="e#10630#10631#0" expanded="true" />
-                <element signature="e#16910#16918#0" expanded="true" />
-                <element signature="e#17076#17084#0" expanded="true" />
-                <element signature="e#28509#28521#0" expanded="true" />
-                <element signature="e#29212#29224#0" expanded="true" />
-                <element signature="e#29276#29283#0" expanded="true" />
-                <element signature="e#33028#33233#0" expanded="true" />
-                <element signature="e#33231#33232#0" expanded="true" />
+                <element signature="e#1625#1680#0" expanded="false" />
+                <element signature="method#onCreate#0;class#PictureTakerFragment#0" expanded="false" />
+                <element signature="e#4992#5066#0" expanded="false" />
+                <element signature="e#5943#6091#0" expanded="true" />
+                <element signature="e#6080#6081#0" expanded="true" />
+                <element signature="e#6457#7347#0" expanded="true" />
+                <element signature="e#7336#7337#0" expanded="true" />
+                <element signature="e#7568#8327#0" expanded="true" />
+                <element signature="e#8316#8317#0" expanded="true" />
+                <element signature="e#8615#8641#0" expanded="false" />
+                <element signature="e#9462#9470#0" expanded="true" />
+                <element signature="e#9729#9900#0" expanded="true" />
+                <element signature="e#9885#9886#0" expanded="true" />
+                <element signature="e#12490#12902#0" expanded="true" />
+                <element signature="e#12891#12892#0" expanded="true" />
+                <element signature="e#12987#13398#0" expanded="true" />
+                <element signature="e#13387#13388#0" expanded="true" />
+                <element signature="e#13451#13863#0" expanded="true" />
+                <element signature="e#13852#13853#0" expanded="true" />
+                <element signature="e#13999#14183#0" expanded="true" />
+                <element signature="e#14172#14173#0" expanded="true" />
+                <element signature="e#14947#15433#0" expanded="true" />
+                <element signature="e#15422#15423#0" expanded="true" />
+                <element signature="e#15583#15665#0" expanded="false" />
+                <element signature="method#getOutputMediaFile#0;class#PictureTakerFragment#0" expanded="false" />
+                <element signature="e#18917#18941#0" expanded="false" />
+                <element signature="method#getTagSuggestions#0;class#PictureTakerFragment#0" expanded="false" />
+                <element signature="e#19130#19138#0" expanded="true" />
+                <element signature="e#19296#19304#0" expanded="true" />
+                <element signature="e#27408#27429#0" expanded="false" />
+                <element signature="method#cropPhoto#0;class#PictureTakerFragment#0" expanded="false" />
+                <element signature="method#segmentImage#0;class#PictureTakerFragment#0" expanded="false" />
+                <element signature="e#30821#30833#0" expanded="true" />
+                <element signature="e#31524#31536#0" expanded="true" />
+                <element signature="e#31588#31595#0" expanded="true" />
+                <element signature="e#33925#33954#0" expanded="false" />
+                <element signature="method#onCreateOptionsMenu#0;class#PictureTakerFragment#0" expanded="false" />
+                <element signature="method#onOptionsItemSelected#0;class#PictureTakerFragment#0" expanded="false" />
+                <element signature="method#deletePhotosAfterConfirmation#0;class#PictureTakerFragment#0" expanded="false" />
+                <element signature="e#35391#35596#0" expanded="true" />
+                <element signature="e#35594#35595#0" expanded="true" />
+                <element signature="method#openGallery#0;class#PictureTakerFragment#0" expanded="false" />
+                <element signature="method#openNutrition#0;class#PictureTakerFragment#0" expanded="false" />
+                <element signature="method#openMainMenu#0;class#PictureTakerFragment#0" expanded="false" />
+                <element signature="e#36237#36278#0" expanded="false" />
+                <element signature="class#AsyncSharplesGetter#0;class#PictureTakerFragment#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -1590,8 +1619,8 @@
     <treeState />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="44" />
-    <option name="y" value="425" />
+    <option name="x" value="2" />
+    <option name="y" value="99" />
     <option name="width" value="1259" />
     <option name="height" value="773" />
   </component>
@@ -2065,7 +2094,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="44" y="425" width="1259" height="773" extended-state="0" />
+    <frame x="2" y="99" width="1259" height="773" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -2082,7 +2111,7 @@
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="14" side_tool="true" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32724506" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.5062893" sideWeight="0.31260097" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.08962264" sideWeight="0.31260097" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32724506" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -2152,12 +2181,6 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java</url>
-          <line>885</line>
-          <properties />
-          <option name="timeStamp" value="183" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/SharplesMenuFragment.java</url>
           <line>48</line>
           <properties />
@@ -2165,25 +2188,25 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java</url>
-          <line>537</line>
+          <line>602</line>
           <properties />
           <option name="timeStamp" value="192" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java</url>
-          <line>543</line>
+          <line>608</line>
           <properties />
           <option name="timeStamp" value="196" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java</url>
-          <line>541</line>
+          <line>606</line>
           <properties />
           <option name="timeStamp" value="197" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java</url>
-          <line>777</line>
+          <line>844</line>
           <properties />
           <option name="timeStamp" value="202" />
         </line-breakpoint>
@@ -2232,21 +2255,52 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="8340">
           <caret line="550" column="0" selection-start-line="550" selection-start-column="0" selection-end-line="550" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#5998#6888#0" expanded="true" />
-            <element signature="e#6877#6878#0" expanded="true" />
-            <element signature="e#7198#7816#0" expanded="true" />
-            <element signature="e#7805#7806#0" expanded="true" />
-            <element signature="e#10207#10215#0" expanded="true" />
-            <element signature="e#10474#10645#0" expanded="true" />
-            <element signature="e#10630#10631#0" expanded="true" />
-            <element signature="e#16910#16918#0" expanded="true" />
-            <element signature="e#17076#17084#0" expanded="true" />
-            <element signature="e#28509#28521#0" expanded="true" />
-            <element signature="e#29212#29224#0" expanded="true" />
-            <element signature="e#29276#29283#0" expanded="true" />
-            <element signature="e#33028#33233#0" expanded="true" />
-            <element signature="e#33231#33232#0" expanded="true" />
+            <element signature="e#1625#1680#0" expanded="false" />
+            <element signature="method#onCreate#0;class#PictureTakerFragment#0" expanded="false" />
+            <element signature="e#4992#5066#0" expanded="false" />
+            <element signature="e#5943#6091#0" expanded="true" />
+            <element signature="e#6080#6081#0" expanded="true" />
+            <element signature="e#6457#7347#0" expanded="true" />
+            <element signature="e#7336#7337#0" expanded="true" />
+            <element signature="e#7568#8327#0" expanded="true" />
+            <element signature="e#8316#8317#0" expanded="true" />
+            <element signature="e#8615#8641#0" expanded="false" />
+            <element signature="e#9462#9470#0" expanded="true" />
+            <element signature="e#9729#9900#0" expanded="true" />
+            <element signature="e#9885#9886#0" expanded="true" />
+            <element signature="e#12490#12902#0" expanded="true" />
+            <element signature="e#12891#12892#0" expanded="true" />
+            <element signature="e#12987#13398#0" expanded="true" />
+            <element signature="e#13387#13388#0" expanded="true" />
+            <element signature="e#13451#13863#0" expanded="true" />
+            <element signature="e#13852#13853#0" expanded="true" />
+            <element signature="e#13999#14183#0" expanded="true" />
+            <element signature="e#14172#14173#0" expanded="true" />
+            <element signature="e#14947#15433#0" expanded="true" />
+            <element signature="e#15422#15423#0" expanded="true" />
+            <element signature="e#15583#15665#0" expanded="false" />
+            <element signature="method#getOutputMediaFile#0;class#PictureTakerFragment#0" expanded="false" />
+            <element signature="e#18917#18941#0" expanded="false" />
+            <element signature="method#getTagSuggestions#0;class#PictureTakerFragment#0" expanded="false" />
+            <element signature="e#19130#19138#0" expanded="true" />
+            <element signature="e#19296#19304#0" expanded="true" />
+            <element signature="e#27408#27429#0" expanded="false" />
+            <element signature="method#cropPhoto#0;class#PictureTakerFragment#0" expanded="false" />
+            <element signature="method#segmentImage#0;class#PictureTakerFragment#0" expanded="false" />
+            <element signature="e#30821#30833#0" expanded="true" />
+            <element signature="e#31524#31536#0" expanded="true" />
+            <element signature="e#31588#31595#0" expanded="true" />
+            <element signature="e#33925#33954#0" expanded="false" />
+            <element signature="method#onCreateOptionsMenu#0;class#PictureTakerFragment#0" expanded="false" />
+            <element signature="method#onOptionsItemSelected#0;class#PictureTakerFragment#0" expanded="false" />
+            <element signature="method#deletePhotosAfterConfirmation#0;class#PictureTakerFragment#0" expanded="false" />
+            <element signature="e#35391#35596#0" expanded="true" />
+            <element signature="e#35594#35595#0" expanded="true" />
+            <element signature="method#openGallery#0;class#PictureTakerFragment#0" expanded="false" />
+            <element signature="method#openNutrition#0;class#PictureTakerFragment#0" expanded="false" />
+            <element signature="method#openMainMenu#0;class#PictureTakerFragment#0" expanded="false" />
+            <element signature="e#36237#36278#0" expanded="false" />
+            <element signature="class#AsyncSharplesGetter#0;class#PictureTakerFragment#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2643,24 +2697,55 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.21052632" vertical-offset="11858" max-vertical-offset="14070">
-          <caret line="819" column="42" selection-start-line="819" selection-start-column="42" selection-end-line="819" selection-end-column="42" />
+        <state vertical-scroll-proportion="0.31428573" vertical-offset="0" max-vertical-offset="525">
+          <caret line="414" column="0" selection-start-line="414" selection-start-column="0" selection-end-line="414" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#5998#6888#0" expanded="true" />
-            <element signature="e#6877#6878#0" expanded="true" />
-            <element signature="e#7198#7816#0" expanded="true" />
-            <element signature="e#7805#7806#0" expanded="true" />
-            <element signature="e#10207#10215#0" expanded="true" />
-            <element signature="e#10474#10645#0" expanded="true" />
-            <element signature="e#10630#10631#0" expanded="true" />
-            <element signature="e#16910#16918#0" expanded="true" />
-            <element signature="e#17076#17084#0" expanded="true" />
-            <element signature="e#28509#28521#0" expanded="true" />
-            <element signature="e#29212#29224#0" expanded="true" />
-            <element signature="e#29276#29283#0" expanded="true" />
-            <element signature="e#33028#33233#0" expanded="true" />
-            <element signature="e#33231#33232#0" expanded="true" />
+            <element signature="e#1625#1680#0" expanded="false" />
+            <element signature="method#onCreate#0;class#PictureTakerFragment#0" expanded="false" />
+            <element signature="e#4992#5066#0" expanded="false" />
+            <element signature="e#5943#6091#0" expanded="true" />
+            <element signature="e#6080#6081#0" expanded="true" />
+            <element signature="e#6457#7347#0" expanded="true" />
+            <element signature="e#7336#7337#0" expanded="true" />
+            <element signature="e#7568#8327#0" expanded="true" />
+            <element signature="e#8316#8317#0" expanded="true" />
+            <element signature="e#8615#8641#0" expanded="false" />
+            <element signature="e#9462#9470#0" expanded="true" />
+            <element signature="e#9729#9900#0" expanded="true" />
+            <element signature="e#9885#9886#0" expanded="true" />
+            <element signature="e#12490#12902#0" expanded="true" />
+            <element signature="e#12891#12892#0" expanded="true" />
+            <element signature="e#12987#13398#0" expanded="true" />
+            <element signature="e#13387#13388#0" expanded="true" />
+            <element signature="e#13451#13863#0" expanded="true" />
+            <element signature="e#13852#13853#0" expanded="true" />
+            <element signature="e#13999#14183#0" expanded="true" />
+            <element signature="e#14172#14173#0" expanded="true" />
+            <element signature="e#14947#15433#0" expanded="true" />
+            <element signature="e#15422#15423#0" expanded="true" />
+            <element signature="e#15583#15665#0" expanded="false" />
+            <element signature="method#getOutputMediaFile#0;class#PictureTakerFragment#0" expanded="false" />
+            <element signature="e#18917#18941#0" expanded="false" />
+            <element signature="method#getTagSuggestions#0;class#PictureTakerFragment#0" expanded="false" />
+            <element signature="e#19130#19138#0" expanded="true" />
+            <element signature="e#19296#19304#0" expanded="true" />
+            <element signature="e#27408#27429#0" expanded="false" />
+            <element signature="method#cropPhoto#0;class#PictureTakerFragment#0" expanded="false" />
+            <element signature="method#segmentImage#0;class#PictureTakerFragment#0" expanded="false" />
+            <element signature="e#30821#30833#0" expanded="true" />
+            <element signature="e#31524#31536#0" expanded="true" />
+            <element signature="e#31588#31595#0" expanded="true" />
+            <element signature="e#33925#33954#0" expanded="false" />
+            <element signature="method#onCreateOptionsMenu#0;class#PictureTakerFragment#0" expanded="false" />
+            <element signature="method#onOptionsItemSelected#0;class#PictureTakerFragment#0" expanded="false" />
+            <element signature="method#deletePhotosAfterConfirmation#0;class#PictureTakerFragment#0" expanded="false" />
+            <element signature="e#35391#35596#0" expanded="true" />
+            <element signature="e#35594#35595#0" expanded="true" />
+            <element signature="method#openGallery#0;class#PictureTakerFragment#0" expanded="false" />
+            <element signature="method#openNutrition#0;class#PictureTakerFragment#0" expanded="false" />
+            <element signature="method#openMainMenu#0;class#PictureTakerFragment#0" expanded="false" />
+            <element signature="e#36237#36278#0" expanded="false" />
+            <element signature="class#AsyncSharplesGetter#0;class#PictureTakerFragment#0" expanded="false" />
           </folding>
         </state>
       </provider>
