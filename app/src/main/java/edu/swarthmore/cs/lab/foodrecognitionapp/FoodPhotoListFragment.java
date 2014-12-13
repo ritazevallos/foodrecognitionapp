@@ -104,16 +104,10 @@ public class FoodPhotoListFragment  extends ListFragment {
 
             ImageView imageView = (ImageView) convertView.findViewById(R.id.list_image);
             File file = fp.getFile();
-            String path = file.getAbsolutePath();
-            int start = path.indexOf("/storage");
-            path = path.substring(start, path.length());
-            
-            //Uri contentUri = Uri.parse(path);
-            //Uri contentUri = Uri.fromFile(fp.getFile());
+            String path = fp.cleanedFilePath(); // I moved the hacky code that was here before into a FoodPhoto method -Rita 12-12-14
 
             Log.d(TAG, "File: " + file.toString());
             Log.d(TAG, "Absolute path: " + path);
-
 
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inPreferredConfig = Bitmap.Config.ARGB_8888;

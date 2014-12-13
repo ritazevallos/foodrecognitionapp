@@ -1,6 +1,8 @@
 package edu.swarthmore.cs.lab.foodrecognitionapp;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -15,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -73,7 +76,7 @@ public class PictureTakerFragment extends Fragment{
     public static final String EXTRA_FOODPHOTO_ID =
             "edu.swarthmore.cs.lab.foodrecognitionapp.foodphoto_id";
     private ArrayList<ImageView> mSegmentImageViews;
-    public boolean using_emulator = false; // make this true if you don't want it to break when opening up camera
+    private boolean taggingUnSegmentedBit = false;
     private ArrayList<Rect> ROIs;
     private TextView mNumberOfSegmentsTextView;
     private LinearLayout mTagSuggestionsLayout;
@@ -85,6 +88,11 @@ public class PictureTakerFragment extends Fragment{
     private float guessScore = 0;
     private String inputTag;
 
+    // SOME DEVELOPER SETTINGS
+    private boolean viewMaskAndMaskedImage = false;
+    public boolean using_emulator = false; // make this true if you don't want it to break when opening up camera
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -92,7 +100,10 @@ public class PictureTakerFragment extends Fragment{
         // todo: we are not making sure there is an app to take pictures
         setHasOptionsMenu(true);
         beforePhotoTaken = true;
+
+        //store these views for accessing later
         mTagFields = new ArrayList<AutoCompleteTextView>();
+        mSegmentImageViews = new ArrayList<ImageView>();
 
         // Either create a new food photo, or get the one with the id added to the intent
         CreateDirectoryForPictures();
@@ -100,15 +111,19 @@ public class PictureTakerFragment extends Fragment{
         UUID foodPhotoId = (UUID)getArguments().getSerializable(EXTRA_FOODPHOTO_ID);
         mFoodPhoto = mFoodPhotoStore.getFoodPhoto(foodPhotoId);
 
-        mSegmentImageViews = new ArrayList<ImageView>();
+        //Populate mSharplesMenu, populates FOOD_GUESSES, and sets menuIsLoaded to true once done
         AsyncSharplesGetter dashScraper = new AsyncSharplesGetter();
-        dashScraper.execute("go!"); //populates mSharplesMenu, populates FOOD_GUESSES, and sets menuIsLoaded to true once done
+        dashScraper.execute("go!");
 
-        if(mFoodPhoto.getFile()==null) {
-            TakeAPicture();
+        if (mFoodPhoto.getFile() != null){
+            // load image from file
+            Uri contentUri = Uri.fromFile(new File(mFoodPhoto.cleanedFilePath()));
+            loadBitmapFromUri(contentUri);
+        }
+        else if (!using_emulator) {
+            TakeAPicture(); // launches camera intent
         }
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
@@ -120,8 +135,6 @@ public class PictureTakerFragment extends Fragment{
         mTagSuggestionsLayout = (LinearLayout)v.findViewById(R.id.tag_buttons_layout);
         mNotFoodLayout = (LinearLayout)v.findViewById(R.id.notFoodLayout);
         mTagContainer = (RelativeLayout)v.findViewById(R.id.tagContainerLayout);
-
-
 
         retakePhotoButton = (Button)v.findViewById(R.id.retake_photo_button);
         if(beforePhotoTaken) {
@@ -147,40 +160,21 @@ public class PictureTakerFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "tag says: " + mFoodPhoto.getTags());
-                if (mFoodPhoto.getTags().isEmpty()){
-                    Toast toast = Toast.makeText(getActivity(), "Remember to tag your photo", Toast.LENGTH_SHORT);
-                    toast.show();
-                } else{
+                if (mFoodPhoto.getTags().isEmpty()) {
+                    showToast("Remember to tag your photo");
+                }
+                else if (mFoodPhoto.getTags().size() < ROIs.size()){
+                    int tags_left = ROIs.size()-mFoodPhoto.getTags().size();
+                    showToast("You still have "+ tags_left + "segments left to tag!");
+                }
+                else{
                     mFoodPhotoStore.addFoodPhoto(mFoodPhoto);
                     FoodPhotoStore.get(getActivity()).saveFoodPhotos();
-                    //bitmap.recycle();
                     Log.d(TAG, "Average guess score: " + String.valueOf(guessScore/mFoodPhoto.getTags().size()));
                     openNutrition();
                 }
             }
         });
-
-//        mTagField = (AutoCompleteTextView)v.findViewById(R.id.pictureTag);
-//        //mTagField.setVisibility(View.INVISIBLE);
-//
-//        mTagField.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                String msg = s.toString();
-//                //mFoodPhoto.setOneTag(0, msg, 0, 0);
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//
-//            }
-//        });
 
         mImageView = (ImageView)v.findViewById(R.id.imageView1);
         if (bitmap != null) {
@@ -188,61 +182,30 @@ public class PictureTakerFragment extends Fragment{
             bitmap = null;
         }
 
-        //final LinearLayout tagContainer = (LinearLayout)v.findViewById(R.id.tagContainerLayout);
-
         mNumberOfSegmentsTextView = (TextView)v.findViewById(R.id.number_of_segments);
-//
-//        mImageView.setOnTouchListener(new View.OnTouchListener(){
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event){
-//                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-//                    if (beforePhotoTaken && !(using_emulator)) {
-//
-//                    } else if (clickNTagActivated) {
-//                        Log.d(TAG, "mImageView.onTouchListener");
-//                        Point ll = new Point(event.getX() - 20, event.getY() - 20);
-//                        Point ur = new Point(event.getX() + 20, event.getY() + 20);
-//                        addTagField(ll,ur, tagContainer);
-//
-//                        retakePhotoButton.setVisibility(View.VISIBLE);
-//                    }
-//                }
-//                return true;
-//            }
-//        });
 
-        return v;
-
-
-    }
-
-    private void addTagField(final Point ll, final Point ur, final LinearLayout tagContainer){ // declared final so we can access in inner block
-        final AutoCompleteTextView tag_field = new AutoCompleteTextView(getActivity());
-        tag_field.setHint("Tag this picture");
-        final int index = mFoodPhoto.getTags().size();
-        mFoodPhoto.setOneTag("",ll, ur);
-
-        tag_field.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mImageView.setOnTouchListener(new View.OnTouchListener(){
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String selection = (String)parent.getItemAtPosition(position);
-                mFoodPhoto.setOneTag(selection, ll, ur, index);
+            public boolean onTouch(View v, MotionEvent event){
+                if ((taggingUnSegmentedBit) && (event.getAction() == MotionEvent.ACTION_DOWN)) {
+                        Log.d(TAG, "mImageView.onTouchListener");
+                        Point ll = new Point(event.getX() - 20, event.getY() - 20);
+                        Point ur = new Point(event.getX() + 20, event.getY() + 20);
+                        //todo:
+
+                        retakePhotoButton.setVisibility(View.VISIBLE);
+                }
+                return true;
             }
         });
 
-        // doing this after so that mTagFields.size() is the correct index for the new tag
-        mTagFields.add(tag_field);
-        tagContainer.addView(tag_field);
+        return v;
 
-        ArrayList<AutoCompleteTextView> final_tagfield = new ArrayList<AutoCompleteTextView>();
-        final_tagfield.add(tag_field);
-        if (menuIsLoaded) {
-            attachGuessesToTagFields(final_tagfield);
-        }
     }
 
-    private void removeTag(){
-        //TODO: need to get index of tag and remove both from the layout and the foodphoto.maybe this could be called by pressing the ESC key
+    private void showToast(String text){
+        Toast toast = Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     private void CreateDirectoryForPictures()
@@ -262,7 +225,6 @@ public class PictureTakerFragment extends Fragment{
     }
 
     private void TakeAPicture(){
-        //Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         Intent intent = new Intent(getActivity(), CameraActivity.class);
 
@@ -289,19 +251,7 @@ public class PictureTakerFragment extends Fragment{
             contentUri = data.getData();
         }
 
-
-        // display in ImageView. We will resize the bitmap to fit the display
-        // Loading the full sized image will consume to much memory
-        // and cause the application to crash.
-        try {
-            bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), contentUri);
-        } catch (FileNotFoundException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        } catch (IOException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
+        loadBitmapFromUri(contentUri);
 
         cropPhoto();
 
@@ -340,6 +290,18 @@ public class PictureTakerFragment extends Fragment{
 
     }
 
+    private void loadBitmapFromUri(Uri uri){
+        try {
+            bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
+        } catch (FileNotFoundException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+    }
+
     public void goToNextSegment(){
         if(canContinue) {
             if(count<ROIs.size()){
@@ -347,15 +309,13 @@ public class PictureTakerFragment extends Fragment{
                 mNumberOfSegmentsTextView.setText(ROIs.size()-count + " foods left to tag!");
                 count++;
             } else {
-                Toast toast = Toast.makeText(getActivity(), "All segments have been tagged", Toast.LENGTH_SHORT);
-                toast.show();
+                showToast("All segments have been tagged");
                 canContinue = true;
             }
 
             canContinue = false;
         } else {
-            Toast toast = Toast.makeText(getActivity(), "Tag this segment, or hit 'Not Food'", Toast.LENGTH_SHORT);
-            toast.show();
+            showToast("Tag this segment, or hit 'Not Food'");
         }
     }
 
@@ -447,10 +407,6 @@ public class PictureTakerFragment extends Fragment{
             }
         });
 
-
-        ArrayList<AutoCompleteTextView> final_tagfield = new ArrayList<AutoCompleteTextView>();
-        final_tagfield.add(mTagField);
-        attachGuessesToTagFields(final_tagfield);
         mTagField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -482,11 +438,9 @@ public class PictureTakerFragment extends Fragment{
                     canContinue = true;
                     guessScore += 4;
                     inputTag = null;
-                    Toast toast = Toast.makeText(getActivity(), "Custom tag added", Toast.LENGTH_SHORT);
-                    toast.show();
+                    showToast("Custom tag added");
                 } else {
-                    Toast toast = Toast.makeText(getActivity(), "Type in your custom tag", Toast.LENGTH_SHORT);
-                    toast.show();
+                    showToast("Type in your custom tag");
 
                 }
             }
@@ -846,8 +800,7 @@ public class PictureTakerFragment extends Fragment{
         }
         if(item.getItemId() == R.id.menu_item_add) {
             Log.d(TAG, "Add new photo (from picture taker)");
-            Toast toast = Toast.makeText(getActivity(), "Save your current photo first!", Toast.LENGTH_SHORT);
-            toast.show();
+            showToast("Save your current photo first!");
 
         }
         if(item.getItemId() == R.id.menu_item_main_menu) {
@@ -856,12 +809,25 @@ public class PictureTakerFragment extends Fragment{
         }
         if(item.getItemId() == R.id.menu_item_deleteAll) {
             Log.d(TAG, "Delete all (from picture taker)");
-            Toast toast = Toast.makeText(getActivity(), "Delete things from gallery please", Toast.LENGTH_SHORT);
-            toast.show();
+            deletePhotosAfterConfirmation();
 
         }
 
         return true;
+    }
+
+    private void deletePhotosAfterConfirmation(){
+        //todo: this alert isn't appearing
+        new AlertDialog.Builder(getActivity())
+                .setTitle("Delete all photos")
+                .setMessage("Do you really want to delete all the photos?")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        mFoodPhotoStore.deleteAllPhotos();
+                    }})
+                .setNegativeButton(android.R.string.no, null).show();
     }
 
     public void openGallery(){
@@ -966,6 +932,7 @@ public class PictureTakerFragment extends Fragment{
             Log.d(TAG, "in onPostExecute");
             if (mSharplesMenu.isLoaded()) {
                 menuIsLoaded = true;
+                mTagFields.add(mTagField);
                 attachGuessesToTagFields(mTagFields);
             }
 

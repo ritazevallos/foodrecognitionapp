@@ -53,6 +53,13 @@ public class FoodPhoto {
         return mTags;
     }
 
+    public String cleanedFilePath(){
+        String path = mFile.getAbsolutePath();
+        int start = path.indexOf("/storage");
+        path = path.substring(start, path.length());
+        return path;
+    }
+
     public void setTags(ArrayList<FoodPhotoTag> tags) {
         mTags = tags;
     }
@@ -82,6 +89,8 @@ public class FoodPhoto {
 
     public void setFile(File file) {
         mFile = file;
+        String path = cleanedFilePath();
+        mFile = new File(path);
     }
 
     public UUID getId() {
