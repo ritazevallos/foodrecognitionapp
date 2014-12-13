@@ -90,9 +90,11 @@ public class PictureTakerFragment extends Fragment{
     private int count;
     private float guessScore = 0;
     private String inputTag;
+    private ArrayList<Mat> segmentMats;
 
     // SOME DEVELOPER SETTINGS
     private boolean viewMaskAndMaskedImage = false;
+    private boolean viewSegments = true;
     public boolean using_emulator = false; // make this true if you don't want it to break when opening up camera
 
     @Override
@@ -145,7 +147,9 @@ public class PictureTakerFragment extends Fragment{
         final View v = inflater.inflate(R.layout.activity_picture_taker, parent, false);
 
         mSegmentsContainer = (LinearLayout)v.findViewById(R.id.segmentsContainerLayout);
-        mSegmentsContainer.setVisibility(View.GONE); //todo: remove this if you're confused why segments are missing
+        if (!viewSegments) {
+            mSegmentsContainer.setVisibility(View.GONE);
+        }
 
         mTagSuggestionsLayout = (LinearLayout)v.findViewById(R.id.tag_buttons_layout);
         mNotFoodLayout = (LinearLayout)v.findViewById(R.id.notFoodLayout);
@@ -258,7 +262,6 @@ public class PictureTakerFragment extends Fragment{
         }
     }
 
-
     public void goToNextSegment(){
         if(canContinue) {
             if(count<ROIs.size()){
@@ -276,14 +279,18 @@ public class PictureTakerFragment extends Fragment{
         }
     }
 
-    public void highlightCurrentROI(Point ll, Point ur){
+    public void highlightCurrentROI(Point ll, Point ur, int segmentNum){
         Bitmap.Config config = bitmap.getConfig();
         mapbit = bitmap.copy(config, true);
         Mat imageMat = new Mat(mapbit.getWidth(), mapbit.getHeight(), CvType.CV_8UC4); // fc means floating point matrices
         Utils.bitmapToMat(mapbit, imageMat);
         // highlight the segment we're talking about with a rectangle
         Scalar colorLine = new Scalar(0, 255, 0, 255);
-        Core.rectangle(imageMat, ll, ur, colorLine, 15);
+
+        //commented out to do contour instead of rectangle
+        //Core.rectangle(imageMat, ll, ur, colorLine, 15);
+
+        Imgproc.drawContours(imageMat, mContours, segmentNum, colorLine, 15);
         Utils.matToBitmap(imageMat, mapbit);
 
         mImageView.setImageBitmap(mapbit);
@@ -300,7 +307,7 @@ public class PictureTakerFragment extends Fragment{
 
         isFood = true;
 
-        highlightCurrentROI(ll,ur);
+        highlightCurrentROI(ll,ur, segmentNum);
 
         final ArrayList<String> suggestions = getTagSuggestions(1, 2, 3);
 
@@ -497,6 +504,8 @@ public class PictureTakerFragment extends Fragment{
 
         segmentImage();
 
+        cropSegmentsToContours();
+
         displayTaggingUI();
 
     }
@@ -518,6 +527,31 @@ public class PictureTakerFragment extends Fragment{
 
     // region Classification
 
+    public void cropSegmentsToContours(){
+
+
+        for (int i=0; i<segmentMats.size(); i++){
+            Mat segmentMat = segmentMats.get(i);
+
+            Mat maskedImg = new Mat(segmentMat.size(), segmentMat.type());
+            maskedImg.setTo(new Scalar(102,51,153));
+
+            Mat mask = new Mat(segmentMat.size(), segmentMat.type());
+            Imgproc.cvtColor(segmentMat, mask, Imgproc.COLOR_RGBA2GRAY, 4);
+            mask.setTo(new Scalar(0, 0, 0));
+            Imgproc.drawContours(mask, mContours, i, new Scalar(255, 255, 255), -200);
+            segmentMat.copyTo(maskedImg, mask);
+
+            Bitmap maskedImgBitmap = Bitmap.createBitmap(maskedImg.cols(), maskedImg.rows(), Bitmap.Config.ARGB_8888);
+            Utils.matToBitmap(maskedImg, maskedImgBitmap);
+            ImageView maskedImgView = new ImageView(getActivity());
+            maskedImgView.setImageBitmap(maskedImgBitmap);
+            mSegmentsContainer.addView(maskedImgView);
+
+            // todo: store the cropped image in a file ex: //Highgui.imwrite(mFile.toString(),submat);
+
+        }
+    }
 
     public ArrayList<String> getTagSuggestions(int R, int G, int B){
         // todo: get suggestions from classifier, given foodMat
@@ -785,9 +819,11 @@ public class PictureTakerFragment extends Fragment{
             }
 
             List <MatOfPoint> contours = new ArrayList<MatOfPoint>();
+            ROIs = new ArrayList<Rect>();
+            segmentMats = new ArrayList<Mat>();
+
             Imgproc.findContours(mask, contours, new Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
 
-            ROIs = new ArrayList<Rect>();
             Scalar colorLine = new Scalar(180, 37, 216, 255); // PURPLE the last value is necessary so that it's not transparent
 
             int minSize = 500; // we can figure out what this should be using the tray size: they should position the camera
@@ -799,24 +835,20 @@ public class PictureTakerFragment extends Fragment{
             for (int i = 0; i < contours.size(); i++) {
                 // draw contour in green
                 if (Imgproc.contourArea(contours.get(i)) > minSize) {
-                    mContours.add(contours.get(i));
                     Rect rect = Imgproc.boundingRect(contours.get(i));
-                    // I commented this out because then ROIs and contours index differently, so we get an IndexOutOfRange error.
-                    // we may eventually want to prune out skinny contours, though. - Rita 12-12-14
-//                    if(rect.width<250||rect.height<250){
-//                        continue;
-//                    }
-                    Point center = new Point(rect.x+rect.width/2.0, rect.y+rect.height/2.0);
-                    centers.add(center);
-                    Mat subMat = imageMat.submat(rect.y, rect.y + rect.height, rect.x, rect.x + rect.width);
-                    ROIs.add(rect);
+                    if(rect.width>250||rect.height>250) {
+                        mContours.add(contours.get(i));
+                        ROIs.add(rect);
 
-                    ImageView segmentImageView = new ImageView(getActivity());
+                        Mat subMat = imageMat.submat(rect.y, rect.y + rect.height, rect.x, rect.x + rect.width);
+                        segmentMats.add(subMat);
 
-                    Bitmap segmentBitmap = Bitmap.createBitmap(subMat.cols(), subMat.rows(), Bitmap.Config.ARGB_8888);
-                    Utils.matToBitmap(subMat, segmentBitmap);
-                    segmentImageView.setImageBitmap(segmentBitmap);
-                    mSegmentsContainer.addView(segmentImageView);
+                        ImageView segmentImageView = new ImageView(getActivity());
+
+                        Bitmap segmentBitmap = Bitmap.createBitmap(subMat.cols(), subMat.rows(), Bitmap.Config.ARGB_8888);
+                        Utils.matToBitmap(subMat, segmentBitmap);
+                        segmentImageView.setImageBitmap(segmentBitmap);
+                    }
                 }
             }
 
