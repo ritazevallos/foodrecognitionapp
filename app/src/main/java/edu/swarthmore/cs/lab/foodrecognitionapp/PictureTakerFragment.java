@@ -57,6 +57,7 @@ public class PictureTakerFragment extends Fragment{
     public static final int MEDIA_TYPE_IMAGE = 1;
     private static final String TAG = "PictureTakerFragment";
     public static File mFile;
+    List <MatOfPoint> mContours;
     public static File mDir;
     public static Bitmap bitmap;
     public static Bitmap mapbit;
@@ -275,32 +276,31 @@ public class PictureTakerFragment extends Fragment{
         }
     }
 
-    public void tagSegment(int segmentNum){
+    public void highlightCurrentROI(Point ll, Point ur){
         Bitmap.Config config = bitmap.getConfig();
         mapbit = bitmap.copy(config, true);
         Mat imageMat = new Mat(mapbit.getWidth(), mapbit.getHeight(), CvType.CV_8UC4); // fc means floating point matrices
         Utils.bitmapToMat(mapbit, imageMat);
-
-
-        //todo: save original image (w/o) any rectangles so we can display each of the rects one by one
-
-        // eventually, loop through all of the segments in ROIs, right now, only doing ROIs[0]
-
-        isFood = true;
-        Rect rect = ROIs.get(segmentNum);
-        final Point ll = new Point(rect.x, rect.y);
-        final Point ur = new Point(rect.x + rect.width, rect.y + rect.height);
-        Log.d(TAG, "Rect width: " + rect.width);
-        Log.d(TAG, "Rect height: " + rect.height);
-
-
-        Scalar colorLine = new Scalar(0, 255, 0, 255);
         // highlight the segment we're talking about with a rectangle
+        Scalar colorLine = new Scalar(0, 255, 0, 255);
         Core.rectangle(imageMat, ll, ur, colorLine, 15);
         Utils.matToBitmap(imageMat, mapbit);
 
+        mImageView.setImageBitmap(mapbit);
+    }
 
-        Mat subMat = imageMat.submat(rect.y, rect.y + rect.height, rect.x, rect.x + rect.width);
+    public void tagSegment(int segmentNum){
+
+        Rect rect = ROIs.get(segmentNum);
+        final Point ll = new Point(rect.x, rect.y);
+        final Point ur = new Point(rect.x + rect.width, rect.y + rect.height);
+
+        //todo: use the submat (with the area outside the contour zeroed out) for the classification)
+        //Mat subMat = imageMat.submat(rect.y, rect.y + rect.height, rect.x, rect.x + rect.width);
+
+        isFood = true;
+
+        highlightCurrentROI(ll,ur);
 
         final ArrayList<String> suggestions = getTagSuggestions(1, 2, 3);
 
@@ -405,9 +405,6 @@ public class PictureTakerFragment extends Fragment{
             ROIs.remove(segmentNum);
         }
 
-
-
-        mImageView.setImageBitmap(mapbit);
 
     }
 
@@ -751,7 +748,6 @@ public class PictureTakerFragment extends Fragment{
     }
 
     public void segmentImage(){
-        try {
             Mat imageMat = new Mat(bitmap.getWidth(), bitmap.getHeight(), CvType.CV_8UC4); // fc means floating point matrices
 
             Utils.bitmapToMat(bitmap, imageMat);
@@ -797,21 +793,19 @@ public class PictureTakerFragment extends Fragment{
             int minSize = 500; // we can figure out what this should be using the tray size: they should position the camera
             //so's the tray fills the camera screen
 
-            TextView segmentsText = new TextView(getActivity());
-            segmentsText.setText("segments");
-            mSegmentsContainer.addView(segmentsText);
-
-            List <MatOfPoint> bigContours = new ArrayList<MatOfPoint>();
+            mContours = new ArrayList<MatOfPoint>();
             List <Point> centers = new ArrayList<Point>();
 
             for (int i = 0; i < contours.size(); i++) {
                 // draw contour in green
                 if (Imgproc.contourArea(contours.get(i)) > minSize) {
-                    bigContours.add(contours.get(i));
+                    mContours.add(contours.get(i));
                     Rect rect = Imgproc.boundingRect(contours.get(i));
-                    if(rect.width<250||rect.height<250){
-                        continue;
-                    }
+                    // I commented this out because then ROIs and contours index differently, so we get an IndexOutOfRange error.
+                    // we may eventually want to prune out skinny contours, though. - Rita 12-12-14
+//                    if(rect.width<250||rect.height<250){
+//                        continue;
+//                    }
                     Point center = new Point(rect.x+rect.width/2.0, rect.y+rect.height/2.0);
                     centers.add(center);
                     Mat subMat = imageMat.submat(rect.y, rect.y + rect.height, rect.x, rect.x + rect.width);
@@ -831,22 +825,16 @@ public class PictureTakerFragment extends Fragment{
             imageMat.copyTo(imageWithContoursAndRectangles);
 
             // draw contours and rectangles
-            for (int i=0; i< bigContours.size(); i++){
+            for (int i=0; i< mContours.size(); i++){
                 // switch around the commented section to draw contours instead of rectangles
-                Imgproc.drawContours ( imageWithContoursAndRectangles, bigContours, i, colorLine, 15);
+                Imgproc.drawContours ( imageWithContoursAndRectangles, mContours, i, colorLine, 15);
                 Rect rect = ROIs.get(i);
-                //Core.rectangle(imageWithContoursAndRectangles, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), colorGreen, 15);
+                //Core.rectangle(imageWithContoursAndRectangles, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), colorLine, 15);
             }
 
             bitmap = Bitmap.createBitmap(imageWithContoursAndRectangles.cols(), imageWithContoursAndRectangles.rows(), Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(imageWithContoursAndRectangles, bitmap);
-            ImageView contoursView = new ImageView(getActivity());
-            contoursView.setImageBitmap(bitmap);
             mImageView.setImageBitmap(bitmap);
-
-        } catch(Exception ex){
-            Log.d(TAG, "Error in segmentImage: "+ex);
-        }
 
     }
 
