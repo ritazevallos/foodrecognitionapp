@@ -75,7 +75,6 @@ public class PictureTakerFragment extends Fragment{
     private ArrayList<ImageView> mSegmentImageViews;
     public boolean using_emulator = false; // make this true if you don't want it to break when opening up camera
     private ArrayList<Rect> ROIs;
-    private boolean clickNTagActivated;
     private TextView mNumberOfSegmentsTextView;
     private LinearLayout mTagSuggestionsLayout;
     private LinearLayout mNotFoodLayout;
@@ -90,19 +89,20 @@ public class PictureTakerFragment extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // we are not making sure there is an app to take pictures
+        // todo: we are not making sure there is an app to take pictures
         setHasOptionsMenu(true);
-        clickNTagActivated = true;
-        mFoodPhotoStore = FoodPhotoStore.get(getActivity());
-        UUID foodPhotoId = (UUID)getArguments().getSerializable(EXTRA_FOODPHOTO_ID);
         beforePhotoTaken = true;
         mTagFields = new ArrayList<AutoCompleteTextView>();
+
+        // Either create a new food photo, or get the one with the id added to the intent
         CreateDirectoryForPictures();
+        mFoodPhotoStore = FoodPhotoStore.get(getActivity());
+        UUID foodPhotoId = (UUID)getArguments().getSerializable(EXTRA_FOODPHOTO_ID);
         mFoodPhoto = mFoodPhotoStore.getFoodPhoto(foodPhotoId);
+
         mSegmentImageViews = new ArrayList<ImageView>();
         AsyncSharplesGetter dashScraper = new AsyncSharplesGetter();
-        dashScraper.execute("go!");
-        //populates mSharplesMenu, populates FOOD_GUESSES, and sets menuIsLoaded to true once done
+        dashScraper.execute("go!"); //populates mSharplesMenu, populates FOOD_GUESSES, and sets menuIsLoaded to true once done
 
         if(mFoodPhoto.getFile()==null) {
             TakeAPicture();
@@ -937,8 +937,7 @@ public class PictureTakerFragment extends Fragment{
         protected void onPreExecute() {
             Log.d(TAG, "in AsyncSharplesGetter.onPreExecute()");
             super.onPreExecute();
-            //mBreakfastMenuView.setText("loading menu");
-            // show progress bar
+            // todo: show progress bar
         }
 
         @Override
@@ -967,17 +966,8 @@ public class PictureTakerFragment extends Fragment{
             Log.d(TAG, "in onPostExecute");
             if (mSharplesMenu.isLoaded()) {
                 menuIsLoaded = true;
+                attachGuessesToTagFields(mTagFields);
             }
-
-            // populate the guesses
-//            ArrayList<String> arrayListGuesses = mSharplesMenu.getMenu(new Date());
-//            String[] guessesArr = new String[arrayListGuesses.size()];
-//            guessesArr = arrayListGuesses.toArray(guessesArr);
-//            Log.d(TAG, "how many guesses do we have: "+guessesArr.length);
-//            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, guessesArr);
-//            mTagField.setAdapter(adapter);
-
-            attachGuessesToTagFields(mTagFields);
 
         }
     }
