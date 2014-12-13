@@ -117,19 +117,23 @@ public class FoodPhotoListFragment  extends ListFragment {
 
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+            options.inSampleSize = 2;
+            System.gc();
             Bitmap bitmap = BitmapFactory.decodeFile(path, options);
             imageView.setImageBitmap(bitmap);
 
 
             //Bitmap bitmap;
-            try {
-                //bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), contentUri);
-                //imageView.setImageBitmap(bitmap);
-                bitmap = BitmapFactory.decodeFile(path, options);
-                imageView.setImageBitmap(bitmap);
-            } catch (Exception e){
-                Log.e(TAG, "ERROR: " + e.getMessage());
-            }
+            //I commented this because it looks like we're doing the same thing twice? Rita 12-12-14
+//            try {
+//                //bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), contentUri);
+//                //imageView.setImageBitmap(bitmap);
+//                System.gc();
+//                bitmap = BitmapFactory.decodeFile(path, options);
+//                imageView.setImageBitmap(bitmap);
+//            } catch (Exception e){
+//                Log.e(TAG, "ERROR: " + e.getMessage());
+//            }
 //            } catch (FileNotFoundException e1) {
 //                // TODO Auto-generated catch block
 //                Log.d(TAG, "FILE NOT FOUND ~~~~~~????");
