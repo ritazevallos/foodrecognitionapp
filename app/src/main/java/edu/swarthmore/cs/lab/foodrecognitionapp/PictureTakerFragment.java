@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -99,9 +100,9 @@ public class PictureTakerFragment extends Fragment{
         CreateDirectoryForPictures();
         mFoodPhoto = mFoodPhotoStore.getFoodPhoto(foodPhotoId);
         mSegmentImageViews = new ArrayList<ImageView>();
-        //AsyncSharplesGetter dashScraper = new AsyncSharplesGetter();
-        //dashScraper.execute("go!");
-        // populates mSharplesMenu, populates FOOD_GUESSES, and sets menuIsLoaded to true once done
+        AsyncSharplesGetter dashScraper = new AsyncSharplesGetter();
+        dashScraper.execute("go!");
+        //populates mSharplesMenu, populates FOOD_GUESSES, and sets menuIsLoaded to true once done
 
         if(mFoodPhoto.getFile()==null) {
             TakeAPicture();
@@ -236,7 +237,7 @@ public class PictureTakerFragment extends Fragment{
         ArrayList<AutoCompleteTextView> final_tagfield = new ArrayList<AutoCompleteTextView>();
         final_tagfield.add(tag_field);
         if (menuIsLoaded) {
-            //attachGuessesToTagFields(final_tagfield);
+            attachGuessesToTagFields(final_tagfield);
         }
     }
 
@@ -384,38 +385,9 @@ public class PictureTakerFragment extends Fragment{
 
 
         Mat subMat = imageMat.submat(rect.y, rect.y + rect.height, rect.x, rect.x + rect.width);
-//        // sample color
-//        int rows = (int)subMat.size().height;
-//        int cols = (int)subMat.size().width;
-//        int Rr = 0;
-//        int Gg = 0;
-//        int Bb = 0;
-//        int num = 0;
-//
-//        for(int i = rows-(2*rows/3); i < rows-(rows/3); i++){
-//            for(int j = cols-(2*cols/3); j < cols-(cols/3); j++) {
-//                double[] c = subMat.get(i, j);
-//                if(c == null){
-//                    continue;
-//                }else if(c[0]==0&&c[1]==255&&c[2]==0) {
-//                    continue;
-//                }else if(c[0]==102&&c[1]==51&&c[2]==153){
-//                    continue;
-//                } else {
-//                    Rr+=c[0];
-//                    Gg+=c[1];
-//                    Bb+=c[2];
-//                    num++;
-//                }
-//            }
-//        }
-//
-//        Rr = Rr/num;
-//        Gg = Gg/num;
-//        Bb = Bb/num;
-//
-//        Log.d(TAG, "Average color values: " + String.valueOf(Rr) + ", " + String.valueOf(Gg) + ", " + String.valueOf(Bb));
-//
+
+
+
         final ArrayList<String> suggestions = getTagSuggestions(1, 2, 3);
 
         final Button firstButtonSuggestion = (Button) mTagSuggestionsLayout.findViewById(R.id.first_tag_suggestion);
@@ -478,7 +450,7 @@ public class PictureTakerFragment extends Fragment{
 
         ArrayList<AutoCompleteTextView> final_tagfield = new ArrayList<AutoCompleteTextView>();
         final_tagfield.add(mTagField);
-        //attachGuessesToTagFields(final_tagfield);
+        attachGuessesToTagFields(final_tagfield);
         mTagField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -958,69 +930,71 @@ public class PictureTakerFragment extends Fragment{
         return fragment;
     }
 
-//    private class AsyncSharplesGetter extends AsyncTask<String, Integer, String> {
-//        //todo: what are the string, int, string in the constructor?
-//
-//        @Override
-//        protected void onPreExecute() {
-//            Log.d(TAG, "in AsyncSharplesGetter.onPreExecute()");
-//            super.onPreExecute();
-//            //mBreakfastMenuView.setText("loading menu");
-//            // show progress bar
-//        }
-//
-//        @Override
-//        protected String doInBackground(String... params) {
-//            Log.d(TAG, "in AsyncSharplesGetter.doInBackground()");
-//            // this will get the existing sharples menu, or create one if it doesn't exist
-//            mSharplesMenu = SharplesMenu.get(getActivity());
-//            if (mSharplesMenu.isNewDay(new Date())){
-//                mSharplesMenu = SharplesMenu.get(getActivity(), true);
-//                // todo: i haven't tested whether the new day thing works
-//            }
-//
-//
-//            return "All done!";
-//        }
-//
-//        @Override
-//        protected void onProgressUpdate(Integer... values) {
-//            super.onProgressUpdate(values);
-//            // update progress bar
-//        }
-//
-//        @Override
-//        protected void onPostExecute(String result) {
-//            super.onPostExecute(result);
-//            Log.d(TAG, "in onPostExecute");
-//            menuIsLoaded = true;
-//
-//            // populate the guesses
-////            ArrayList<String> arrayListGuesses = mSharplesMenu.getMenu(new Date());
-////            String[] guessesArr = new String[arrayListGuesses.size()];
-////            guessesArr = arrayListGuesses.toArray(guessesArr);
-////            Log.d(TAG, "how many guesses do we have: "+guessesArr.length);
-////            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, guessesArr);
-////            mTagField.setAdapter(adapter);
-//
-//            attachGuessesToTagFields(mTagFields);
-//
-//        }
-//    }
-//
-//    private void attachGuessesToTagFields(ArrayList<AutoCompleteTextView> tagFields){
-//        ArrayList<String> arrayListGuesses = mSharplesMenu.getDinnerMenu();
-//        String[] guessesArr = new String[arrayListGuesses.size()];
-//        guessesArr = arrayListGuesses.toArray(guessesArr);
-//        Log.d(TAG, "how many guesses do we have: "+guessesArr.length);
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, guessesArr);
-//
-//        for (AutoCompleteTextView tagField : tagFields){
-//            Log.d(TAG,"attaching guesses to a tag field");
-//            tagField.setAdapter(adapter);
-//            tagField.setHint("autocomplete tag field");
-//
-//        }
-//    }
+    private class AsyncSharplesGetter extends AsyncTask<String, Integer, String> {
+        //todo: what are the string, int, string in the constructor?
+
+        @Override
+        protected void onPreExecute() {
+            Log.d(TAG, "in AsyncSharplesGetter.onPreExecute()");
+            super.onPreExecute();
+            //mBreakfastMenuView.setText("loading menu");
+            // show progress bar
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            Log.d(TAG, "in AsyncSharplesGetter.doInBackground()");
+            // this will get the existing sharples menu, or create one if it doesn't exist
+            mSharplesMenu = SharplesMenu.get(getActivity());
+            if (mSharplesMenu.isNewDay(new Date())){
+                mSharplesMenu = SharplesMenu.get(getActivity(), true);
+                // todo: i haven't tested whether the new day thing works
+            }
+
+
+            return "All done!";
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            // update progress bar
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            Log.d(TAG, "in onPostExecute");
+            if (mSharplesMenu.isLoaded()) {
+                menuIsLoaded = true;
+            }
+
+            // populate the guesses
+//            ArrayList<String> arrayListGuesses = mSharplesMenu.getMenu(new Date());
+//            String[] guessesArr = new String[arrayListGuesses.size()];
+//            guessesArr = arrayListGuesses.toArray(guessesArr);
+//            Log.d(TAG, "how many guesses do we have: "+guessesArr.length);
+//            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, guessesArr);
+//            mTagField.setAdapter(adapter);
+
+            attachGuessesToTagFields(mTagFields);
+
+        }
+    }
+
+    private void attachGuessesToTagFields(ArrayList<AutoCompleteTextView> tagFields){
+        ArrayList<String> arrayListGuesses = mSharplesMenu.getDinnerMenu();
+        String[] guessesArr = new String[arrayListGuesses.size()];
+        guessesArr = arrayListGuesses.toArray(guessesArr);
+        Log.d(TAG, "how many guesses do we have: "+guessesArr.length);
+        ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, guessesArr);
+
+        for (AutoCompleteTextView tagField : tagFields){
+            Log.d(TAG,"attaching guesses to a tag field");
+            tagField.setAdapter(adapter);
+            tagField.setHint("autocomplete tag field");
+
+        }
+    }
 
 }

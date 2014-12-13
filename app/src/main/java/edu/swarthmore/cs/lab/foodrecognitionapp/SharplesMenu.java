@@ -114,6 +114,35 @@ public class SharplesMenu {
         }
     }
 
+    public boolean isLoaded(){
+        boolean isLoaded = true;
+        ArrayList<ArrayList<String>> menus = new ArrayList<ArrayList<String>>() {{
+            add(breakfastMenu);
+            add(lunchMenu);
+            add(dinnerMenu);
+        }};
+        ArrayList<Date> times = new ArrayList<Date>() {{
+            add(breakfastStart);
+            add(breakfastEnd);
+            add(lunchStart);
+            add(lunchEnd);
+            add(dinnerStart);
+            add(dinnerEnd);
+        }};
+        for (ArrayList<String> menu : menus){
+            if (menu == null){
+                isLoaded = false;
+            }
+        }
+        for (Date time : times){
+            if (time == null){
+                isLoaded = false;
+            }
+        }
+
+        return isLoaded;
+    }
+
     public static SharplesMenu get(Context c ) {
         return get(c,false);
     }

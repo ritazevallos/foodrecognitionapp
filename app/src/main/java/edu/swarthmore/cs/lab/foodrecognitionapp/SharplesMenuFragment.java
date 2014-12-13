@@ -165,12 +165,14 @@ public class SharplesMenuFragment extends Fragment {
             super.onPostExecute(result);
 
             // refresh view
-            menuIsLoaded = true;
+            if (mSharplesMenu.isLoaded()) {
+                menuIsLoaded = true;
+                mBreakfastMenuView.setText(mSharplesMenu.getBreakfastMenu().toString());
+                mLunchMenuView.setText(mSharplesMenu.getLunchMenu().toString());
+                mDinnerMenuView.setText(mSharplesMenu.getDinnerMenu().toString());
+                // todo: dismiss progress bar
+            }
 
-            mBreakfastMenuView.setText(mSharplesMenu.getBreakfastMenu().toString());
-            mLunchMenuView.setText(mSharplesMenu.getLunchMenu().toString());
-            mDinnerMenuView.setText(mSharplesMenu.getDinnerMenu().toString());
-            // todo: dismiss progress bar
 
             Log.d(TAG, "in onPostExecute");
         }
