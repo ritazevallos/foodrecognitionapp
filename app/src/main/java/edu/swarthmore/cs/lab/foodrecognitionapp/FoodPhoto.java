@@ -34,6 +34,7 @@ public class FoodPhoto {
     private Uri mUri;
     private Boolean mFromGallery;
     private Gson gson;
+    private JSONObject json;
 
     private static final String JSON_ID = "id";
     private static final String JSON_TAGS = "tags";

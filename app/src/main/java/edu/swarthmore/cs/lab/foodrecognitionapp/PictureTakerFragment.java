@@ -101,8 +101,8 @@ public class PictureTakerFragment extends Fragment{
         CreateDirectoryForPictures();
         mFoodPhoto = mFoodPhotoStore.getFoodPhoto(foodPhotoId);
         mSegmentImageViews = new ArrayList<ImageView>();
-        AsyncSharplesGetter dashScraper = new AsyncSharplesGetter();
-        dashScraper.execute("go!");
+        //AsyncSharplesGetter dashScraper = new AsyncSharplesGetter();
+        //dashScraper.execute("go!");
         // populates mSharplesMenu, populates FOOD_GUESSES, and sets menuIsLoaded to true once done
 
         if(mFoodPhoto.getFile()==null) {
@@ -240,7 +240,7 @@ public class PictureTakerFragment extends Fragment{
         ArrayList<AutoCompleteTextView> final_tagfield = new ArrayList<AutoCompleteTextView>();
         final_tagfield.add(tag_field);
         if (menuIsLoaded) {
-            attachGuessesToTagFields(final_tagfield);
+            //attachGuessesToTagFields(final_tagfield);
         }
     }
 
@@ -388,39 +388,39 @@ public class PictureTakerFragment extends Fragment{
 
 
         Mat subMat = imageMat.submat(rect.y, rect.y + rect.height, rect.x, rect.x + rect.width);
-        // sample color
-        int rows = (int)subMat.size().height;
-        int cols = (int)subMat.size().width;
-        int Rr = 0;
-        int Gg = 0;
-        int Bb = 0;
-        int num = 0;
-
-        for(int i = rows-(2*rows/3); i < rows-(rows/3); i++){
-            for(int j = cols-(2*cols/3); j < cols-(cols/3); j++) {
-                double[] c = subMat.get(i, j);
-                if(c == null){
-                    continue;
-                }else if(c[0]==0&&c[1]==255&&c[2]==0) {
-                    continue;
-                }else if(c[0]==102&&c[1]==51&&c[2]==153){
-                    continue;
-                } else {
-                    Rr+=c[0];
-                    Gg+=c[1];
-                    Bb+=c[2];
-                    num++;
-                }
-            }
-        }
-
-        Rr = Rr/num;
-        Gg = Gg/num;
-        Bb = Bb/num;
-
-        Log.d(TAG, "Average color values: " + String.valueOf(Rr) + ", " + String.valueOf(Gg) + ", " + String.valueOf(Bb));
-
-        final ArrayList<String> suggestions = getTagSuggestions(Rr, Gg, Bb);
+//        // sample color
+//        int rows = (int)subMat.size().height;
+//        int cols = (int)subMat.size().width;
+//        int Rr = 0;
+//        int Gg = 0;
+//        int Bb = 0;
+//        int num = 0;
+//
+//        for(int i = rows-(2*rows/3); i < rows-(rows/3); i++){
+//            for(int j = cols-(2*cols/3); j < cols-(cols/3); j++) {
+//                double[] c = subMat.get(i, j);
+//                if(c == null){
+//                    continue;
+//                }else if(c[0]==0&&c[1]==255&&c[2]==0) {
+//                    continue;
+//                }else if(c[0]==102&&c[1]==51&&c[2]==153){
+//                    continue;
+//                } else {
+//                    Rr+=c[0];
+//                    Gg+=c[1];
+//                    Bb+=c[2];
+//                    num++;
+//                }
+//            }
+//        }
+//
+//        Rr = Rr/num;
+//        Gg = Gg/num;
+//        Bb = Bb/num;
+//
+//        Log.d(TAG, "Average color values: " + String.valueOf(Rr) + ", " + String.valueOf(Gg) + ", " + String.valueOf(Bb));
+//
+        final ArrayList<String> suggestions = getTagSuggestions(1, 2, 3);
 
         final Button firstButtonSuggestion = (Button) mTagSuggestionsLayout.findViewById(R.id.first_tag_suggestion);
         firstButtonSuggestion.setText(suggestions.get(0));
@@ -445,7 +445,7 @@ public class PictureTakerFragment extends Fragment{
 
             }
         });
-
+        Log.e(TAG, "GOT HERE");
         secondButtonSuggestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -482,7 +482,7 @@ public class PictureTakerFragment extends Fragment{
 
         ArrayList<AutoCompleteTextView> final_tagfield = new ArrayList<AutoCompleteTextView>();
         final_tagfield.add(mTagField);
-        attachGuessesToTagFields(final_tagfield);
+        //attachGuessesToTagFields(final_tagfield);
         mTagField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -501,6 +501,8 @@ public class PictureTakerFragment extends Fragment{
             public void afterTextChanged(Editable s) {
 
             }
+
+
         });
 
         Button doneButton = (Button) mTagContainer.findViewById(R.id.done_button);
@@ -528,6 +530,7 @@ public class PictureTakerFragment extends Fragment{
         }
 
 
+
         mImageView.setImageBitmap(mapbit);
 
     }
@@ -535,178 +538,181 @@ public class PictureTakerFragment extends Fragment{
     public ArrayList<String> getTagSuggestions(int R, int G, int B){
         // todo: get suggestions from classifier, given foodMat
         ArrayList<String> suggestions = new ArrayList<String>();
-        mLunchFoods = new ArrayList<MenuFood>();
-        mDinnerFoods = new ArrayList<MenuFood>();
-        //ArrayList<String> foodItems = mSharplesMenu.getMenu(new Date());
+        //mLunchFoods = new ArrayList<MenuFood>();
+        //mDinnerFoods = new ArrayList<MenuFood>();
+        ArrayList<String> foodItems = new ArrayList<String>();//mSharplesMenu.getMenu(new Date());
         //parseLunchMenu();
-        parseDinnerMenu();
-        ArrayList<Integer> comp = new ArrayList<Integer>(mDinnerFoods.size()*2);
+//        parseDinnerMenu();
+//        ArrayList<Integer> comp = new ArrayList<Integer>(mDinnerFoods.size()*2);
+//
+//        for(int i =0; i<mDinnerFoods.size(); i++){
+//            MenuFood food = mDinnerFoods.get(i);
+//            ArrayList<Integer> color1 = food.getColor1();
+//            ArrayList<Integer> color2 = food.getColor2();
+//            int compNum = Math.abs(R-color1.get(0)) + Math.abs(G - color1.get(1)) + Math.abs(B-color1.get(2));
+//            int compNum2 = Math.abs(R-color2.get(0)) + Math.abs(G-color2.get(1)) + Math.abs(B-color2.get(2));
+//            comp.add(compNum);
+//            comp.add(compNum2);
+//        }
+//
+//        ArrayList<Integer> smallestComps = new ArrayList<Integer>(Arrays.asList(1000,1000,1000));
+//        ArrayList<Integer> indices = new ArrayList<Integer>(Arrays.asList(0,0,0));
+//        for(int j = 0; j<comp.size();j++){
+//
+//            if(comp.get(j)<smallestComps.get(0)){
+//                smallestComps.set(2, smallestComps.get(1));
+//                smallestComps.set(1, smallestComps.get(0));
+//                smallestComps.set(0, comp.get(j));
+//                indices.set(2, indices.get(1));
+//                indices.set(1, indices.get(0));
+//                indices.set(0, j);
+//            } else if (comp.get(j)<smallestComps.get(1)){
+//                smallestComps.set(2, smallestComps.get(1));
+//                smallestComps.set(1, comp.get(j));
+//                indices.set(2, indices.get(1));
+//                indices.set(1, j);
+//            } else if (comp.get(j)<smallestComps.get(2)){
+//                smallestComps.set(2, comp.get(j));
+//                indices.set(2, j);
+//            }
+//        }
+//        for(int k = 0; k<3; k++){
+//            int index = (indices.get(k)/2);
+//            suggestions.add(mDinnerFoods.get(index).getFoodName());
+//        }
 
-        for(int i =0; i<mDinnerFoods.size(); i++){
-            MenuFood food = mDinnerFoods.get(i);
-            ArrayList<Integer> color1 = food.getColor1();
-            ArrayList<Integer> color2 = food.getColor2();
-            int compNum = Math.abs(R-color1.get(0)) + Math.abs(G - color1.get(1)) + Math.abs(B-color1.get(2));
-            int compNum2 = Math.abs(R-color2.get(0)) + Math.abs(G-color2.get(1)) + Math.abs(B-color2.get(2));
-            comp.add(compNum);
-            comp.add(compNum2);
-        }
-
-        ArrayList<Integer> smallestComps = new ArrayList<Integer>(Arrays.asList(1000,1000,1000));
-        ArrayList<Integer> indices = new ArrayList<Integer>(Arrays.asList(0,0,0));
-        for(int j = 0; j<comp.size();j++){
-
-            if(comp.get(j)<smallestComps.get(0)){
-                smallestComps.set(2, smallestComps.get(1));
-                smallestComps.set(1, smallestComps.get(0));
-                smallestComps.set(0, comp.get(j));
-                indices.set(2, indices.get(1));
-                indices.set(1, indices.get(0));
-                indices.set(0, j);
-            } else if (comp.get(j)<smallestComps.get(1)){
-                smallestComps.set(2, smallestComps.get(1));
-                smallestComps.set(1, comp.get(j));
-                indices.set(2, indices.get(1));
-                indices.set(1, j);
-            } else if (comp.get(j)<smallestComps.get(2)){
-                smallestComps.set(2, comp.get(j));
-                indices.set(2, j);
-            }
-        }
-        for(int k = 0; k<3; k++){
-            int index = (indices.get(k)/2);
-            suggestions.add(mDinnerFoods.get(index).getFoodName());
-        }
-
+        foodItems.add("Vegetable Medley");
+        foodItems.add("Cheese Ravioli with Marinara");
+        foodItems.add("Falafel Bar with Hummus");
 
 //        //todo: if we don't do machine learning in time, get a random three from this meal period from sharples menu
-//        while(suggestions.size()<4) {
-//            String newSug = foodItems.get(randInt(0, foodItems.size() - 1));
-//            //guess food here
-//
-//            if(suggestions.contains(newSug)){
-//                continue;
-//            }
-//            suggestions.add(newSug);
-//        }
+        while(suggestions.size()<4) {
+            String newSug = foodItems.get(randInt(0, foodItems.size() - 1));
+            //guess food here
+
+            if(suggestions.contains(newSug)){
+                continue;
+            }
+            suggestions.add(newSug);
+        }
 
         return suggestions;
     }
 
-    public void parseLunchMenu(){
-        int colorCount = 0;
-        parseLunchColors();
-        ArrayList<String> foodItems = mSharplesMenu.getMenu(new Date());
-        for(int i = 0; i<foodItems.size(); i++){
-            MenuFood food = new MenuFood(foodItems.get(i), mLunchColors.get(colorCount), mLunchColors.get(colorCount+1));
-            mLunchFoods.add(food);
-            colorCount+=2;
-        }
-    }
-
-    public void parseDinnerMenu(){
-        int colorCount = 0;
-        parseDinnerColors();
-        //ArrayList<String> foodItems = mSharplesMenu.getMenu(new Date());
-        ArrayList<String> foodItems = mSharplesMenu.getDinnerMenu();
-        for(int i = 0; i<foodItems.size(); i++){
-            String foodName = foodItems.get(i);
-            ArrayList<Integer> color1 = mDinnerColors.get(colorCount);
-            ArrayList<Integer> color2 = mDinnerColors.get(colorCount+1);
-            MenuFood food = new MenuFood(foodItems.get(i), mDinnerColors.get(colorCount), mDinnerColors.get(colorCount+1));
-            mDinnerFoods.add(food);
-            colorCount+=2;
-        }
-    }
-
-    public void parseLunchColors(){
-        mLunchColors = new ArrayList<ArrayList<Integer>>();
-        ArrayList<Integer> color = new ArrayList<Integer>(Arrays.asList(175,113,55));
-        mLunchColors.add(color);
-        color = new ArrayList<Integer>(Arrays.asList(183,110,38));
-        mLunchColors.add(color);
-        color = new ArrayList<Integer>(Arrays.asList(198,109,33));
-        mLunchColors.add(color);
-        color = new ArrayList<Integer>(Arrays.asList(193,115,29));
-        mLunchColors.add(color);
-        color = new ArrayList<Integer>(Arrays.asList(222,75,28));
-        mLunchColors.add(color);
-        color = new ArrayList<Integer>(Arrays.asList(205,78,25));
-        mLunchColors.add(color);
-        color = new ArrayList<Integer>(Arrays.asList(147,117,50));
-        mLunchColors.add(color);
-        color = new ArrayList<Integer>(Arrays.asList(135,94,24));
-        mLunchColors.add(color);
-        color = new ArrayList<Integer>(Arrays.asList(187,166,97));
-        mLunchColors.add(color);
-        color = new ArrayList<Integer>(Arrays.asList(173,149,80));
-        mLunchColors.add(color);
-        color = new ArrayList<Integer>(Arrays.asList(224,169,107));
-        mLunchColors.add(color);
-        color = new ArrayList<Integer>(Arrays.asList(208,153,87));
-        mLunchColors.add(color);
-        color = new ArrayList<Integer>(Arrays.asList(175,127,67));
-        mLunchColors.add(color);
-        color = new ArrayList<Integer>(Arrays.asList(202,91,47));
-        mLunchColors.add(color);
-        color = new ArrayList<Integer>(Arrays.asList(157,94,29));
-        mLunchColors.add(color);
-        color = new ArrayList<Integer>(Arrays.asList(146,93,19));
-        mLunchColors.add(color);
-        color = new ArrayList<Integer>(Arrays.asList(131,56,4));
-        mLunchColors.add(color);
-        color = new ArrayList<Integer>(Arrays.asList(175,94,43));
-        mLunchColors.add(color);
-        color = new ArrayList<Integer>(Arrays.asList(213,209,176));
-        mLunchColors.add(color);
-        color = new ArrayList<Integer>(Arrays.asList(224,191,156));
-        mLunchColors.add(color);
-
-    }
-
-    public void parseDinnerColors(){
-        mDinnerColors = new ArrayList<ArrayList<Integer>>();
-
-        ArrayList<Integer> color = new ArrayList<Integer>(Arrays.asList(92,63,39));
-        mDinnerColors.add(color);
-        color = new ArrayList<Integer>(Arrays.asList(96,67,65));
-        mDinnerColors.add(color);
-
-        color = new ArrayList<Integer>(Arrays.asList(128,89,79));
-        mDinnerColors.add(color);
-        color = new ArrayList<Integer>(Arrays.asList(154,92,44));
-        mDinnerColors.add(color);
-
-        color = new ArrayList<Integer>(Arrays.asList(86,121,43));
-        mDinnerColors.add(color);
-        color = new ArrayList<Integer>(Arrays.asList(105,92,64));
-        mDinnerColors.add(color);
-
-        color = new ArrayList<Integer>(Arrays.asList(210,144,27));
-        mDinnerColors.add(color);
-        color = new ArrayList<Integer>(Arrays.asList(201,133,60));
-        mDinnerColors.add(color);
-
-        color = new ArrayList<Integer>(Arrays.asList(88,55,41));
-        mDinnerColors.add(color);
-        color = new ArrayList<Integer>(Arrays.asList(90,59,34));
-        mDinnerColors.add(color);
-
-        color = new ArrayList<Integer>(Arrays.asList(121,90,21));
-        mDinnerColors.add(color);
-        color = new ArrayList<Integer>(Arrays.asList(120,93,48));
-        mDinnerColors.add(color);
-
-        color = new ArrayList<Integer>(Arrays.asList(93,60,25));
-        mDinnerColors.add(color);
-        color = new ArrayList<Integer>(Arrays.asList(121,72,15));
-        mDinnerColors.add(color);
-
-        color = new ArrayList<Integer>(Arrays.asList(247,215,109));
-        mDinnerColors.add(color);
-        color = new ArrayList<Integer>(Arrays.asList(130,78,63));
-        mDinnerColors.add(color);
-    }
+//    public void parseLunchMenu(){
+//        int colorCount = 0;
+//        parseLunchColors();
+//        ArrayList<String> foodItems = mSharplesMenu.getMenu(new Date());
+//        for(int i = 0; i<foodItems.size(); i++){
+//            MenuFood food = new MenuFood(foodItems.get(i), mLunchColors.get(colorCount), mLunchColors.get(colorCount+1));
+//            mLunchFoods.add(food);
+//            colorCount+=2;
+//        }
+//    }
+//
+//    public void parseDinnerMenu(){
+//        int colorCount = 0;
+//        parseDinnerColors();
+//        //ArrayList<String> foodItems = mSharplesMenu.getMenu(new Date());
+//        ArrayList<String> foodItems = mSharplesMenu.getDinnerMenu();
+//        for(int i = 0; i<foodItems.size(); i++){
+//            String foodName = foodItems.get(i);
+//            ArrayList<Integer> color1 = mDinnerColors.get(colorCount);
+//            ArrayList<Integer> color2 = mDinnerColors.get(colorCount+1);
+//            MenuFood food = new MenuFood(foodItems.get(i), mDinnerColors.get(colorCount), mDinnerColors.get(colorCount+1));
+//            mDinnerFoods.add(food);
+//            colorCount+=2;
+//        }
+//    }
+//
+//    public void parseLunchColors(){
+//        mLunchColors = new ArrayList<ArrayList<Integer>>();
+//        ArrayList<Integer> color = new ArrayList<Integer>(Arrays.asList(175,113,55));
+//        mLunchColors.add(color);
+//        color = new ArrayList<Integer>(Arrays.asList(183,110,38));
+//        mLunchColors.add(color);
+//        color = new ArrayList<Integer>(Arrays.asList(198,109,33));
+//        mLunchColors.add(color);
+//        color = new ArrayList<Integer>(Arrays.asList(193,115,29));
+//        mLunchColors.add(color);
+//        color = new ArrayList<Integer>(Arrays.asList(222,75,28));
+//        mLunchColors.add(color);
+//        color = new ArrayList<Integer>(Arrays.asList(205,78,25));
+//        mLunchColors.add(color);
+//        color = new ArrayList<Integer>(Arrays.asList(147,117,50));
+//        mLunchColors.add(color);
+//        color = new ArrayList<Integer>(Arrays.asList(135,94,24));
+//        mLunchColors.add(color);
+//        color = new ArrayList<Integer>(Arrays.asList(187,166,97));
+//        mLunchColors.add(color);
+//        color = new ArrayList<Integer>(Arrays.asList(173,149,80));
+//        mLunchColors.add(color);
+//        color = new ArrayList<Integer>(Arrays.asList(224,169,107));
+//        mLunchColors.add(color);
+//        color = new ArrayList<Integer>(Arrays.asList(208,153,87));
+//        mLunchColors.add(color);
+//        color = new ArrayList<Integer>(Arrays.asList(175,127,67));
+//        mLunchColors.add(color);
+//        color = new ArrayList<Integer>(Arrays.asList(202,91,47));
+//        mLunchColors.add(color);
+//        color = new ArrayList<Integer>(Arrays.asList(157,94,29));
+//        mLunchColors.add(color);
+//        color = new ArrayList<Integer>(Arrays.asList(146,93,19));
+//        mLunchColors.add(color);
+//        color = new ArrayList<Integer>(Arrays.asList(131,56,4));
+//        mLunchColors.add(color);
+//        color = new ArrayList<Integer>(Arrays.asList(175,94,43));
+//        mLunchColors.add(color);
+//        color = new ArrayList<Integer>(Arrays.asList(213,209,176));
+//        mLunchColors.add(color);
+//        color = new ArrayList<Integer>(Arrays.asList(224,191,156));
+//        mLunchColors.add(color);
+//
+//    }
+//
+//    public void parseDinnerColors(){
+//        mDinnerColors = new ArrayList<ArrayList<Integer>>();
+//
+//        ArrayList<Integer> color = new ArrayList<Integer>(Arrays.asList(92,63,39));
+//        mDinnerColors.add(color);
+//        color = new ArrayList<Integer>(Arrays.asList(96,67,65));
+//        mDinnerColors.add(color);
+//
+//        color = new ArrayList<Integer>(Arrays.asList(128,89,79));
+//        mDinnerColors.add(color);
+//        color = new ArrayList<Integer>(Arrays.asList(154,92,44));
+//        mDinnerColors.add(color);
+//
+//        color = new ArrayList<Integer>(Arrays.asList(86,121,43));
+//        mDinnerColors.add(color);
+//        color = new ArrayList<Integer>(Arrays.asList(105,92,64));
+//        mDinnerColors.add(color);
+//
+//        color = new ArrayList<Integer>(Arrays.asList(210,144,27));
+//        mDinnerColors.add(color);
+//        color = new ArrayList<Integer>(Arrays.asList(201,133,60));
+//        mDinnerColors.add(color);
+//
+//        color = new ArrayList<Integer>(Arrays.asList(88,55,41));
+//        mDinnerColors.add(color);
+//        color = new ArrayList<Integer>(Arrays.asList(90,59,34));
+//        mDinnerColors.add(color);
+//
+//        color = new ArrayList<Integer>(Arrays.asList(121,90,21));
+//        mDinnerColors.add(color);
+//        color = new ArrayList<Integer>(Arrays.asList(120,93,48));
+//        mDinnerColors.add(color);
+//
+//        color = new ArrayList<Integer>(Arrays.asList(93,60,25));
+//        mDinnerColors.add(color);
+//        color = new ArrayList<Integer>(Arrays.asList(121,72,15));
+//        mDinnerColors.add(color);
+//
+//        color = new ArrayList<Integer>(Arrays.asList(247,215,109));
+//        mDinnerColors.add(color);
+//        color = new ArrayList<Integer>(Arrays.asList(130,78,63));
+//        mDinnerColors.add(color);
+//    }
 
 
 
@@ -958,69 +964,69 @@ public class PictureTakerFragment extends Fragment{
         return fragment;
     }
 
-    private class AsyncSharplesGetter extends AsyncTask<String, Integer, String> {
-        //todo: what are the string, int, string in the constructor?
-
-        @Override
-        protected void onPreExecute() {
-            Log.d(TAG, "in AsyncSharplesGetter.onPreExecute()");
-            super.onPreExecute();
-            //mBreakfastMenuView.setText("loading menu");
-            // show progress bar
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            Log.d(TAG, "in AsyncSharplesGetter.doInBackground()");
-            // this will get the existing sharples menu, or create one if it doesn't exist
-            mSharplesMenu = SharplesMenu.get(getActivity());
-            if (mSharplesMenu.isNewDay(new Date())){
-                mSharplesMenu = SharplesMenu.get(getActivity(), true);
-                // todo: i haven't tested whether the new day thing works
-            }
-
-
-            return "All done!";
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-            // update progress bar
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            Log.d(TAG, "in onPostExecute");
-            menuIsLoaded = true;
-
-            // populate the guesses
-//            ArrayList<String> arrayListGuesses = mSharplesMenu.getMenu(new Date());
-//            String[] guessesArr = new String[arrayListGuesses.size()];
-//            guessesArr = arrayListGuesses.toArray(guessesArr);
-//            Log.d(TAG, "how many guesses do we have: "+guessesArr.length);
-//            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, guessesArr);
-//            mTagField.setAdapter(adapter);
-
-            attachGuessesToTagFields(mTagFields);
-
-        }
-    }
-
-    private void attachGuessesToTagFields(ArrayList<AutoCompleteTextView> tagFields){
-        ArrayList<String> arrayListGuesses = mSharplesMenu.getDinnerMenu();
-        String[] guessesArr = new String[arrayListGuesses.size()];
-        guessesArr = arrayListGuesses.toArray(guessesArr);
-        Log.d(TAG, "how many guesses do we have: "+guessesArr.length);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, guessesArr);
-
-        for (AutoCompleteTextView tagField : tagFields){
-            Log.d(TAG,"attaching guesses to a tag field");
-            tagField.setAdapter(adapter);
-            tagField.setHint("autocomplete tag field");
-
-        }
-    }
+//    private class AsyncSharplesGetter extends AsyncTask<String, Integer, String> {
+//        //todo: what are the string, int, string in the constructor?
+//
+//        @Override
+//        protected void onPreExecute() {
+//            Log.d(TAG, "in AsyncSharplesGetter.onPreExecute()");
+//            super.onPreExecute();
+//            //mBreakfastMenuView.setText("loading menu");
+//            // show progress bar
+//        }
+//
+//        @Override
+//        protected String doInBackground(String... params) {
+//            Log.d(TAG, "in AsyncSharplesGetter.doInBackground()");
+//            // this will get the existing sharples menu, or create one if it doesn't exist
+//            mSharplesMenu = SharplesMenu.get(getActivity());
+//            if (mSharplesMenu.isNewDay(new Date())){
+//                mSharplesMenu = SharplesMenu.get(getActivity(), true);
+//                // todo: i haven't tested whether the new day thing works
+//            }
+//
+//
+//            return "All done!";
+//        }
+//
+//        @Override
+//        protected void onProgressUpdate(Integer... values) {
+//            super.onProgressUpdate(values);
+//            // update progress bar
+//        }
+//
+//        @Override
+//        protected void onPostExecute(String result) {
+//            super.onPostExecute(result);
+//            Log.d(TAG, "in onPostExecute");
+//            menuIsLoaded = true;
+//
+//            // populate the guesses
+////            ArrayList<String> arrayListGuesses = mSharplesMenu.getMenu(new Date());
+////            String[] guessesArr = new String[arrayListGuesses.size()];
+////            guessesArr = arrayListGuesses.toArray(guessesArr);
+////            Log.d(TAG, "how many guesses do we have: "+guessesArr.length);
+////            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, guessesArr);
+////            mTagField.setAdapter(adapter);
+//
+//            attachGuessesToTagFields(mTagFields);
+//
+//        }
+//    }
+//
+//    private void attachGuessesToTagFields(ArrayList<AutoCompleteTextView> tagFields){
+//        ArrayList<String> arrayListGuesses = mSharplesMenu.getDinnerMenu();
+//        String[] guessesArr = new String[arrayListGuesses.size()];
+//        guessesArr = arrayListGuesses.toArray(guessesArr);
+//        Log.d(TAG, "how many guesses do we have: "+guessesArr.length);
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, guessesArr);
+//
+//        for (AutoCompleteTextView tagField : tagFields){
+//            Log.d(TAG,"attaching guesses to a tag field");
+//            tagField.setAdapter(adapter);
+//            tagField.setHint("autocomplete tag field");
+//
+//        }
+//    }
 
 }

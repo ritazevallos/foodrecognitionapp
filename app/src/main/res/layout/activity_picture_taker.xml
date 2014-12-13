@@ -31,17 +31,20 @@
             android:id="@+id/first_tag_suggestion"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="Vegetable Medley"/>
         <Button
             android:id="@+id/second_tag_suggestion"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="Cheese Ravioli with Marinara"/>
         <Button
             android:id="@+id/third_tag_suggestion"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="Falafel Bar with Hummus"/>
 
     </LinearLayout>
 
