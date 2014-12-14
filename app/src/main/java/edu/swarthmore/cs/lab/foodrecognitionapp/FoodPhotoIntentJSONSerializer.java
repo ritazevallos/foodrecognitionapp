@@ -74,14 +74,11 @@ public class FoodPhotoIntentJSONSerializer {
                 }
                 // Parse the JSON
                 JSONArray array = (JSONArray) new JSONTokener(jsonString.toString()).nextValue();
-                Log.d(TAG, "AMOUNT OF THINGS IN THE JSON ARRAY: " + array.length());
                 // Build the array from JSONObjects
                 for (int i = 0; i < array.length(); i++) {
                     JSONObject jsonObject = array.getJSONObject(i);
                     FoodPhoto foodPhoto = new FoodPhoto(jsonObject);
-                    Log.d(TAG, "before Add");
                     foodPhotos.add(foodPhoto);
-                    Log.d(TAG, "after Add");
                     //todo: getting a null pointer exception in the FoodPhoto(jsonObject) constructor.
                     //to figure this out, we need to delete bad dadata and just try tags as a string
                 }

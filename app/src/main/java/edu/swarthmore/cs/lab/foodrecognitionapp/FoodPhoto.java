@@ -151,11 +151,6 @@ public class FoodPhoto {
         Object obj = json.get(JSON_TAGS);
         String string = obj.toString();
         mTags = gson.fromJson(string, type);
-
-
-        //String string_tags = json.getString(JSON_TAGS); // currently just a single string
-        //FoodPhotoTag new_tag = new FoodPhotoTag(string_tags, new Point(), new Point());
-        //mTags.add(new_tag); // temporary losing all data except the string of the first tag
         mDate = new Date(json.getLong(JSON_DATE));
         mFile = new File(json.getString(JSON_FILE_URI));
 

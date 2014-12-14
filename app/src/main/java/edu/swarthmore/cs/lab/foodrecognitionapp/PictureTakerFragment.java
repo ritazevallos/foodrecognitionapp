@@ -35,6 +35,7 @@ import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfDouble;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
@@ -45,6 +46,7 @@ import org.opencv.imgproc.Imgproc;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -73,6 +75,7 @@ public class PictureTakerFragment extends Fragment{
     private ArrayList<ArrayList<Integer>> mDinnerColors;
     private FoodPhoto mFoodPhoto;
     private FoodPhotoStore mFoodPhotoStore;
+    private NaiveBayesClassifier mBayesClassifier;
     private FoodPhoto.FoodPhotoTag mFoodPhotoTag;
     private Button retakePhotoButton;
     public boolean beforePhotoTaken;
@@ -102,6 +105,8 @@ public class PictureTakerFragment extends Fragment{
     private boolean viewSegments = true;
     private boolean using_emulator = false; // make this true if you don't want it to break when opening up camera
     private boolean loggingTrainingData = true;
+    private boolean recomputeModel = false;
+    private boolean recomputeClusteringAndModel = false;
 
 
     @Override
@@ -156,11 +161,34 @@ public class PictureTakerFragment extends Fragment{
             String tag = mFoodPhoto.getTags().get(i).getFoodName();
 
             Vector feature_vector = new Vector();
-            // todo: put all the features in here
+
+            MatOfDouble mean = new MatOfDouble();
+            MatOfDouble stddev = new MatOfDouble();
+            Core.meanStdDev(segment, mean, stddev);
+            double[] meanArray = mean.toArray();
+            double[] stdDevArray = stddev.toArray();
+
+            feature_vector.add(meanArray[0]);
+            feature_vector.add(meanArray[1]);
+            feature_vector.add(meanArray[2]);
+            feature_vector.add(stdDevArray[0]);
+            feature_vector.add(stdDevArray[1]);
+            feature_vector.add(stdDevArray[2]);
 
             // stick the feature vector into the Naive Bayes
-            // should probably also save the image file in case we want to extract more features later
-            // so save the file and store the uri somewhere
+
+            // either gets the current classifier or makes a new one
+            mBayesClassifier = NaiveBayesClassifier.get(getActivity());
+            mBayesClassifier.addToModel(feature_vector, tag);
+            if (recomputeClusteringAndModel){
+                mBayesClassifier.recomputeClusteringAndModel();
+            } else if (recomputeModel) {
+                mBayesClassifier.recomputeModel();
+            }
+            
+            // todo: should probably also save the image file in case we want to extract more features later, so save the file and store the uri somewhere
+
+
         }
     }
 

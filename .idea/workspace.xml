@@ -31,9 +31,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e557c951-0733-49f2-8012-94cb2564ad19" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/NaiveBayesClassifier.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/appcompat_v7_20_0_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/appcompat_v7_20_0_0.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/support_v4_20_0_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/support_v4_20_0_0.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhoto.java" afterPath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhoto.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhotoIntentJSONSerializer.java" afterPath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhotoIntentJSONSerializer.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/NaiveBayesClassifier.java" afterPath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/NaiveBayesClassifier.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="foodrecognitionapp.iws" />
@@ -57,21 +58,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="PictureTakerFragment.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="PictureTakerFragment.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.576923" vertical-offset="3725" max-vertical-offset="14550">
-              <caret line="330" column="70" selection-start-line="330" selection-start-column="70" selection-end-line="330" selection-end-column="84" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="picture_taker.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/menu/picture_taker.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="164" max-vertical-offset="540">
-              <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.86994725" vertical-offset="1515" max-vertical-offset="14940">
+              <caret line="187" column="12" selection-start-line="187" selection-start-column="12" selection-end-line="187" selection-end-column="12" />
               <folding />
             </state>
           </provider>
@@ -80,41 +71,45 @@
       <file leaf-file-name="FoodPhotoStore.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhotoStore.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="420" max-vertical-offset="2190">
-              <caret line="28" column="33" selection-start-line="28" selection-start-column="33" selection-end-line="28" selection-end-column="33" />
-              <folding />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1230">
+              <caret line="31" column="13" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="13" />
+              <folding>
+                <element signature="class#NutritionGrid#0;class#FoodPhotoStore#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FoodPhotoIntentJSONSerializer.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhotoIntentJSONSerializer.java">
+      <file leaf-file-name="FoodPhoto.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhoto.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="540" max-vertical-offset="1365">
-              <caret line="53" column="0" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1369" max-vertical-offset="2505">
+              <caret line="152" column="44" selection-start-line="152" selection-start-column="44" selection-end-line="152" selection-end-column="44" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="NaiveBayesClassifier.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="NaiveBayesClassifier.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/NaiveBayesClassifier.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4514039" vertical-offset="76" max-vertical-offset="2010">
-              <caret line="19" column="3" selection-start-line="19" selection-start-column="3" selection-end-line="19" selection-end-column="3" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="735" max-vertical-offset="4830">
+              <caret line="67" column="47" selection-start-line="67" selection-start-column="47" selection-end-line="67" selection-end-column="47" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="method#computeClusterTagCounts#0;class#NaiveBayesClassifier#0" expanded="false" />
-                <element signature="e#1934#1951#0" expanded="true" />
-                <element signature="e#2191#2208#0" expanded="true" />
+                <element signature="method#get#0;class#NaiveBayesClassifier#0" expanded="false" />
                 <element signature="method#classify#0;class#NaiveBayesClassifier#0" expanded="false" />
-                <element signature="e#6378#6408#0" expanded="true" />
-                <element signature="e#6609#6617#0" expanded="true" />
-                <element signature="e#7376#7398#0" expanded="true" />
-                <element signature="e#7562#7563#0" expanded="true" />
-                <element signature="e#7594#7595#0" expanded="true" />
-                <element signature="e#7624#7625#0" expanded="true" />
-                <element signature="e#7653#7654#0" expanded="true" />
+                <element signature="method#incrementClusterTagCountAndTagCount#0;class#NaiveBayesClassifier#0" expanded="false" />
+                <element signature="e#7538#7555#0" expanded="true" />
+                <element signature="e#7771#7788#0" expanded="true" />
+                <element signature="method#euclideanDistance#0;class#NaiveBayesClassifier#0" expanded="false" />
+                <element signature="method#nearestNeighbor#0;class#NaiveBayesClassifier#0" expanded="false" />
+                <element signature="method#clusterNovelFeatureVectorList#0;class#NaiveBayesClassifier#0" expanded="false" />
+                <element signature="e#10061#10078#0" expanded="true" />
+                <element signature="e#11732#11762#0" expanded="true" />
+                <element signature="e#12010#12018#0" expanded="true" />
+                <element signature="e#12073#12080#0" expanded="true" />
+                <element signature="e#13006#13028#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -1520,7 +1515,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTaker.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhotoFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_main_menu.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/list_item_food_photo.xml" />
@@ -1564,13 +1558,14 @@
         <option value="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/SharplesMenu.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/SharplesMenuFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhotoListFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhoto.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/menu/picture_taker.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/TagScore.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhotoIntentJSONSerializer.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/TagScoresJSONSerializer.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhotoIntentJSONSerializer.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhoto.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/NaiveBayesClassifierJSONSerializer.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/NaiveBayesClassifier.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java" />
       </list>
     </option>
   </component>
@@ -1578,8 +1573,8 @@
     <treeState />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="136" />
-    <option name="y" value="506" />
+    <option name="x" value="-42" />
+    <option name="y" value="469" />
     <option name="width" value="1259" />
     <option name="height" value="773" />
   </component>
@@ -2053,7 +2048,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="136" y="506" width="1259" height="773" extended-state="0" />
+    <frame x="-42" y="469" width="1259" height="773" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -2061,13 +2056,14 @@
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21308981" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32861635" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3773585" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.46270928" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="14" side_tool="true" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20754717" sideWeight="0.31260097" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20754717" sideWeight="0.31260097" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32724506" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -2082,7 +2078,6 @@
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25308135" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32876712" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32724506" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
     </layout>
@@ -2147,31 +2142,31 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java</url>
-          <line>675</line>
+          <line>703</line>
           <properties />
           <option name="timeStamp" value="192" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java</url>
-          <line>681</line>
+          <line>709</line>
           <properties />
           <option name="timeStamp" value="196" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java</url>
-          <line>679</line>
+          <line>707</line>
           <properties />
           <option name="timeStamp" value="197" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java</url>
-          <line>900</line>
+          <line>928</line>
           <properties />
           <option name="timeStamp" value="222" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java</url>
-          <line>367</line>
+          <line>395</line>
           <properties />
           <option name="timeStamp" value="223" />
         </line-breakpoint>
@@ -2180,13 +2175,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/MainMenuFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1320" max-vertical-offset="2580">
-          <caret line="88" column="16" selection-start-line="88" selection-start-column="16" selection-end-line="89" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="8340">
@@ -2530,6 +2518,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="720" max-vertical-offset="1260">
           <caret line="49" column="5" selection-start-line="49" selection-start-column="5" selection-end-line="49" selection-end-column="5" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2543,61 +2532,66 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/TagScoresJSONSerializer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5379877" vertical-offset="488" max-vertical-offset="1080">
-          <caret line="50" column="96" selection-start-line="50" selection-start-column="96" selection-end-line="50" selection-end-column="96" />
+        <state vertical-scroll-proportion="0.85084033" vertical-offset="0" max-vertical-offset="795">
+          <caret line="46" column="0" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhoto.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.21875" vertical-offset="90" max-vertical-offset="2580">
-          <caret line="34" column="33" selection-start-line="34" selection-start-column="33" selection-end-line="35" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhotoStore.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1965">
-          <caret line="28" column="33" selection-start-line="28" selection-start-column="33" selection-end-line="28" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.576923" vertical-offset="3725" max-vertical-offset="14550">
-          <caret line="330" column="70" selection-start-line="330" selection-start-column="70" selection-end-line="330" selection-end-column="84" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1429" max-vertical-offset="2505">
+          <caret line="152" column="44" selection-start-line="152" selection-start-column="44" selection-end-line="152" selection-end-column="44" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhotoIntentJSONSerializer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="210" max-vertical-offset="1365">
-          <caret line="53" column="0" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="705" max-vertical-offset="1320">
+          <caret line="76" column="44" selection-start-line="76" selection-start-column="44" selection-end-line="76" selection-end-column="44" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhotoStore.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1230">
+          <caret line="31" column="13" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="13" />
+          <folding>
+            <element signature="class#NutritionGrid#0;class#FoodPhotoStore#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/NaiveBayesClassifier.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4514039" vertical-offset="76" max-vertical-offset="2010">
-          <caret line="19" column="3" selection-start-line="19" selection-start-column="3" selection-end-line="19" selection-end-column="3" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="735" max-vertical-offset="4830">
+          <caret line="67" column="47" selection-start-line="67" selection-start-column="47" selection-end-line="67" selection-end-column="47" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#computeClusterTagCounts#0;class#NaiveBayesClassifier#0" expanded="false" />
-            <element signature="e#1934#1951#0" expanded="true" />
-            <element signature="e#2191#2208#0" expanded="true" />
+            <element signature="method#get#0;class#NaiveBayesClassifier#0" expanded="false" />
             <element signature="method#classify#0;class#NaiveBayesClassifier#0" expanded="false" />
-            <element signature="e#6378#6408#0" expanded="true" />
-            <element signature="e#6609#6617#0" expanded="true" />
-            <element signature="e#7376#7398#0" expanded="true" />
-            <element signature="e#7562#7563#0" expanded="true" />
-            <element signature="e#7594#7595#0" expanded="true" />
-            <element signature="e#7624#7625#0" expanded="true" />
-            <element signature="e#7653#7654#0" expanded="true" />
+            <element signature="method#incrementClusterTagCountAndTagCount#0;class#NaiveBayesClassifier#0" expanded="false" />
+            <element signature="e#7538#7555#0" expanded="true" />
+            <element signature="e#7771#7788#0" expanded="true" />
+            <element signature="method#euclideanDistance#0;class#NaiveBayesClassifier#0" expanded="false" />
+            <element signature="method#nearestNeighbor#0;class#NaiveBayesClassifier#0" expanded="false" />
+            <element signature="method#clusterNovelFeatureVectorList#0;class#NaiveBayesClassifier#0" expanded="false" />
+            <element signature="e#10061#10078#0" expanded="true" />
+            <element signature="e#11732#11762#0" expanded="true" />
+            <element signature="e#12010#12018#0" expanded="true" />
+            <element signature="e#12073#12080#0" expanded="true" />
+            <element signature="e#13006#13028#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.86994725" vertical-offset="1515" max-vertical-offset="14940">
+          <caret line="187" column="12" selection-start-line="187" selection-start-column="12" selection-end-line="187" selection-end-column="12" />
+          <folding />
         </state>
       </provider>
     </entry>
