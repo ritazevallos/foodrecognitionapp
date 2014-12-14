@@ -105,8 +105,10 @@ public class PictureTakerFragment extends Fragment{
     private boolean viewSegments = true;
     private boolean using_emulator = false; // make this true if you don't want it to break when opening up camera
     private boolean loggingTrainingData = true;
-    private boolean recomputeModel = false;
-    private boolean recomputeClusteringAndModel = false;
+    private boolean recomputeModelIfNeeded = true;
+    private boolean recomputeClusteringAndModelIfNeeded = true;
+    private int maxInputBeforeRecomputingModel = 5;
+    private int maxInputBeforeRecomputingClusteringAndModel = 15;
 
 
     @Override
@@ -180,12 +182,14 @@ public class PictureTakerFragment extends Fragment{
             // either gets the current classifier or makes a new one
             mBayesClassifier = NaiveBayesClassifier.get(getActivity());
             mBayesClassifier.addToModel(feature_vector, tag);
-            if (recomputeClusteringAndModel){
+            if (recomputeClusteringAndModelIfNeeded && mBayesClassifier.getNumVectorsSinceLastRecomputeClustering() > maxInputBeforeRecomputingClusteringAndModel){
+                Log.d(TAG, "RECOMPUTING NAIVE BAYES CLUSTERING AND MODEL");
                 mBayesClassifier.recomputeClusteringAndModel();
-            } else if (recomputeModel) {
+            } else if (recomputeModelIfNeeded && mBayesClassifier.getNumVectorsSinceLastRecomputeModel() > maxInputBeforeRecomputingModel) {
+                Log.d(TAG, "RECOMPUTING NAIVE BAYES MODEL");
                 mBayesClassifier.recomputeModel();
             }
-            
+
             // todo: should probably also save the image file in case we want to extract more features later, so save the file and store the uri somewhere
 
 

@@ -48,6 +48,8 @@ public class NaiveBayesClassifier {
     private HashMap<String, Integer> mTagCounts; // the total tag counts, for the priors
     private HashMap<Double, Map<String,Integer>> mClusterTagCounts;
     private NaiveBayesClassifierJSONSerializer mSerializer;
+    private int numVectorsSinceLastRecomputeModel = 0;
+    private int numVectorsSinceLastRecomputeClustering = 0;
 
     /* NaiveBayesClassifier usage
         - NaiveBayesClassifier.get(Context context);
@@ -59,11 +61,12 @@ public class NaiveBayesClassifier {
             Performs clustering on the image, and updates mCluster tags, which has a cluster-tag entry
             for each cluster in the input image
             Also adds the vector to the vector list
+        - Void recomputeModel();
             Recomputes the model but doesn't recompute clustering, so if we input a large amount of
             training data, we should call the below function.
+            todo: There is a better way to do this - just add the new data to the counts
         - Void recomputeClusteringAndModel();
             Recomputes clustering and counting from all the tagged vectors that are currently stored in mVectorList
-
         There's also some JSON serializer things at the bottom which I haven't tested at all or thought
         very long about what needs to be stored
         I haven't tested any of this actually
@@ -161,11 +164,13 @@ public class NaiveBayesClassifier {
             }
             it.remove();
         }
-        recomputeModel();
+        numVectorsSinceLastRecomputeModel += featureVectorList.size();
+        numVectorsSinceLastRecomputeClustering += featureVectorList.size();
     }
 
     public void recomputeClusteringAndModel(){
         mClusters = performClustering();
+        numVectorsSinceLastRecomputeClustering = 0;
         recomputeModel();
     }
 
@@ -206,6 +211,7 @@ public class NaiveBayesClassifier {
 
             it.remove();
         }
+        numVectorsSinceLastRecomputeModel = 0;
     }
 
     private float euclideanDistance(Vector<Float> first, Vector<Float> second) throws Exception{
@@ -318,6 +324,14 @@ public class NaiveBayesClassifier {
 
         //instead I'm returning the dict
         return clusterDict;
+    }
+
+    public int getNumVectorsSinceLastRecomputeModel() {
+        return numVectorsSinceLastRecomputeModel;
+    }
+
+    public int getNumVectorsSinceLastRecomputeClustering() {
+        return numVectorsSinceLastRecomputeClustering;
     }
 
     // endregion

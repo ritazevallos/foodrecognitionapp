@@ -31,11 +31,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e557c951-0733-49f2-8012-94cb2564ad19" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhoto.java" afterPath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhoto.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhotoIntentJSONSerializer.java" afterPath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhotoIntentJSONSerializer.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/NaiveBayesClassifier.java" afterPath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/NaiveBayesClassifier.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="foodrecognitionapp.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -61,8 +58,8 @@
       <file leaf-file-name="PictureTakerFragment.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.86994725" vertical-offset="1515" max-vertical-offset="14940">
-              <caret line="187" column="12" selection-start-line="187" selection-start-column="12" selection-end-line="187" selection-end-column="12" />
+            <state vertical-scroll-proportion="0.9327731" vertical-offset="1485" max-vertical-offset="15000">
+              <caret line="189" column="50" selection-start-line="189" selection-start-column="50" selection-end-line="189" selection-end-column="50" />
               <folding />
             </state>
           </provider>
@@ -72,7 +69,7 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhotoStore.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1230">
-              <caret line="31" column="13" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="13" />
+              <caret line="37" column="9" selection-start-line="37" selection-start-column="9" selection-end-line="37" selection-end-column="9" />
               <folding>
                 <element signature="class#NutritionGrid#0;class#FoodPhotoStore#0" expanded="false" />
               </folding>
@@ -80,36 +77,28 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FoodPhoto.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhoto.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1369" max-vertical-offset="2505">
-              <caret line="152" column="44" selection-start-line="152" selection-start-column="44" selection-end-line="152" selection-end-column="44" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="NaiveBayesClassifier.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/NaiveBayesClassifier.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="735" max-vertical-offset="4830">
-              <caret line="67" column="47" selection-start-line="67" selection-start-column="47" selection-end-line="67" selection-end-column="47" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="2675" max-vertical-offset="5040">
+              <caret line="324" column="38" selection-start-line="324" selection-start-column="38" selection-end-line="324" selection-end-column="38" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#get#0;class#NaiveBayesClassifier#0" expanded="false" />
                 <element signature="method#classify#0;class#NaiveBayesClassifier#0" expanded="false" />
                 <element signature="method#incrementClusterTagCountAndTagCount#0;class#NaiveBayesClassifier#0" expanded="false" />
-                <element signature="e#7538#7555#0" expanded="true" />
-                <element signature="e#7771#7788#0" expanded="true" />
+                <element signature="e#7947#7964#0" expanded="true" />
+                <element signature="e#8180#8197#0" expanded="true" />
                 <element signature="method#euclideanDistance#0;class#NaiveBayesClassifier#0" expanded="false" />
                 <element signature="method#nearestNeighbor#0;class#NaiveBayesClassifier#0" expanded="false" />
                 <element signature="method#clusterNovelFeatureVectorList#0;class#NaiveBayesClassifier#0" expanded="false" />
-                <element signature="e#10061#10078#0" expanded="true" />
-                <element signature="e#11732#11762#0" expanded="true" />
-                <element signature="e#12010#12018#0" expanded="true" />
-                <element signature="e#12073#12080#0" expanded="true" />
-                <element signature="e#13006#13028#0" expanded="true" />
+                <element signature="e#10517#10534#0" expanded="true" />
+                <element signature="e#12188#12218#0" expanded="true" />
+                <element signature="e#12466#12474#0" expanded="true" />
+                <element signature="e#12529#12536#0" expanded="true" />
+                <element signature="e#13462#13484#0" expanded="true" />
+                <element signature="e#13639#13640#0" expanded="true" />
+                <element signature="e#13695#13696#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -1573,8 +1562,8 @@
     <treeState />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-42" />
-    <option name="y" value="469" />
+    <option name="x" value="50" />
+    <option name="y" value="340" />
     <option name="width" value="1259" />
     <option name="height" value="773" />
   </component>
@@ -2048,7 +2037,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-42" y="469" width="1259" height="773" extended-state="0" />
+    <frame x="50" y="340" width="1259" height="773" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -2142,31 +2131,31 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java</url>
-          <line>703</line>
+          <line>707</line>
           <properties />
           <option name="timeStamp" value="192" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java</url>
-          <line>709</line>
+          <line>713</line>
           <properties />
           <option name="timeStamp" value="196" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java</url>
-          <line>707</line>
+          <line>711</line>
           <properties />
           <option name="timeStamp" value="197" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java</url>
-          <line>928</line>
+          <line>932</line>
           <properties />
           <option name="timeStamp" value="222" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java</url>
-          <line>395</line>
+          <line>399</line>
           <properties />
           <option name="timeStamp" value="223" />
         </line-breakpoint>
@@ -2557,7 +2546,7 @@
     <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhotoStore.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1230">
-          <caret line="31" column="13" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="13" />
+          <caret line="37" column="9" selection-start-line="37" selection-start-column="9" selection-end-line="37" selection-end-column="9" />
           <folding>
             <element signature="class#NutritionGrid#0;class#FoodPhotoStore#0" expanded="false" />
           </folding>
@@ -2566,31 +2555,33 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/NaiveBayesClassifier.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="735" max-vertical-offset="4830">
-          <caret line="67" column="47" selection-start-line="67" selection-start-column="47" selection-end-line="67" selection-end-column="47" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="2675" max-vertical-offset="5040">
+          <caret line="324" column="38" selection-start-line="324" selection-start-column="38" selection-end-line="324" selection-end-column="38" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#get#0;class#NaiveBayesClassifier#0" expanded="false" />
             <element signature="method#classify#0;class#NaiveBayesClassifier#0" expanded="false" />
             <element signature="method#incrementClusterTagCountAndTagCount#0;class#NaiveBayesClassifier#0" expanded="false" />
-            <element signature="e#7538#7555#0" expanded="true" />
-            <element signature="e#7771#7788#0" expanded="true" />
+            <element signature="e#7947#7964#0" expanded="true" />
+            <element signature="e#8180#8197#0" expanded="true" />
             <element signature="method#euclideanDistance#0;class#NaiveBayesClassifier#0" expanded="false" />
             <element signature="method#nearestNeighbor#0;class#NaiveBayesClassifier#0" expanded="false" />
             <element signature="method#clusterNovelFeatureVectorList#0;class#NaiveBayesClassifier#0" expanded="false" />
-            <element signature="e#10061#10078#0" expanded="true" />
-            <element signature="e#11732#11762#0" expanded="true" />
-            <element signature="e#12010#12018#0" expanded="true" />
-            <element signature="e#12073#12080#0" expanded="true" />
-            <element signature="e#13006#13028#0" expanded="true" />
+            <element signature="e#10517#10534#0" expanded="true" />
+            <element signature="e#12188#12218#0" expanded="true" />
+            <element signature="e#12466#12474#0" expanded="true" />
+            <element signature="e#12529#12536#0" expanded="true" />
+            <element signature="e#13462#13484#0" expanded="true" />
+            <element signature="e#13639#13640#0" expanded="true" />
+            <element signature="e#13695#13696#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.86994725" vertical-offset="1515" max-vertical-offset="14940">
-          <caret line="187" column="12" selection-start-line="187" selection-start-column="12" selection-end-line="187" selection-end-column="12" />
+        <state vertical-scroll-proportion="0.9327731" vertical-offset="1485" max-vertical-offset="15000">
+          <caret line="189" column="50" selection-start-line="189" selection-start-column="50" selection-end-line="189" selection-end-column="50" />
           <folding />
         </state>
       </provider>
