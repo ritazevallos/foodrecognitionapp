@@ -76,4 +76,17 @@ public class TagScore {
     public int getGuessesTaken() {
         return guessesTaken;
     }
+
+    @Override
+    public String toString() {
+        return "TagScore{" +
+                "correctTag='" + correctTag + '\'' +
+                ", firstTagGuess='" + firstTagGuess + '\'' +
+                ", secondTagGuess='" + secondTagGuess + '\'' +
+                ", thirdTagGuess='" + thirdTagGuess + '\'' +
+                ", correctlyClassifiedFirstGuess=" + correctlyClassifiedFirstGuess +
+                ", correctlyClassified=" + correctlyClassified +
+                ", guessesTaken=" + guessesTaken +
+                '}';
+    }
 }

@@ -33,14 +33,10 @@ public class SharplesMenuFragment extends Fragment {
         setHasOptionsMenu(true);
 
         AsyncSharplesGetter dashScraper = new AsyncSharplesGetter();
-        Log.d(TAG, "before execute");
         dashScraper.execute("go!");
-        Log.d(TAG, "after execute");
         // todo: asynctask crashes when screen is rotated
         // https://androidresearch.wordpress.com/2013/05/10/dealing-with-asynctask-and-screen-orientation/
 
-
-        Log.d(TAG, "SharplesMenuFragment: end of onCreate");
     }
 
 
@@ -57,7 +53,7 @@ public class SharplesMenuFragment extends Fragment {
             mLunchMenuView.setText(mSharplesMenu.getLunchMenu().toString());
             mDinnerMenuView.setText(mSharplesMenu.getDinnerMenu().toString());
         } else {
-            Log.d(TAG, "Sharples menu failed to load");
+            Log.e(TAG, "Sharples menu failed to load");
         }
 
         return v;

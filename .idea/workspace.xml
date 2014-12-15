@@ -33,6 +33,10 @@
     <list default="true" id="e557c951-0733-49f2-8012-94cb2564ad19" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/NaiveBayesClassifier.java" afterPath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/NaiveBayesClassifier.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/SharplesMenuFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/SharplesMenuFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/TagScore.java" afterPath="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/TagScore.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_picture_taker.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_picture_taker.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="foodrecognitionapp.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -55,24 +59,39 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="PictureTakerFragment.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="PictureTakerFragment.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.9327731" vertical-offset="1485" max-vertical-offset="15000">
-              <caret line="189" column="50" selection-start-line="189" selection-start-column="50" selection-end-line="189" selection-end-column="50" />
+            <state vertical-scroll-proportion="-7.8846154" vertical-offset="14390" max-vertical-offset="14970">
+              <caret line="1111" column="9" selection-start-line="1111" selection-start-column="9" selection-end-line="1111" selection-end-column="9" />
+              <folding>
+                <element signature="e#5818#5840#0" expanded="false" />
+                <element signature="e#13081#13252#0" expanded="true" />
+                <element signature="e#13237#13238#0" expanded="true" />
+                <element signature="e#15778#16695#0" expanded="true" />
+                <element signature="e#16680#16681#0" expanded="true" />
+                <element signature="e#24217#24225#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SharplesMenuFragment.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/SharplesMenuFragment.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.6856288" vertical-offset="896" max-vertical-offset="2505">
+              <caret line="89" column="0" selection-start-line="89" selection-start-column="0" selection-end-line="89" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FoodPhotoStore.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhotoStore.java">
+      <file leaf-file-name="TagScore.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/TagScore.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1230">
-              <caret line="37" column="9" selection-start-line="37" selection-start-column="9" selection-end-line="37" selection-end-column="9" />
-              <folding>
-                <element signature="class#NutritionGrid#0;class#FoodPhotoStore#0" expanded="false" />
-              </folding>
+            <state vertical-scroll-proportion="0.0" vertical-offset="345" max-vertical-offset="1170">
+              <caret line="47" column="34" selection-start-line="47" selection-start-column="34" selection-end-line="47" selection-end-column="34" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -80,27 +99,35 @@
       <file leaf-file-name="NaiveBayesClassifier.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/NaiveBayesClassifier.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="2675" max-vertical-offset="5040">
-              <caret line="324" column="38" selection-start-line="324" selection-start-column="38" selection-end-line="324" selection-end-column="38" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="5562" max-vertical-offset="7800">
+              <caret line="397" column="106" selection-start-line="397" selection-start-column="106" selection-end-line="397" selection-end-column="106" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="method#get#0;class#NaiveBayesClassifier#0" expanded="false" />
-                <element signature="method#classify#0;class#NaiveBayesClassifier#0" expanded="false" />
-                <element signature="method#incrementClusterTagCountAndTagCount#0;class#NaiveBayesClassifier#0" expanded="false" />
-                <element signature="e#7947#7964#0" expanded="true" />
-                <element signature="e#8180#8197#0" expanded="true" />
+                <element signature="e#7032#7040#0" expanded="true" />
+                <element signature="e#7100#7108#0" expanded="true" />
+                <element signature="e#10716#10733#0" expanded="true" />
+                <element signature="e#10949#10966#0" expanded="true" />
                 <element signature="method#euclideanDistance#0;class#NaiveBayesClassifier#0" expanded="false" />
-                <element signature="method#nearestNeighbor#0;class#NaiveBayesClassifier#0" expanded="false" />
-                <element signature="method#clusterNovelFeatureVectorList#0;class#NaiveBayesClassifier#0" expanded="false" />
-                <element signature="e#10517#10534#0" expanded="true" />
-                <element signature="e#12188#12218#0" expanded="true" />
-                <element signature="e#12466#12474#0" expanded="true" />
-                <element signature="e#12529#12536#0" expanded="true" />
-                <element signature="e#13462#13484#0" expanded="true" />
-                <element signature="e#13639#13640#0" expanded="true" />
-                <element signature="e#13695#13696#0" expanded="true" />
+                <element signature="e#12705#12722#0" expanded="true" />
+                <element signature="e#15118#15126#0" expanded="true" />
+                <element signature="e#15181#15188#0" expanded="true" />
+                <element signature="e#16179#16180#0" expanded="true" />
+                <element signature="e#16235#16236#0" expanded="true" />
               </folding>
             </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="activity_picture_taker.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_picture_taker.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-18.814816" vertical-offset="1457" max-vertical-offset="2085">
+              <caret line="131" column="34" selection-start-line="131" selection-start-column="34" selection-end-line="131" selection-end-column="34" />
+              <folding />
+            </state>
+          </provider>
+          <provider editor-type-id="android-designer">
+            <state />
           </provider>
         </entry>
       </file>
@@ -1539,22 +1566,22 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_nutrition.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/NutritionFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_picture_taker.xml" />
         <option value="$PROJECT_DIR$/app/.gitignore" />
         <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/SharplesMenu.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/SharplesMenuFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhotoListFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/menu/picture_taker.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/TagScore.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/TagScoresJSONSerializer.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhotoIntentJSONSerializer.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhoto.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/NaiveBayesClassifierJSONSerializer.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/TagScore.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/NaiveBayesClassifier.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_picture_taker.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/SharplesMenuFragment.java" />
       </list>
     </option>
   </component>
@@ -1562,8 +1589,8 @@
     <treeState />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="50" />
-    <option name="y" value="340" />
+    <option name="x" value="-3" />
+    <option name="y" value="371" />
     <option name="width" value="1259" />
     <option name="height" value="773" />
   </component>
@@ -1593,22 +1620,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="foodrecognitionapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-      <pane id="Scope" />
-      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -1799,6 +1810,22 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="foodrecognitionapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -2037,22 +2064,23 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="50" y="340" width="1259" height="773" extended-state="0" />
+    <frame x="-3" y="371" width="1259" height="773" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3291536" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25308135" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21308981" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32861635" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3773585" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.46270928" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="14" side_tool="true" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20754717" sideWeight="0.31260097" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32724506" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.4308176" sideWeight="0.31260097" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32724506" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -2065,9 +2093,8 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25308135" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32724506" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32861635" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -2075,15 +2102,15 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3291536" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.46270928" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="14" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="14" side_tool="true" content_ui="tabs" />
+      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32832834" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33037156" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3196347" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Memory Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.46270928" sideWeight="0.687399" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -2097,8 +2124,8 @@
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32724506" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24809742" sideWeight="0.31260097" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32941177" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32941177" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
     </layout-to-restore>
   </component>
@@ -2124,51 +2151,84 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/SharplesMenuFragment.java</url>
-          <line>48</line>
-          <properties />
-          <option name="timeStamp" value="188" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java</url>
-          <line>707</line>
+          <line>760</line>
           <properties />
           <option name="timeStamp" value="192" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java</url>
-          <line>713</line>
+          <line>766</line>
           <properties />
           <option name="timeStamp" value="196" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java</url>
-          <line>711</line>
+          <line>764</line>
           <properties />
           <option name="timeStamp" value="197" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java</url>
-          <line>932</line>
+          <line>985</line>
           <properties />
           <option name="timeStamp" value="222" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java</url>
-          <line>399</line>
+          <line>674</line>
           <properties />
-          <option name="timeStamp" value="223" />
+          <option name="timeStamp" value="225" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java</url>
+          <line>1115</line>
+          <properties />
+          <option name="timeStamp" value="226" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java</url>
+          <line>1105</line>
+          <properties />
+          <option name="timeStamp" value="227" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="224" />
+      <option name="time" value="228" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/NaiveBayesClassifier.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2120" max-vertical-offset="5040">
+          <caret line="284" column="47" selection-start-line="284" selection-start-column="47" selection-end-line="284" selection-end-column="47" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#7032#7040#0" expanded="true" />
+            <element signature="e#7100#7108#0" expanded="true" />
+            <element signature="e#10716#10733#0" expanded="true" />
+            <element signature="e#10949#10966#0" expanded="true" />
+            <element signature="method#euclideanDistance#0;class#NaiveBayesClassifier#0" expanded="false" />
+            <element signature="e#12705#12722#0" expanded="true" />
+            <element signature="e#15118#15126#0" expanded="true" />
+            <element signature="e#15181#15188#0" expanded="true" />
+            <element signature="e#16179#16180#0" expanded="true" />
+            <element signature="e#16235#16236#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="8340">
           <caret line="550" column="0" selection-start-line="550" selection-start-column="0" selection-end-line="550" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="e#5818#5840#0" expanded="false" />
+            <element signature="e#13081#13252#0" expanded="true" />
+            <element signature="e#13237#13238#0" expanded="true" />
+            <element signature="e#15778#16695#0" expanded="true" />
+            <element signature="e#16680#16681#0" expanded="true" />
+            <element signature="e#24217#24225#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -2190,7 +2250,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1200" max-vertical-offset="2325">
           <caret line="100" column="17" selection-start-line="100" selection-start-column="17" selection-end-line="100" selection-end-column="17" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2445,14 +2504,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/SharplesMenuFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-17.807692" vertical-offset="1907" max-vertical-offset="2565">
-          <caret line="172" column="45" selection-start-line="172" selection-start-column="45" selection-end-line="172" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="150" max-vertical-offset="960">
@@ -2484,30 +2535,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_picture_taker.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="160" max-vertical-offset="2010">
-          <caret line="23" column="43" selection-start-line="23" selection-start-column="25" selection-end-line="23" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/FoodPhotoListFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="2147" max-vertical-offset="3240">
           <caret line="150" column="24" selection-start-line="150" selection-start-column="24" selection-end-line="150" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/TagScore.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="720" max-vertical-offset="1260">
-          <caret line="49" column="5" selection-start-line="49" selection-start-column="5" selection-end-line="49" selection-end-column="5" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2555,33 +2586,62 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/NaiveBayesClassifier.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2675" max-vertical-offset="5040">
-          <caret line="324" column="38" selection-start-line="324" selection-start-column="38" selection-end-line="324" selection-end-column="38" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="5562" max-vertical-offset="7800">
+          <caret line="397" column="106" selection-start-line="397" selection-start-column="106" selection-end-line="397" selection-end-column="106" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#get#0;class#NaiveBayesClassifier#0" expanded="false" />
-            <element signature="method#classify#0;class#NaiveBayesClassifier#0" expanded="false" />
-            <element signature="method#incrementClusterTagCountAndTagCount#0;class#NaiveBayesClassifier#0" expanded="false" />
-            <element signature="e#7947#7964#0" expanded="true" />
-            <element signature="e#8180#8197#0" expanded="true" />
+            <element signature="e#7032#7040#0" expanded="true" />
+            <element signature="e#7100#7108#0" expanded="true" />
+            <element signature="e#10716#10733#0" expanded="true" />
+            <element signature="e#10949#10966#0" expanded="true" />
             <element signature="method#euclideanDistance#0;class#NaiveBayesClassifier#0" expanded="false" />
-            <element signature="method#nearestNeighbor#0;class#NaiveBayesClassifier#0" expanded="false" />
-            <element signature="method#clusterNovelFeatureVectorList#0;class#NaiveBayesClassifier#0" expanded="false" />
-            <element signature="e#10517#10534#0" expanded="true" />
-            <element signature="e#12188#12218#0" expanded="true" />
-            <element signature="e#12466#12474#0" expanded="true" />
-            <element signature="e#12529#12536#0" expanded="true" />
-            <element signature="e#13462#13484#0" expanded="true" />
-            <element signature="e#13639#13640#0" expanded="true" />
-            <element signature="e#13695#13696#0" expanded="true" />
+            <element signature="e#12705#12722#0" expanded="true" />
+            <element signature="e#15118#15126#0" expanded="true" />
+            <element signature="e#15181#15188#0" expanded="true" />
+            <element signature="e#16179#16180#0" expanded="true" />
+            <element signature="e#16235#16236#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_picture_taker.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-18.814816" vertical-offset="1457" max-vertical-offset="2085">
+          <caret line="131" column="34" selection-start-line="131" selection-start-column="34" selection-end-line="131" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/TagScore.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="345" max-vertical-offset="1170">
+          <caret line="47" column="34" selection-start-line="47" selection-start-column="34" selection-end-line="47" selection-end-column="34" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/PictureTakerFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.9327731" vertical-offset="1485" max-vertical-offset="15000">
-          <caret line="189" column="50" selection-start-line="189" selection-start-column="50" selection-end-line="189" selection-end-column="50" />
+        <state vertical-scroll-proportion="-7.8846154" vertical-offset="14390" max-vertical-offset="14970">
+          <caret line="1111" column="9" selection-start-line="1111" selection-start-column="9" selection-end-line="1111" selection-end-column="9" />
+          <folding>
+            <element signature="e#5818#5840#0" expanded="false" />
+            <element signature="e#13081#13252#0" expanded="true" />
+            <element signature="e#13237#13238#0" expanded="true" />
+            <element signature="e#15778#16695#0" expanded="true" />
+            <element signature="e#16680#16681#0" expanded="true" />
+            <element signature="e#24217#24225#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/swarthmore/cs/lab/foodrecognitionapp/SharplesMenuFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6856288" vertical-offset="896" max-vertical-offset="2505">
+          <caret line="89" column="0" selection-start-line="89" selection-start-column="0" selection-end-line="89" selection-end-column="0" />
           <folding />
         </state>
       </provider>

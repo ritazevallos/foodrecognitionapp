@@ -38,35 +38,50 @@ import java.util.Vector;
 public class NaiveBayesClassifier {
     private static NaiveBayesClassifier sBayesClassifier;
     private String TAG = "NaiveBayesClassifier";
-    private List<Vector<Float>> mVectorList;
-    private Mat samples;
-    List<Vector<Float>> mCenters;
     private Context mContext;
-    private List<Double> mClusterLabels;
-    private HashMap<Double, List<Vector<Double>>> mClusters;
-    private HashMap<Double, String> mClusterTags;
+    private List<Vector<Float>> mVectorList;
+    private HashMap<Integer, String> mVectorListTagMap;
+    List<Vector<Float>> mCenters; // vectors that stand for each of the clusters; to be compared against during nearest neighbors classification
+    private List<Double> mClusterLabels; // list of cluster labels; for iteration
+    private HashMap<Double, List<Vector<Double>>> mClusters; // list of the vectors that make up the clusters
+    private HashMap<Double, String> mClusterTags; // labeling of clusters by tags (clusters are repeated)
     private HashMap<String, Integer> mTagCounts; // the total tag counts, for the priors
-    private HashMap<Double, Map<String,Integer>> mClusterTagCounts;
+    private HashMap<Double, Map<String,Integer>> mClusterTagCounts; // the tag counts for each cluster
     private NaiveBayesClassifierJSONSerializer mSerializer;
     private int numVectorsSinceLastRecomputeModel = 0;
-    private int numVectorsSinceLastRecomputeClustering = 0;
+    private int numVectorsSinceLastRecomputeClustering = 0; // in case we want to recompute every x amount of times
 
     /* NaiveBayesClassifier usage
         - NaiveBayesClassifier.get(Context context);
             get the current instance of the classifier, or create one for the first time
-        - String classify(List<Vector<Float>> featureVectorList);
-            Pass in a list of feature vectors, each of which corresponds to a chunk of the image
-            Returns a tag
-        - void addToModel(List<Vector<Float>> featureVectorList, String tag);
-            Performs clustering on the image, and updates mCluster tags, which has a cluster-tag entry
-            for each cluster in the input image
-            Also adds the vector to the vector list
-        - Void recomputeModel();
-            Recomputes the model but doesn't recompute clustering, so if we input a large amount of
-            training data, we should call the below function.
-            todo: There is a better way to do this - just add the new data to the counts
-        - Void recomputeClusteringAndModel();
-            Recomputes clustering and counting from all the tagged vectors that are currently stored in mVectorList
+
+        ##### To build training model ######
+
+        For all training instances, call
+            - void addToVectorList(List<Vector<Float>> featureVectorList, String tag);
+                Adds to the list and the list-tag mapping without recomputing any clustering
+                Use this when we're building the original model from training data
+        Then after we've gotten enough training data, call
+            - Void recomputeClusteringAndModel();
+                Recomputes clustering and counting from all the tagged vectors that are
+                currently stored in mVectorList
+        Now ready to classify using the model!
+
+        ##### To classify a single novel feature vector ######
+
+            - String classify(List<Vector<Float>> featureVectorList);
+                Pass in a list of feature vectors, each of which corresponds to a chunk of the image
+                Returns a tag
+
+        ##### To add a single vector to the training model ######
+
+            - void addToModel(List<Vector<Float>> featureVectorList, String tag);
+                Updates mVectorList, mVectorListTagMap, mClusterTags
+            - Void recomputeModel();
+                Recomputes the model but doesn't recompute clustering
+
+        ##### JSON serializer #####
+
         There's also some JSON serializer things at the bottom which I haven't tested at all or thought
         very long about what needs to be stored
         I haven't tested any of this actually
@@ -76,6 +91,8 @@ public class NaiveBayesClassifier {
 
     NaiveBayesClassifier(Context context){
         mContext = context;
+        mVectorListTagMap = new HashMap<Integer, String>();
+        mVectorList = new ArrayList<Vector<Float>>();
         mSerializer = new NaiveBayesClassifierJSONSerializer(context, "NaiveBayesClassifier.json");
         try {
             mSerializer.loadClassifier(); // this will either load the existing classifier,
@@ -83,10 +100,10 @@ public class NaiveBayesClassifier {
                                           // and the hashmaps from mVectorList
         } catch (JSONException e) {
             Log.e(TAG, "Error loading classifier from serializer"+e);
-            mClusters = performClustering();
+            performClustering();
         } catch (IOException e) {
             Log.e(TAG, "Error loading classifier from serializer"+e);
-            mClusters = performClustering();
+            performClustering();
         }
     }
 
@@ -98,7 +115,46 @@ public class NaiveBayesClassifier {
         return sBayesClassifier;
     }
 
-    public String classify(List<Vector<Float>> featureVectorList){
+    /*
+        addToVectorList - adds each feature vector into the feature vector store,
+                          and associates with each the tag (stored in mVectorListTagMap)
+     */
+    public void addToVectorList(List<Vector<Float>> featureVectorList, String tag){
+        int first_index = mVectorList.size();
+        int last_index = first_index + featureVectorList.size() - 1;
+
+        mVectorList.addAll(featureVectorList);
+
+        for (int i=first_index; i<= last_index; i++){
+            mVectorListTagMap.put(i,tag);
+        }
+
+    }
+
+    /* addToModel - updates mVectorList, mVectorListTagMap, and mClusterTags - ready to recomputeModel
+
+     */
+    public void addToModel(List<Vector<Float>> featureVectorList, String tag){
+        // update mVectorList and mVectorListTagMap
+        addToVectorList(featureVectorList, tag);
+
+        // update mClusterTags
+        HashMap<Double, Integer> clusterCounts = clusterNovelFeatureVectorList(featureVectorList);
+        Iterator it = clusterCounts.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<Double, Integer> pairs = (Map.Entry) it.next();
+            Double cluster = pairs.getKey();
+            Integer countClusters = pairs.getValue();
+
+            for (int i=0; i<countClusters; i++){
+                mClusterTags.put(cluster, tag);
+            }
+            it.remove();
+        }
+
+    }
+
+    public ArrayList<String> classify(List<Vector<Float>> featureVectorList){
 
         HashMap<Double, Integer> clusterCounts = clusterNovelFeatureVectorList(featureVectorList);
 
@@ -114,8 +170,8 @@ public class NaiveBayesClassifier {
          P(w_i|tag) = count (w_i, tag) / sum over all clusters w_j, count(w_j, tag)
          */
 
-        double argmax = 0.0;
-        String maxTag = "default tag";
+        ArrayList<Double> top_three_probabilities = new ArrayList<Double>();
+        ArrayList<String> top_three_tags = new ArrayList<String>();
         double smoothing_constant = 0.1;
 
         Iterator it = mTagCounts.entrySet().iterator();
@@ -138,42 +194,57 @@ public class NaiveBayesClassifier {
                 probability_this_image_given_tag *= clusterCounts.get(imageClusterLabel);
             }
             Double probability_this_tag_given_image = probability_this_tag * probability_this_image_given_tag;
-            if (probability_this_tag_given_image >= argmax) {
-                argmax = probability_this_tag_given_image;
-                maxTag = tag;
+            for (int i=0; i<3; i++) {
+                if (i+1 > top_three_probabilities.size()){
+                    top_three_probabilities.add(probability_this_tag_given_image);
+                    top_three_tags.add(tag);
+                }
+                else {
+                    double argmax = top_three_probabilities.get(i);
+                    //todo: will this actually get the max three
+                    if (probability_this_tag_given_image >= argmax) {
+                        top_three_probabilities.set(i,probability_this_tag_given_image);
+                        top_three_tags.add(tag);
+                    }
+                }
             }
 
             it.remove();
         }
 
-        return maxTag;
-    }
-
-    public void addToModel(List<Vector<Float>> featureVectorList, String tag){
-
-        mVectorList.addAll(featureVectorList); // todo: this is not necessary and take up space; remove as sure as we know clustering is working properly
-
-        HashMap<Double, Integer> clusterCounts = clusterNovelFeatureVectorList(featureVectorList);
-        Iterator it = clusterCounts.entrySet().iterator();
-        while (it.hasNext()){
-            Map.Entry<Double, Integer> pairs = (Map.Entry)it.next();
-            Double clusterLabel = pairs.getKey();
-            Integer clusterCount = pairs.getValue();
-            for (int i=0; i<clusterCount; i++) {
-                mClusterTags.put(clusterLabel, tag);
-            }
-            it.remove();
-        }
-        numVectorsSinceLastRecomputeModel += featureVectorList.size();
-        numVectorsSinceLastRecomputeClustering += featureVectorList.size();
+        return top_three_tags;
     }
 
     public void recomputeClusteringAndModel(){
-        mClusters = performClustering();
+        performClustering();
         numVectorsSinceLastRecomputeClustering = 0;
         recomputeModel();
     }
 
+    /*
+        From changes in mClusterTags, recomputes mClusterTagCounts and mTagCounts
+     */
+    public void recomputeModel(){
+        mClusterTagCounts = new HashMap<Double, Map<String,Integer>>();
+        mTagCounts = new HashMap<String, Integer>();
+
+        Iterator it = mClusterTags.entrySet().iterator();
+        while (it.hasNext()){
+            Map.Entry<Double,String> pairs = (Map.Entry)it.next();
+            Double clusterLabel = pairs.getKey();
+            String clusterTag = pairs.getValue();
+
+            incrementClusterTagCountAndTagCount(clusterLabel, clusterTag);
+
+            it.remove();
+        }
+        numVectorsSinceLastRecomputeModel = 0;
+    }
+
+    /* incrementClusterTagCountAndTagCount - for the given clusterLabel and tag,
+        adds a count of 1 in mClusterTagCounts. Also adds a count of 1 in mTagCounts
+        for the given tag
+     */
     private void incrementClusterTagCountAndTagCount(Double clusterLabel, String clusterTag) {
         Integer clusterTagCount;
         Integer tagCount;
@@ -195,23 +266,6 @@ public class NaiveBayesClassifier {
         }
         mClusterTagCounts.get(clusterLabel).put(clusterTag,clusterTagCount);
         mTagCounts.put(clusterTag, tagCount);
-    }
-
-    public void recomputeModel(){
-        mClusterTagCounts = new HashMap<Double, Map<String,Integer>>();
-        mTagCounts = new HashMap<String, Integer>();
-
-        Iterator it = mClusterTags.entrySet().iterator();
-        while (it.hasNext()){
-            Map.Entry<Double,String> pairs = (Map.Entry)it.next();
-            Double clusterLabel = pairs.getKey();
-            String clusterTag = pairs.getValue();
-
-            incrementClusterTagCountAndTagCount(clusterLabel, clusterTag);
-
-            it.remove();
-        }
-        numVectorsSinceLastRecomputeModel = 0;
     }
 
     private float euclideanDistance(Vector<Float> first, Vector<Float> second) throws Exception{
@@ -260,13 +314,22 @@ public class NaiveBayesClassifier {
         return clusterCounts;
     }
 
-
     //region Clustering
 
-    private HashMap<Double, List<Vector<Double>>> performClustering(){
+    /* performClustering - performs k-means clustering on all the feature vectors in mVectorList.
+        Also updates mClusterTags, which is essentially the same this as mVectorListTagMap, except
+        each vector key is replaced with a cluster key
+
+        Updated data structures:
+        ArrayList<Vector<Float>> mCenters
+        ArrayList<Double> mClusterLabels
+        HashMap<Double, List<Vector<Double>>> mClusters
+        HashMap<Double, String>() mClusterTags
+     */
+    private void performClustering(){
         int width = mVectorList.get(0).size();
         int height = mVectorList.size();
-        samples = new Mat(width, height, CvType.CV_32F);
+        Mat samples = new Mat(width, height, CvType.CV_32F);
         for (int i=0; i<width; i++){
             for (int j=0; j<height; j++){
                 samples.put(i, j, mVectorList.get(j).get(i));
@@ -294,8 +357,9 @@ public class NaiveBayesClassifier {
 
         mCenters = new ArrayList<Vector<Float>>() ;
         mClusterLabels = new ArrayList<Double>();
+        mClusterTags = new HashMap<Double, String>();
 
-        HashMap<Double, List<Vector<Double>>> clusterDict = new HashMap<Double, List<Vector<Double>>>();
+        mClusters = new HashMap<Double, List<Vector<Double>>>();
         for (int i = 0; i < labels.cols(); i++){
             Double clusterLabel = labels.get(i,0)[0]; //todo: I don't know what the [0] is for
             mClusterLabels.add(clusterLabel);
@@ -310,20 +374,17 @@ public class NaiveBayesClassifier {
             mCenters.add(centerVector);
 
             List<Vector<Double>> clusterVectorList;
-            if (clusterDict.containsKey(clusterLabel)){
-                clusterVectorList = clusterDict.get(clusterLabel);
+            if (mClusters.containsKey(clusterLabel)){
+                clusterVectorList = mClusters.get(clusterLabel);
             } else{
                 clusterVectorList = new ArrayList<Vector<Double>>();
             }
             clusterVectorList.add(featureVector);
-            clusterDict.put(clusterLabel,clusterVectorList);
+            mClusters.put(clusterLabel,clusterVectorList);
+
+            // for each feature vector, associate the cluster with a tag
+            mClusterTags.put(clusterLabel, mVectorListTagMap.get(i)); // todo: make sure this is right
         }
-
-        // clusters is a list of clusters, each of which is a list of feature vectors in that cluster
-        ArrayList<List<Vector<Double>>> clusters = new ArrayList<List<Vector<Double>>>(clusterDict.values());
-
-        //instead I'm returning the dict
-        return clusterDict;
     }
 
     public int getNumVectorsSinceLastRecomputeModel() {
@@ -332,6 +393,24 @@ public class NaiveBayesClassifier {
 
     public int getNumVectorsSinceLastRecomputeClustering() {
         return numVectorsSinceLastRecomputeClustering;
+    }
+
+    /* this is what Android Studio's "generate" spit out... i'm dubious whether those dicts will look nice
+     */
+    @Override
+    public String toString() {
+        return "NaiveBayesClassifier{" +
+                "mVectorList=" + mVectorList +
+                ", mVectorListTagMap=" + mVectorListTagMap +
+                ", mCenters=" + mCenters +
+                ", mClusterLabels=" + mClusterLabels +
+                ", mClusters=" + mClusters +
+                ", mClusterTags=" + mClusterTags +
+                ", mTagCounts=" + mTagCounts +
+                ", mClusterTagCounts=" + mClusterTagCounts +
+                ", numVectorsSinceLastRecomputeClustering=" + numVectorsSinceLastRecomputeClustering +
+                ", numVectorsSinceLastRecomputeModel=" + numVectorsSinceLastRecomputeModel +
+                '}';
     }
 
     // endregion
@@ -428,7 +507,7 @@ public class NaiveBayesClassifier {
                     mClusterTagCounts = gson.fromJson(stringClusterTagCounts, typeClusterTagCounts);
 
                 } else {
-                    mClusters = performClustering();
+                    performClustering();
                     recomputeModel();
                 }
             } catch (FileNotFoundException e) {

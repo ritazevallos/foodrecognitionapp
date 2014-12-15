@@ -20,7 +20,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -46,7 +45,6 @@ import org.opencv.imgproc.Imgproc;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,6 +52,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import java.util.Vector;
+import java.util.concurrent.TimeUnit;
 
 public class PictureTakerFragment extends Fragment{
 
@@ -96,20 +95,21 @@ public class PictureTakerFragment extends Fragment{
     private int count;
     private float guessScore = 0;
     private String inputTag;
-    private ArrayList<Mat> segmentMats;
+    private ArrayList<Mat> mSegmentMats;
     private ArrayList<TagScore> mScores;
     private TagScoresJSONSerializer mSerializer;
+    private TextView mScoresTextView;
+    private ArrayList<Button> mSuggestionButtons;
 
     // SOME DEVELOPER SETTINGS
     private boolean viewMaskAndMaskedImage = false;
     private boolean viewSegments = true;
     private boolean using_emulator = false; // make this true if you don't want it to break when opening up camera
-    private boolean loggingTrainingData = true;
-    private boolean recomputeModelIfNeeded = true;
-    private boolean recomputeClusteringAndModelIfNeeded = true;
-    private int maxInputBeforeRecomputingModel = 5;
-    private int maxInputBeforeRecomputingClusteringAndModel = 15;
-
+    private boolean useNaiveBayesClassifier = false;
+    private boolean currentlyTraining = true;
+    private boolean currentlyClassifying = false;
+    private boolean computeClustersAndModelFromTrainingData = false;
+    private boolean viewScores = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -157,41 +157,51 @@ public class PictureTakerFragment extends Fragment{
 
     //region Data tracking
 
+    private List<Vector<Float>> computeFeatureVector(Mat image){
+
+        List<Vector<Float>> feature_vectors = new ArrayList<Vector<Float>>();
+
+        // eventually we should split it up into chunks and compute various vectors?
+
+        Vector feature_vector = new Vector();
+
+        MatOfDouble mean = new MatOfDouble();
+        MatOfDouble stddev = new MatOfDouble();
+
+        Core.meanStdDev(image, mean, stddev);
+
+        double[] meanArray = mean.toArray();
+        double[] stdDevArray = stddev.toArray();
+
+        feature_vector.add(meanArray[0]);
+        feature_vector.add(meanArray[1]);
+        feature_vector.add(meanArray[2]);
+        feature_vector.add(stdDevArray[0]);
+        feature_vector.add(stdDevArray[1]);
+        feature_vector.add(stdDevArray[2]);
+
+        feature_vectors.add(feature_vector);
+        return feature_vectors;
+    }
+
     private void saveTrainingData(){
-        for (int i=0; i<segmentMats.size(); i++){
-            Mat segment = segmentMats.get(i);
+        for (int i=0; i< mSegmentMats.size(); i++){
+            Mat segment = mSegmentMats.get(i);
             String tag = mFoodPhoto.getTags().get(i).getFoodName();
 
-            Vector feature_vector = new Vector();
-
-            MatOfDouble mean = new MatOfDouble();
-            MatOfDouble stddev = new MatOfDouble();
-            Core.meanStdDev(segment, mean, stddev);
-            double[] meanArray = mean.toArray();
-            double[] stdDevArray = stddev.toArray();
-
-            feature_vector.add(meanArray[0]);
-            feature_vector.add(meanArray[1]);
-            feature_vector.add(meanArray[2]);
-            feature_vector.add(stdDevArray[0]);
-            feature_vector.add(stdDevArray[1]);
-            feature_vector.add(stdDevArray[2]);
+            List<Vector<Float>> feature_vectors = computeFeatureVector(segment);
 
             // stick the feature vector into the Naive Bayes
 
             // either gets the current classifier or makes a new one
             mBayesClassifier = NaiveBayesClassifier.get(getActivity());
-            mBayesClassifier.addToModel(feature_vector, tag);
-            if (recomputeClusteringAndModelIfNeeded && mBayesClassifier.getNumVectorsSinceLastRecomputeClustering() > maxInputBeforeRecomputingClusteringAndModel){
-                Log.d(TAG, "RECOMPUTING NAIVE BAYES CLUSTERING AND MODEL");
+            mBayesClassifier.addToVectorList(feature_vectors, tag);
+
+            if (computeClustersAndModelFromTrainingData){
                 mBayesClassifier.recomputeClusteringAndModel();
-            } else if (recomputeModelIfNeeded && mBayesClassifier.getNumVectorsSinceLastRecomputeModel() > maxInputBeforeRecomputingModel) {
-                Log.d(TAG, "RECOMPUTING NAIVE BAYES MODEL");
-                mBayesClassifier.recomputeModel();
             }
 
             // todo: should probably also save the image file in case we want to extract more features later, so save the file and store the uri somewhere
-
 
         }
     }
@@ -223,6 +233,9 @@ public class PictureTakerFragment extends Fragment{
         mTagSuggestionsLayout = (LinearLayout)v.findViewById(R.id.tag_buttons_layout);
         mNotFoodLayout = (LinearLayout)v.findViewById(R.id.notFoodLayout);
         mTagContainer = (RelativeLayout)v.findViewById(R.id.tagContainerLayout);
+        mTagField = (AutoCompleteTextView)mTagContainer.findViewById(R.id.pictureTag);
+
+        mScoresTextView = (TextView)v.findViewById(R.id.scoreView);
 
         retakePhotoButton = (Button)v.findViewById(R.id.retake_photo_button);
         if(beforePhotoTaken) {
@@ -258,7 +271,7 @@ public class PictureTakerFragment extends Fragment{
                 else{
                     mFoodPhotoStore.addFoodPhoto(mFoodPhoto);
                     FoodPhotoStore.get(getActivity()).saveFoodPhotos();
-                    if (loggingTrainingData) {
+                    if (currentlyTraining) {
                         saveTrainingData();
                     }
                     saveAccuracyData();
@@ -376,6 +389,8 @@ public class PictureTakerFragment extends Fragment{
 
     public void tagSegment(int segmentNum){
 
+        final ArrayList<String> suggestions = classifySegment(mSegmentMats.get(segmentNum));
+
         Rect rect = ROIs.get(segmentNum);
         final Point ll = new Point(rect.x, rect.y);
         final Point ur = new Point(rect.x + rect.width, rect.y + rect.height);
@@ -387,19 +402,16 @@ public class PictureTakerFragment extends Fragment{
 
         highlightCurrentROI(ll,ur, segmentNum);
 
-        final ArrayList<String> suggestions = getTagSuggestions(1, 2, 3);
-
-        final ArrayList<Button> suggestionButtons = new ArrayList<Button>(){{
+        mSuggestionButtons = new ArrayList<Button>(){{
             add((Button) mTagSuggestionsLayout.findViewById(R.id.first_tag_suggestion));
             add((Button) mTagSuggestionsLayout.findViewById(R.id.second_tag_suggestion));
             add((Button) mTagSuggestionsLayout.findViewById(R.id.third_tag_suggestion));
         }};
-        mTagField = (AutoCompleteTextView)mTagContainer.findViewById(R.id.pictureTag);
         mTagField.setEnabled(true);
 
-        for (int index=0; index<suggestionButtons.size(); index++){
+        for (int index=0; index<mSuggestionButtons.size(); index++){
             final int i = index;
-            Button button = suggestionButtons.get(i);
+            Button button = mSuggestionButtons.get(i);
             button.setText(suggestions.get(i));
             button.setEnabled(true);
             button.setOnClickListener(new View.OnClickListener() {
@@ -413,10 +425,13 @@ public class PictureTakerFragment extends Fragment{
                     mFoodPhoto.setOneTag(selectedTag, ll, ur, i+1);
                     canContinue = true;
                     guessScore+= i+1;
-                    for (int j=0; j<suggestionButtons.size(); j++){
+                    for (int j=0; j<mSuggestionButtons.size(); j++){
                         if (j!=i){
-                            suggestionButtons.get(i).setEnabled(false);
+                            mSuggestionButtons.get(i).setEnabled(false);
                         }
+                    }
+                    if (viewScores) {
+                        mScoresTextView.setText(mScores.toString());
                     }
                     mTagField.setEnabled(false);
                 }
@@ -447,7 +462,7 @@ public class PictureTakerFragment extends Fragment{
                 mScores.add(tagScore);
 
                 inputTag = s.toString();
-                for (Button button: suggestionButtons) {
+                for (Button button: mSuggestionButtons) {
                     button.setEnabled(false);
                 }
             }
@@ -580,7 +595,6 @@ public class PictureTakerFragment extends Fragment{
 
     }
 
-
     private void loadBitmapFromUri(Uri uri){
         try {
             bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
@@ -601,8 +615,8 @@ public class PictureTakerFragment extends Fragment{
 
         ArrayList<Mat> croppedSegmentMats = new ArrayList<Mat>();
 
-        for (int i=0; i<segmentMats.size(); i++){
-            Mat segmentMat = segmentMats.get(i);
+        for (int i=0; i< mSegmentMats.size(); i++){
+            Mat segmentMat = mSegmentMats.get(i);
 
             Mat maskedImg = new Mat(segmentMat.size(), segmentMat.type());
             maskedImg.setTo(new Scalar(102,51,153));
@@ -624,11 +638,50 @@ public class PictureTakerFragment extends Fragment{
 
         }
 
-        segmentMats = croppedSegmentMats;
+        mSegmentMats = croppedSegmentMats;
+    }
+
+    private ArrayList<String> classifySegment(Mat segment) {
+        if (currentlyClassifying) {
+            List<Vector<Float>> feature_vectors = computeFeatureVector(segment);
+            return mBayesClassifier.classify(feature_vectors);
+        }
+        else if (menuIsLoaded) {
+            return getRandomThreeMenuItems();
+        } else {
+            for (int i=0; i<5; i++){ // give the menu 5 seconds to load
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                    if (menuIsLoaded){
+                        return getRandomThreeMenuItems();
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            return new ArrayList<String>(){{
+                add("Menu not loaded");
+                add("Menu not loaded");
+                add("Menu not loaded");
+            }};
+        }
+    }
+
+    public ArrayList<String> getRandomThreeMenuItems(){
+        ArrayList<String> suggestions = new ArrayList<String>();
+        ArrayList<String> menu = mSharplesMenu.getMenu(new Date());
+
+        Random randomGenerator = new Random();
+        for (int i=0; i<3; i++){
+            int index = randomGenerator.nextInt(menu.size());
+            String item = menu.get(index);
+            suggestions.add(item);
+            menu.remove(index);
+        }
+        return suggestions;
     }
 
     public ArrayList<String> getTagSuggestions(int R, int G, int B){
-        // todo: get suggestions from classifier, given foodMat
         ArrayList<String> suggestions = new ArrayList<String>();
         //mLunchFoods = new ArrayList<MenuFood>();
         //mDinnerFoods = new ArrayList<MenuFood>();
@@ -894,7 +947,7 @@ public class PictureTakerFragment extends Fragment{
 
             List <MatOfPoint> contours = new ArrayList<MatOfPoint>();
             ROIs = new ArrayList<Rect>();
-            segmentMats = new ArrayList<Mat>();
+            mSegmentMats = new ArrayList<Mat>();
 
             Imgproc.findContours(mask, contours, new Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
 
@@ -915,7 +968,7 @@ public class PictureTakerFragment extends Fragment{
                         ROIs.add(rect);
 
                         Mat subMat = imageMat.submat(rect.y, rect.y + rect.height, rect.x, rect.x + rect.width);
-                        segmentMats.add(subMat);
+                        mSegmentMats.add(subMat);
 
                         ImageView segmentImageView = new ImageView(getActivity());
 
@@ -1036,7 +1089,6 @@ public class PictureTakerFragment extends Fragment{
                 // todo: i haven't tested whether the new day thing works
             }
 
-
             return "All done!";
         }
 
@@ -1052,26 +1104,25 @@ public class PictureTakerFragment extends Fragment{
             Log.d(TAG, "in onPostExecute");
             if (mSharplesMenu.isLoaded()) {
                 menuIsLoaded = true;
-                mTagFields.add(mTagField);
-                attachGuessesToTagFields(mTagFields);
+                if (mTagField != null) {
+                    attachGuessesToTextField(mTagField);
+                }
             }
 
         }
     }
 
-    private void attachGuessesToTagFields(ArrayList<AutoCompleteTextView> tagFields){
-        ArrayList<String> arrayListGuesses = mSharplesMenu.getDinnerMenu();
+    private void attachGuessesToTextField(AutoCompleteTextView textField){
+        ArrayList<String> arrayListGuesses = mSharplesMenu.getMenu(new Date());
         String[] guessesArr = new String[arrayListGuesses.size()];
         guessesArr = arrayListGuesses.toArray(guessesArr);
         Log.d(TAG, "how many guesses do we have: "+guessesArr.length);
         ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, guessesArr);
 
-        for (AutoCompleteTextView tagField : tagFields){
-            Log.d(TAG,"attaching guesses to a tag field");
-            tagField.setAdapter(adapter);
-            tagField.setHint("autocomplete tag field");
+        Log.d(TAG,"attaching guesses to a tag field");
+        textField.setAdapter(adapter);
+        textField.setHint("autocomplete tag field");
 
-        }
     }
 
     //endregion
