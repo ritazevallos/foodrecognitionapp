@@ -96,9 +96,10 @@ public class PictureTakerFragment extends Fragment{
     private float guessScore = 0;
     private String inputTag;
     private ArrayList<Mat> mSegmentMats;
-    private ArrayList<TagScore> mScores;
+    private TagScoreStore mScores;
     private TagScoresJSONSerializer mSerializer;
     private TextView mScoresTextView;
+    private TextView mDebugClassifierTextView;
     private ArrayList<Button> mSuggestionButtons;
 
     // SOME DEVELOPER SETTINGS
@@ -110,6 +111,7 @@ public class PictureTakerFragment extends Fragment{
     private boolean currentlyClassifying = false;
     private boolean computeClustersAndModelFromTrainingData = false;
     private boolean viewScores = true;
+    private boolean debugClassifier = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -121,7 +123,7 @@ public class PictureTakerFragment extends Fragment{
         //store these views for accessing later
         mTagFields = new ArrayList<AutoCompleteTextView>();
         mSegmentImageViews = new ArrayList<ImageView>();
-        mScores = new ArrayList<TagScore>();
+        mScores = TagScoreStore.get(getActivity());
 
         // Either create a new food photo, or get the one with the id added to the intent
         CreateDirectoryForPictures();
@@ -207,14 +209,8 @@ public class PictureTakerFragment extends Fragment{
     }
 
     private void saveAccuracyData(){
-        //todo, using mScores
-        try {
-            mSerializer.saveTagScores(mScores);
-        } catch (JSONException e){
-            Log.d(TAG, "Error in saveAccuracyData calling mSerializer.saveTagScores()"+e);
-        } catch (IOException e){
-            Log.d(TAG, "Error in saveAccuracyData calling mSerializer.saveTagScores()"+e);
-        }
+        mScores.saveTagScores();
+
     }
 
     //endregion
@@ -236,6 +232,7 @@ public class PictureTakerFragment extends Fragment{
         mTagField = (AutoCompleteTextView)mTagContainer.findViewById(R.id.pictureTag);
 
         mScoresTextView = (TextView)v.findViewById(R.id.scoreView);
+        mDebugClassifierTextView = (TextView)v.findViewById(R.id.debugClassifierView);
 
         retakePhotoButton = (Button)v.findViewById(R.id.retake_photo_button);
         if(beforePhotoTaken) {
@@ -420,7 +417,7 @@ public class PictureTakerFragment extends Fragment{
 
                     String selectedTag = suggestions.get(i);
                     TagScore tagScore = new TagScore(selectedTag, suggestions.get(0), suggestions.get(1), suggestions.get(2));
-                    mScores.add(tagScore);
+                    mScores.addTagScore(tagScore);
 
                     mFoodPhoto.setOneTag(selectedTag, ll, ur, i+1);
                     canContinue = true;
@@ -447,6 +444,8 @@ public class PictureTakerFragment extends Fragment{
             }
         });
 
+
+        // todo: can probably fix the need for a button by changing to a setOnItemClickListener and a onItemClick override
         mTagField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -455,11 +454,6 @@ public class PictureTakerFragment extends Fragment{
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                String selectedTag = s.toString();
-
-                TagScore tagScore = new TagScore(selectedTag, suggestions.get(0),suggestions.get(1),suggestions.get(2));
-                mScores.add(tagScore);
 
                 inputTag = s.toString();
                 for (Button button: mSuggestionButtons) {
@@ -480,6 +474,9 @@ public class PictureTakerFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 if (inputTag != null) {
+                    TagScore tagScore = new TagScore(inputTag, suggestions.get(0),suggestions.get(1),suggestions.get(2));
+                    mScores.addTagScore(tagScore);
+                    mScoresTextView.setText(mScores.toString());
                     mFoodPhoto.setOneTag(inputTag, ll, ur, 4);
                     canContinue = true;
                     guessScore += 4;
@@ -644,6 +641,12 @@ public class PictureTakerFragment extends Fragment{
     private ArrayList<String> classifySegment(Mat segment) {
         if (currentlyClassifying) {
             List<Vector<Float>> feature_vectors = computeFeatureVector(segment);
+            if (debugClassifier) {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append(feature_vectors.toString());
+                stringBuilder.append(mBayesClassifier.dump_brief());
+                mDebugClassifierTextView.setText(stringBuilder.toString());
+            }
             return mBayesClassifier.classify(feature_vectors);
         }
         else if (menuIsLoaded) {

@@ -51,6 +51,8 @@ public class NaiveBayesClassifier {
     private int numVectorsSinceLastRecomputeModel = 0;
     private int numVectorsSinceLastRecomputeClustering = 0; // in case we want to recompute every x amount of times
 
+    private int clusterCount = 15;
+
     /* NaiveBayesClassifier usage
         - NaiveBayesClassifier.get(Context context);
             get the current instance of the classifier, or create one for the first time
@@ -80,6 +82,17 @@ public class NaiveBayesClassifier {
             - Void recomputeModel();
                 Recomputes the model but doesn't recompute clustering
 
+        ##### Other #####
+
+            - public void clearTrainingData()
+            - public int size()
+                Returns the number of vectors in the vectorList
+            - public String dump_brief()
+                Prints the clusters (i.e. the list of vectors that have been
+                clustered together), the centers of the clusters, and the clusterTags
+            - public String dump()
+                Prints literally everything about the classifier
+
         ##### JSON serializer #####
 
         There's also some JSON serializer things at the bottom which I haven't tested at all or thought
@@ -105,6 +118,51 @@ public class NaiveBayesClassifier {
             Log.e(TAG, "Error loading classifier from serializer"+e);
             performClustering();
         }
+    }
+
+    public void clearTrainingData(){
+        boolean deleted = mSerializer.deleteJsonFile();
+        Log.d(TAG, "Json file deleted = " + deleted);
+        mVectorListTagMap = new HashMap<Integer, String>();
+        mVectorList = new ArrayList<Vector<Float>>();
+    }
+
+    public int size(){
+        return mVectorList.size();
+    }
+
+    /*
+        private List<Vector<Float>> mVectorList;
+    private HashMap<Integer, String> mVectorListTagMap;
+    List<Vector<Float>> mCenters; // vectors that stand for each of the clusters; to be compared against during nearest neighbors classification
+    private List<Double> mClusterLabels; // list of cluster labels; for iteration
+    private HashMap<Double, List<Vector<Double>>> mClusters; // list of the vectors that make up the clusters
+    private HashMap<Double, String> mClusterTags; // labeling of clusters by tags (clusters are repeated)
+    private HashMap<String, Integer> mTagCounts; // the total tag counts, for the priors
+    private HashMap<Double, Map<String,Integer>> mClusterTagCounts;
+     */
+
+    public String dump(){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("\n\nSize of vector list: "+mVectorList.size());
+        stringBuilder.append("\n\nmVectorList\n"+mVectorList.toString());
+        stringBuilder.append("\n\nmVectorListTagMap\n"+mVectorListTagMap.toString());
+        stringBuilder.append("\n\nmCenters\n"+mCenters.toString());
+        stringBuilder.append("\n\nmClusterLabels\n"+mClusterLabels.toString());
+        stringBuilder.append("\n\nmClusters\n"+mClusters.toString());
+        stringBuilder.append("\n\nmClusterTags\n"+mClusterTags.toString());
+        stringBuilder.append("\n\nmTagCounts\n"+mTagCounts.toString());
+        stringBuilder.append("\n\nmClusterTagCounts\n"+mClusterTagCounts.toString());
+        return stringBuilder.toString();
+    }
+
+    public String dump_brief(){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("\n\nSize of vector list: "+mVectorList.size());
+        stringBuilder.append("\n\nmClusters\n"+mClusters.toString());
+        stringBuilder.append("\n\nmCenters\n"+mCenters.toString());
+        stringBuilder.append("\n\nmClusterTags\n"+mClusterTags.toString());
+        return stringBuilder.toString();
     }
 
     public static NaiveBayesClassifier get(Context context) {
@@ -339,7 +397,6 @@ public class NaiveBayesClassifier {
         Log.d(TAG, "dumping samples matrix");
         samples.dump();
 
-        int clusterCount = 15;
         Mat labels = new Mat();
         int attempts = 5;
         Mat centers = new Mat();

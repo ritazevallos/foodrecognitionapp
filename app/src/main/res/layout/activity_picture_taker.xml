@@ -130,5 +130,9 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/scoreView"/>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/debugClassifierView"/>
 </LinearLayout>
     </ScrollView>
